@@ -88,11 +88,11 @@ function dayFunction(lines)
     return lines;
 end
 
-lines = open("./inputs/inputs_05.txt") do file
+lines = open("./inputs/2022/inputs_2022_05.txt") do file
     @time lines = dayFunction(readlines(file));
 end
 
-# lines = open("./inputs/inputs_05_test.txt") do file
+# lines = open("./inputs/2022/inputs_2022_05_test.txt") do file
 #      lines = readlines(file);
 # end
 

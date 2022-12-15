@@ -19,6 +19,6 @@ function getMaxSum(lines)
     return maxCount;
 end
 
-lines = open("./inputs/inputs_01.txt") do file
+lines = open("./inputs/2022/inputs_2022_01.txt") do file
     display(getMaxSum(readlines(file)))
 end

@@ -48,6 +48,6 @@ function dayFunction(lines)
     return score;
 end
 
-lines = open("./inputs/inputs_02.txt") do file
+lines = open("./inputs/2022/inputs_2022_02.txt") do file
     display(dayFunction(readlines(file)))
 end

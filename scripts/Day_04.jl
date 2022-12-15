@@ -35,7 +35,7 @@ function dayFunction(lines)
     return lines;
 end
 
-lines = open("./inputs/inputs_04.txt") do file
+lines = open("./inputs/2022/inputs_2022_04.txt") do file
     lines = dayFunction(readlines(file));
 end
 
