@@ -26,28 +26,45 @@ result(a::Scissors, b::Rock) = 6;
 result(a::Scissors, b::Paper) = 0;
 result(a::Scissors, b::Scissors) = 3;
 
-getShape(str::SubString{String})::Shape = getShape(string(str));
-function getShape(str::String)::Shape
+function getShape(str::SubString{String})::Shape
     @match str begin
         "A" || "X" => Rock()
         "B" || "Y" => Paper()
         "C" || "Z" => Scissors()
     end
 end
+function getShape(opponent::Shape, str::SubString{String})::Shape
+    outcome = @match str begin
+        "X" => 0
+        "Y" => 3
+        "Z" => 6
+    end
+    for myshape in [Rock(), Paper(), Scissors()]
+        if result(opponent, myshape) == outcome
+            return myshape;
+        end
+    end
+end
 
-function dayFunction(lines)
-    score = 0;
+function calculateScore(lines)
+    score1, score2 = 0, 0;
 
     for l = lines
-        game = split(l, " ");
-        oponnent = getShape(game[1]);
-        me = getShape(game[2]);
-        score += result(oponnent, me) + me.shapeScore;
+        game        = split(l, " ");
+        oponnent    = getShape(game[1]);
+        me1         = getShape(game[2]);
+        me2         = getShape(oponnent, game[2]);
+        score1 += result(oponnent, me1) + me1.shapeScore;
+        score2 += result(oponnent, me2) + me2.shapeScore;
     end
     
-    return score;
+    return (score1, score2);
 end
 
-lines = open("./inputs/2022/inputs_2022_02.txt") do file
-    display(dayFunction(readlines(file)))
+lines = open("./inputs/2022/in_2022--02.txt") do file
+    lines = readlines(file);
 end
+
+@time scores = calculateScore(lines)
+println("\nPart 1 answer: $(scores[1])");
+println("\nPart 2 answer: $(scores[2])");
