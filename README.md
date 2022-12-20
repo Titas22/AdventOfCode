@@ -14,9 +14,9 @@ include("./scripts/init.jl") # Run once to set up and activate the environment
 include("./scripts/Day_xx.jl") # use to run & re-run the actual script
 ```
 
-<br><br>
+<br>
 
-## Overview
+## Summary
 
 | Day | Problem | Time | Allocated memory | Source | Topic |
 |----:|:-------:|-----:|-----------------:|:------:|:----:|
