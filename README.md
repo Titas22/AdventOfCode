@@ -1,4 +1,4 @@
-# AdventOfCode
+# AdventOfCode.jl
 
 My [Advent of Code](https://adventofcode.com/) submissions in [Julia](https://github.com/JuliaLang/julia).
 

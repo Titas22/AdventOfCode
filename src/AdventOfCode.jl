@@ -1,4 +1,4 @@
-module Advent2022
+module AdventOfCode
 
 
-end # module Advent2022
+end # module AdventOfCode
