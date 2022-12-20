@@ -49,10 +49,7 @@ include("./scripts/Day_xx.jl") # use to run & re-run the actual script
 
 
 The benchmarks have been measured on this machine:
-```
-Platform Info:
-  Model:    MSI GE66 Raider 10SFS
-  
+```  
 Julia Version 1.8.1
 Platform Info:
     Model:  MSI GE66 Raider 10SFS
