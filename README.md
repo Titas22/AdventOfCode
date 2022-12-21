@@ -18,7 +18,7 @@ include("./scripts/Day_xx.jl") # use to run & re-run the actual script
 
 | Day | Problem | Time | Allocated memory | Source | Topic |
 |----:|:-------:|-----:|-----------------:|:------:|:----:|
-| 01 | [:white_check_mark:](https://adventofcode.com/2022/day/1) | 385.521 μs | 148.73 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/scripts/Day_01.jl) | - | 
+| 01 | [:white_check_mark:](https://adventofcode.com/2022/day/1) | 385.521 μs | 148.73 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2022/AoC_22_01.jl) | - | 
 | 02 | [:white_check_mark:](https://adventofcode.com/2022/day/2) | - s | - KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/scripts/Day_02.jl) | - | 
 | 03 | [:white_check_mark:](https://adventofcode.com/2022/day/3) | - s | - KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/scripts/Day_03.jl) | - | 
 | 04 | [:white_check_mark:](https://adventofcode.com/2022/day/4) | - s | - KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/scripts/Day_04.jl) | - | 
