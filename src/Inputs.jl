@@ -11,10 +11,10 @@ _yearDayInputsPath(day::Integer, year::Integer, bTestCase::Bool)        = joinpa
 @export createEmptyInputFile(day::Integer, year::Integer = DEFAULT_YEAR, bTestCase::Bool = false) = touch(_yearDayInputsPath(day, year, bTestCase));
 
 @export function getDayYear(filename::String)::Tuple{Int, Int}
-    yydd = match(r"AoC_(\d\d)_(\d\d)", splitext(basename(filename))[1]);
+    yydd = match(r"AoC_(\d\d\d\d)_(\d\d)", splitext(basename(filename))[1]);
     @assert(!=(yydd, nothing), "Wrong script file name format. Expected to be 'AoC_YY_DD.jl'")
 
-    return (parse(Int, yydd[2]), 2000 + parse(Int, yydd[1])); # (day, year)
+    return (parse(Int, yydd[2]), parse(Int, yydd[1])); # (day, year)
 end
 
 @export getInputs(solutionFile::String, bTestCase::Bool = false) = getInputs(getDayYear(solutionFile)..., bTestCase);

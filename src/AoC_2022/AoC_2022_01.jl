@@ -1,4 +1,4 @@
-module AoC_22_01
+module AoC_2022_01
 
     using AdventOfCode;
 
@@ -27,9 +27,9 @@ module AoC_22_01
         return (calories[1], sum(calories[1:3]));
     end
 
-    # @time (part1, part2) = solve(true); # Test
-    @time (part1, part2) = solve();
-    println("\nPart 1 answer: $(part1)");
-    println("\nPart 2 answer: $(part2)");
+    # # @time (part1, part2) = solve(true); # Test
+    # @time (part1, part2) = solve();
+    # println("\nPart 1 answer: $(part1)");
+    # println("\nPart 2 answer: $(part2)");
 
 end # module AoC_22_01
