@@ -30,6 +30,6 @@ module AoC_2022_01
     # # @time (part1, part2) = solve(true); # Test
     # @time (part1, part2) = solve();
     # println("\nPart 1 answer: $(part1)");
-    # println("\nPart 2 answer: $(part2)");
+    # println("Part 2 answer: $(part2)");
 
 end # module AoC_22_01
