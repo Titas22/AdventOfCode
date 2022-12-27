@@ -5,4 +5,7 @@ using Revise
 using Profile
 using BenchmarkTools
 
-Pkg.instantiate();
+Pkg.instantiate()
+
+using AdventOfCode
+const AoC = AdventOfCode

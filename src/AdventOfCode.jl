@@ -3,19 +3,14 @@ module AdventOfCode
     using Profile
     using BenchmarkTools
     using InlineExports
-    
     import Dates
 
+    const TIMEZONE_OFFSET       = Dates.Hour(5); # Advent of Code problem is available @ midnight EST (UTC-5)
+    const DEFAULT_YEAR          = Dates.year(Dates.today());
+    const DEFAULT_SOLVED_DAYS   = 1:25;
+
     include("Inputs.jl")
+    
+    include("Benchmarks.jl")
 
-    export @getInputs;
-
-    macro getInputs(bTestCase::Union{Symbol, Expr, Bool} = false)
-        callingFile = String(__source__.file);
-        @assert(!startswith(callingFile, "REPL"), "Cannot use @getInputs macro from REPL. Use getInputs(day, year, bTestCase).")
-        ex = quote
-            getInputs($(callingFile), $(esc(bTestCase)))
-        end
-        # @show ex
-    end
 end # module AdventOfCode

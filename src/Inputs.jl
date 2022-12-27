@@ -1,7 +1,13 @@
-const DEFAULT_YEAR = Dates.year(Dates.today());
 
+@export macro getInputs(bTestCase::Union{Symbol, Expr, Bool} = false)
+    callingFile = String(__source__.file);
+    @assert(!startswith(callingFile, "REPL"), "Cannot use @getInputs macro from REPL. Use getInputs(day, year, bTestCase).")
+    ex = quote
+        getInputs($(callingFile), $(esc(bTestCase)))
+    end
+    # @show ex
+end
 
-const TIMEZONE_OFFSET = Dates.Hour(5); # Advent of Code problem is available @ midnight EST (UTC-5)
 _timeToPuzzleUnlock(day::Integer, year::Integer=DEFAULT_YEAR)::Dates.Millisecond = (Dates.DateTime(year, 12, day) - (Dates.now(Dates.UTC) - TIMEZONE_OFFSET));
 _isPuzzleUnlocked(day::Integer, year::Integer=DEFAULT_YEAR)::Bool = _timeToPuzzleUnlock(day, year) <= Dates.Millisecond(0);
 

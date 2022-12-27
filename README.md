@@ -37,12 +37,12 @@ include("./scripts/Day_xx.jl") # use to run & re-run the actual script
 | 17 | [:white_check_mark:](https://adventofcode.com/2022/day/17) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
 | 18 | [:white_check_mark:](https://adventofcode.com/2022/day/18) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
 | 19 | [:white_check_mark:](https://adventofcode.com/2022/day/19) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
-| 20 | [:x:](https://adventofcode.com/2022/day/20) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
-| 21 | [:x:](https://adventofcode.com/2022/day/21) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
-| 22 | [:x:](https://adventofcode.com/2022/day/22) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
-| 23 | [:x:](https://adventofcode.com/2022/day/23) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
-| 24 | [:x:](https://adventofcode.com/2022/day/24) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
-| 25 | [:x:](https://adventofcode.com/2022/day/25) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
+| 20 | [:white_check_mark:](https://adventofcode.com/2022/day/20) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
+| 21 | [:white_check_mark:](https://adventofcode.com/2022/day/21) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
+| 22 | [:white_check_mark:](https://adventofcode.com/2022/day/22) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
+| 23 | [:white_check_mark:](https://adventofcode.com/2022/day/23) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
+| 24 | [:white_check_mark:](https://adventofcode.com/2022/day/24) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
+| 25 | [:white_check_mark:](https://adventofcode.com/2022/day/25) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
 
 
 
