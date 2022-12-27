@@ -1,5 +1,6 @@
 module AoC_2022_xx
     using AdventOfCode;
+    const AoC = AdventOfCode;
 
     function parseInputs(lines::Vector{String})
 
