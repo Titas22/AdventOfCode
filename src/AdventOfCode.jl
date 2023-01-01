@@ -13,4 +13,21 @@ module AdventOfCode
     
     include("Benchmarks.jl")
 
+    
+    
+    @export function splitAtEmptyLines(lines::Vector{String})::Vector{Vector{String}}
+        inputs          = Vector{Vector{String}}()
+        currentBlock    = String[]
+        for line in lines
+            if isempty(line)
+                push!(inputs, currentBlock)
+                currentBlock = String[]
+            else
+                push!(currentBlock, line)
+            end
+        end
+        push!(inputs, currentBlock)
+        return inputs
+    end
+
 end # module AdventOfCode
