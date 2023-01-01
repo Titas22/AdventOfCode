@@ -6,7 +6,7 @@ module AdventOfCode
     import Dates
 
     const TIMEZONE_OFFSET       = Dates.Hour(5); # Advent of Code problem is available @ midnight EST (UTC-5)
-    const DEFAULT_YEAR          = Dates.year(Dates.today());
+    const DEFAULT_YEAR          = Dates.year(Dates.today()) - (Dates.value(Dates.Month(Dates.today())) > 10 ? 0 : 1);
     const DEFAULT_SOLVED_DAYS   = 1:25;
 
     include("Inputs.jl")
