@@ -31,7 +31,7 @@ include("./scripts/Day_xx.jl") # use to run & re-run the actual script
 | 11 | [:white_check_mark:](https://adventofcode.com/2022/day/11) | 396.496 ms | 244.14 MiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2022/AoC_2022_11.jl) | - | 
 | 12 | [:white_check_mark:](https://adventofcode.com/2022/day/12) | 330.877 μs | 492.52 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2022/AoC_2022_12.jl) | - | 
 | 13 | [:white_check_mark:](https://adventofcode.com/2022/day/13) | 1.557 ms | 748.29 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2022/AoC_2022_13.jl) | - | 
-| 14 | [:white_check_mark:](https://adventofcode.com/2022/day/14) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
+| 14 | [:white_check_mark:](https://adventofcode.com/2022/day/14) | 1.016 s | 309.37 MiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2022/AoC_2022_14.jl) | - | 
 | 15 | [:white_check_mark:](https://adventofcode.com/2022/day/15) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
 | 16 | [:white_check_mark:](https://adventofcode.com/2022/day/16) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
 | 17 | [:white_check_mark:](https://adventofcode.com/2022/day/17) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
