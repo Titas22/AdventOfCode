@@ -1,4 +1,4 @@
-module AoC_2022_xx
+module AoC_2023_xx
     using AdventOfCode;
     const AoC = AdventOfCode;
 
@@ -23,6 +23,7 @@ module AoC_2022_xx
 
     function solve(bTestCase::Bool = false)::Tuple{Any, Any};
         lines       = @getInputs(bTestCase);
+        # lines2      = @getInputs(bTestCase, "_2"); # Use if 2nd problem test case inputs are different
         inputs      = parseInputs(lines);
 
         solution    = solveCommon(inputs);
