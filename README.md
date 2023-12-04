@@ -18,7 +18,7 @@ include("./src/AoC_2023/AoC_2023_xx.jl") # use to run & re-run the actual script
 
 | Day | Problem | Time | Allocated memory | Source | Topic |
 |----:|:-------:|-----:|-----------------:|:------:|:----:|
-| 15 | [:white_check_mark:](https://adventofcode.com/2023/day/1) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
+| 01 | [:white_check_mark:](https://adventofcode.com/2023/day/1) | 2.515 ms | 3.79 MiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_01.jl) | - | 
 | 15 | [:white_check_mark:](https://adventofcode.com/2023/day/2) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
 | 15 | [:white_check_mark:](https://adventofcode.com/2023/day/3) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
 | 15 | [:white_check_mark:](https://adventofcode.com/2023/day/4) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
