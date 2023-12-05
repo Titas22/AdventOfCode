@@ -43,6 +43,7 @@ function _downloadInputs(day::Integer, year::Integer, bTestCase::Bool)
     end
     
     @warn(filepath)
+    createEmptyInputFile(day, year, bTestCase);
     Base.error("Downloading inputs is not implemented yet.")
 end
     
