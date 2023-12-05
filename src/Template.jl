@@ -2,21 +2,21 @@ module AoC_2023_xx
     using AdventOfCode;
     const AoC = AdventOfCode;
 
-    function parseInputs(lines::Vector{String})
+    function parse_inputs(lines::Vector{String})
 
         return lines;
     end
-    function solveCommon(inputs)
+    function solve_common(inputs)
 
         return inputs;
     end
 
-    function solvePart1(inputs)
+    function solve_part_1(inputs)
 
         return nothing;
     end
 
-    function solvePart2(inputs)
+    function solve_part_2(inputs)
 
         return nothing;
     end
@@ -24,11 +24,11 @@ module AoC_2023_xx
     function solve(bTestCase::Bool = false)::Tuple{Any, Any};
         lines       = @getInputs(bTestCase);
         # lines2      = @getInputs(bTestCase, "_2"); # Use if 2nd problem test case inputs are different
-        inputs      = parseInputs(lines);
+        inputs      = parse_inputs(lines);
 
-        solution    = solveCommon(inputs);
-        part1       = solvePart1(solution);
-        part2       = solvePart2(solution);
+        solution    = solve_common(inputs);
+        part1       = solve_part_1(solution);
+        part2       = solve_part_2(solution);
 
         return (part1, part2);
     end
