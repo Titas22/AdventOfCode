@@ -61,7 +61,7 @@ module AoC_2022_15
     end
 
     function solve(bTestCase::Bool = false)::Tuple{Any, Any};
-        lines               = @getInputs(bTestCase);
+        lines               = @getinputs(bTestCase);
         (sensors, beacons)  = parseInputs(lines);
         # solution    = solveCommon(inputs);
 
@@ -77,7 +77,7 @@ module AoC_2022_15
     println("\nPart 2 answer: $(part2)");
 end
 
-lines = @getInputs false
+lines = @getinputs false
 yRow = 2000000
 
 (sensors, beacons)  = parseInputs(lines);

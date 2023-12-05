@@ -15,18 +15,18 @@ module AdventOfCode
 
     
     
-    @export function splitAtEmptyLines(lines::Vector{String})::Vector{Vector{String}}
+    @export function split_at_empty_lines(lines::Vector{String})::Vector{Vector{String}}
         inputs          = Vector{Vector{String}}()
-        currentBlock    = String[]
+        current_block    = String[]
         for line in lines
             if isempty(line)
-                push!(inputs, currentBlock)
-                currentBlock = String[]
+                push!(inputs, current_block)
+                current_block = String[]
             else
-                push!(currentBlock, line)
+                push!(current_block, line)
             end
         end
-        push!(inputs, currentBlock)
+        push!(inputs, current_block)
         return inputs
     end
 

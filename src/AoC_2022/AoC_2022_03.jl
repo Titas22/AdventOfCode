@@ -36,7 +36,7 @@ module AoC_2022_03
     end
 
     function solve(bTestCase::Bool = false)::Tuple{Any, Any};
-        lines       = @getInputs(bTestCase);
+        lines       = @getinputs(bTestCase);
 
         return (solvePart1(lines), solvePart2(lines));
     end

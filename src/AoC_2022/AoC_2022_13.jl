@@ -3,7 +3,7 @@ module AoC_2022_13
     using JSON
     const AoC = AdventOfCode;
     
-    parseInputs(lines::Vector{String})  = map(x->JSON.parse.(x), splitAtEmptyLines(lines))
+    parseInputs(lines::Vector{String})  = map(x->JSON.parse.(x), split_at_empty_lines(lines))
 
     isCorrectOrder(packetPair::Vector{Vector{Any}}) = isCorrectOrder(packetPair[1], packetPair[2]);
     isCorrectOrder(a::Integer, b::Vector{Any})      = isCorrectOrder(Any[a], b);
@@ -34,7 +34,7 @@ module AoC_2022_13
     end
 
     function solve(bTestCase::Bool = false)::Tuple{Any, Any};
-        lines       = @getInputs(bTestCase);
+        lines       = @getinputs(bTestCase);
         packetPairs = parseInputs(lines);
 
         part1       = solvePart1(packetPairs);

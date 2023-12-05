@@ -22,7 +22,7 @@ module AoC_2022_01
     end
 
     function solve(bTestCase::Bool = false)::Tuple{Any, Any};
-        lines       = @getInputs(bTestCase);
+        lines       = @getinputs(bTestCase);
         calories    = getSortedCalories(lines);
         return (calories[1], sum(calories[1:3]));
     end

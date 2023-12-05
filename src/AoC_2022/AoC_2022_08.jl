@@ -69,7 +69,7 @@ module AoC_2022_08
     end
 
     function solve(bTestCase::Bool = false)::Tuple{Any, Any};
-        lines       = @getInputs(bTestCase);
+        lines       = @getinputs(bTestCase);
         treeHeights = parseInputs(lines);
 
         part1       = visibleTrees(treeHeights);

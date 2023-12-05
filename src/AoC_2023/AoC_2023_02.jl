@@ -41,8 +41,8 @@ module AoC_2023_02
     solve_part_2(games::Vector{Game})::Int = sum(get_power.(games));
 
     function solve(bTestCase::Bool = false)::Tuple{Int, Int};
-        lines       = @getInputs(bTestCase);
-        # lines2      = @getInputs(bTestCase, "_2"); # Use if 2nd problem test case inputs are different
+        lines       = @getinputs(bTestCase);
+        # lines2      = @getinputs(bTestCase, "_2"); # Use if 2nd problem test case inputs are different
         games      = parse_inputs(lines);
 
         part1       = solve_part_1(games);

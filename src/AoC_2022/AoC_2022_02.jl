@@ -49,7 +49,7 @@ module AoC_2022_02
     end
     
     function solve(bTestCase::Bool = false)::Tuple{Any, Any};
-        lines           = @getInputs(bTestCase);
+        lines           = @getinputs(bTestCase);
         score1, score2  = 0, 0;
     
         for l = lines
