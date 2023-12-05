@@ -33,13 +33,14 @@ module AoC_2023_02
     
     get_power(g::Game) = g.MaxSet.Red * g.MaxSet.Green * g.MaxSet.Blue;
 
-    parse_inputs(lines::Vector{<:AbstractString})::Vector{Game} = Game.(lines);
+    parse_inputs(lines::Vector{<:AbstractString})::Vector{Game} = [Game(l) for l in lines] # Somehow this is faster (at least first time)
+    # parse_inputs(lines::Vector{<:AbstractString})::Vector{Game} = Game.(lines); # <- this is nicer but gets recompiled every time
     
     solve_part_1(games::Vector{Game})::Int = sum([g.Id for g in games if ispossible(g)]);
 
     solve_part_2(games::Vector{Game})::Int = sum(get_power.(games));
 
-    function solve(bTestCase::Bool = false)::Tuple{Any, Any};
+    function solve(bTestCase::Bool = false)::Tuple{Int, Int};
         lines       = @getInputs(bTestCase);
         # lines2      = @getInputs(bTestCase, "_2"); # Use if 2nd problem test case inputs are different
         games      = parse_inputs(lines);
