@@ -38,8 +38,8 @@ module AoC_2023_01
     solve_part_2(inputs) = sum(get_digits_2.(inputs));
 
     function solve(bTestCase::Bool = false)::Tuple{Any, Any};
-        lines       = @getInputs(bTestCase);
-        lines2      = bTestCase ? @getInputs(bTestCase, "_2") : lines;
+        lines       = @getinputs(bTestCase);
+        lines2      = bTestCase ? @getinputs(bTestCase, "_2") : lines;
 
         part1       = solve_part_1(lines);
         part2       = solve_part_2(lines2);

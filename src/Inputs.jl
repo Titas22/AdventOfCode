@@ -1,51 +1,47 @@
-
-@export macro getInputs(bTestCase::Union{Symbol, Expr, Bool} = false, extra::AbstractString = "")
-    callingFile = String(__source__.file);
-    @assert(!startswith(callingFile, "REPL"), "Cannot use @getInputs macro from REPL. Use getInputs(day, year, bTestCase).")
+@export macro getinputs(btest::Union{Symbol, Expr, Bool} = false, extra::AbstractString = "")
+    calling_file = String(__source__.file);
+    @assert(!startswith(calling_file, "REPL"), "Cannot use @getinputs macro from REPL. Use getinputs(day, year, btest).")
     ex = quote
-        getInputs($(callingFile), $(esc(bTestCase)))
+        getinputs($(calling_file), $(esc(btest)))
     end
     # @show ex
 end
 
-_timeToPuzzleUnlock(day::Integer, year::Integer=DEFAULT_YEAR)::Dates.Millisecond = (Dates.DateTime(year, 12, day) - (Dates.now(Dates.UTC) - TIMEZONE_OFFSET));
-_isPuzzleUnlocked(day::Integer, year::Integer=DEFAULT_YEAR)::Bool = _timeToPuzzleUnlock(day, year) <= Dates.Millisecond(0);
+_time_to_puzzle_unlock(day::Integer, year::Integer=DEFAULT_YEAR)::Dates.Millisecond = (Dates.DateTime(year, 12, day) - (Dates.now(Dates.UTC) - TIMEZONE_OFFSET));
+_is_puzzle_unlocked(day::Integer, year::Integer=DEFAULT_YEAR)::Bool = _time_to_puzzle_unlock(day, year) <= Dates.Millisecond(0);
 
-_yearDayInputsFileName(day::Integer, year::Integer, bTestCase::Bool, extra::AbstractString = "")    = "in_$(year)--$(lpad(day,2,"0"))$(bTestCase ? "_test" : "")$(extra).txt";
-_yearDayInputsPath(day::Integer, year::Integer, bTestCase::Bool, extra::AbstractString = "")        = joinpath(".", "inputs", string(year), _yearDayInputsFileName(day, year, bTestCase, extra));
+_year_day_inputs_file(day::Integer, year::Integer, btest::Bool, extra::AbstractString = "")    = "in_$(year)--$(lpad(day,2,"0"))$(btest ? "_test" : "")$(extra).txt";
+_year_day_inputs_path(day::Integer, year::Integer, btest::Bool, extra::AbstractString = "")        = joinpath(".", "inputs", string(year), _year_day_inputs_file(day, year, btest, extra));
 
-@export createEmptyInputFile(day::Integer, year::Integer = DEFAULT_YEAR, bTestCase::Bool = false) = touch(_yearDayInputsPath(day, year, bTestCase));
+@export create_empty_input_file(day::Integer, year::Integer = DEFAULT_YEAR, btest::Bool = false) = touch(_year_day_inputs_path(day, year, btest));
 
-@export function getDayYear(filename::String)::Tuple{Int, Int}
+@export function get_day_year(filename::String)::Tuple{Int, Int}
     yydd = match(r"AoC_(\d\d\d\d)_(\d\d)", splitext(basename(filename))[1]);
     @assert(!=(yydd, nothing), "Wrong script file name format. Expected to be 'AoC_YY_DD.jl'")
 
     return (parse(Int, yydd[2]), parse(Int, yydd[1])); # (day, year)
 end
 
-@export getInputs(solutionFile::String, bTestCase::Bool = false, extra::AbstractString = "") = getInputs(getDayYear(solutionFile)..., bTestCase, extra);
+@export getinputs(solution_file::String, btest::Bool = false, extra::AbstractString = "") = getinputs(get_day_year(solution_file)..., btest, extra);
 
-@export function getInputs(day::Integer, year::Integer = DEFAULT_YEAR, bTestCase::Bool = false, extra::AbstractString = "")::Vector{String}
-    filepath = _yearDayInputsPath(day, year, bTestCase, extra);
+@export function getinputs(day::Integer, year::Integer = DEFAULT_YEAR, btest::Bool = false, extra::AbstractString = "")::Vector{String}
+    filepath = _year_day_inputs_path(day, year, btest, extra);
     
-    isfile(filepath) || _downloadInputs(day, year, bTestCase);
+    isfile(filepath) || _download_inputs(day, year, btest);
     
     return readlines(filepath);
 end
 
-function _downloadInputs(day::Integer, year::Integer, bTestCase::Bool)
-    _isPuzzleUnlocked(day, year) || Base.error("$(year) day $(day) has not been released yet - $(_timeToPuzzleUnlock(day, year)) left...")
+function _download_inputs(day::Integer, year::Integer, btest::Bool)
+    _is_puzzle_unlocked(day, year) || Base.error("$(year) day $(day) has not been released yet - $(_time_to_puzzle_unlock(day, year)) left...")
     
-    filepath = _yearDayInputsPath(day, year, bTestCase);
-    if bTestCase
-        createEmptyInputFile(day, year, bTestCase);
+    filepath = _year_day_inputs_path(day, year, btest);
+    if btest
+        create_empty_input_file(day, year, btest);
         Base.error("Cannot automatically download test inputs, paste manually to $(filepath)")
     end
     
     @warn(filepath)
-    createEmptyInputFile(day, year, bTestCase);
+    create_empty_input_file(day, year, btest);
     Base.error("Downloading inputs is not implemented yet.")
 end
-    
-
-    

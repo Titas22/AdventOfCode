@@ -55,7 +55,7 @@ module AoC_2022_10
     parseInputs(lines::Vector{String})::Vector{Instruction} = Instruction.(lines);
 
     function solve(bTestCase::Bool = false)::Tuple{Any, Any};
-        lines           = @getInputs(bTestCase);
+        lines           = @getinputs(bTestCase);
         instructions    = parseInputs(lines);
 
         part1       = solvePart1(instructions);

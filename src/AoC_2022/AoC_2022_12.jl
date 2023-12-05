@@ -51,7 +51,7 @@ module AoC_2022_12
     end
 
     function solve(bTestCase::Bool = false)::Tuple{Any, Any};
-        lines                           = @getInputs(bTestCase);
+        lines                           = @getinputs(bTestCase);
         (heights, idxStart, idxPeak)    = parseInputs(lines);
         (distances, bProcessed)         = findDistanceMatrix(heights, idxPeak);
 

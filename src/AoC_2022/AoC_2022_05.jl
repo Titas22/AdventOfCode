@@ -65,7 +65,7 @@ module AoC_2022_05
     end
 
     function solve(bTestCase::Bool = false)::Tuple{Any, Any};
-        lines           = @getInputs(bTestCase);
+        lines           = @getinputs(bTestCase);
         (stacks, moves) = parseInputs(lines);
 
         part1       = solveCommon(stacks, moves, applyMove1!);

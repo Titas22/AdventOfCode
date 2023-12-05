@@ -17,7 +17,7 @@ module AoC_2022_06
     end
 
     function solve(bTestCase::Bool = false)::Tuple{Any, Any};
-        lines       = @getInputs(bTestCase);
+        lines       = @getinputs(bTestCase);
 
         part1       = findMarker.(lines, 4)[1];
         part2       = findMarker.(lines, 14)[1];

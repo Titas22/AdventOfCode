@@ -31,7 +31,7 @@ module AoC_2022_04
     solvePart2(lines::Vector{String}) = sum(processLine2.(lines));
 
     function solve(bTestCase::Bool = false)::Tuple{Any, Any};
-        lines       = @getInputs(bTestCase);
+        lines       = @getinputs(bTestCase);
 
         part1       = solvePart1(lines);
         part2       = solvePart2(lines);

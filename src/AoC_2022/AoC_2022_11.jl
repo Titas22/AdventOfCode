@@ -9,7 +9,7 @@ module AoC_2022_11
         end
     end
     
-    function splitAtEmptyLines(lines::Vector{String})::Vector{Vector{String}}
+    function split_at_empty_lines(lines::Vector{String})::Vector{Vector{String}}
         inputs          = Vector{Vector{String}}()
         currentBlock    = String[]
         for line in lines
@@ -95,8 +95,8 @@ module AoC_2022_11
     end
 
     function solve(bTestCase::Bool = false)::Tuple{Any, Any};
-        lines       = @getInputs(bTestCase);
-        monkeys     = inputsToMonkeys(splitAtEmptyLines(lines));
+        lines       = @getinputs(bTestCase);
+        monkeys     = inputsToMonkeys(split_at_empty_lines(lines));
         (monkeys1, monkeyBusiness1) = monkeyBusinessAfterXRounds(monkeys, 20, 3);
         (monkeys2, monkeyBusiness2) = monkeyBusinessAfterXRounds(monkeys, 10000, 1);
 

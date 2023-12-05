@@ -118,7 +118,7 @@ module AoC_2022_07
     end
 
     function solve(bTestCase::Bool = false)::Tuple{Any, Any};
-        lines       = AdventOfCode.@getInputs(bTestCase);
+        lines       = AdventOfCode.@getinputs(bTestCase);
         root        = toDirTree(lines); 
 
         part1       = sumDirSizeUnderX(root, 100000);

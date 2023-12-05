@@ -109,7 +109,7 @@ module AoC_2022_14
     end
 
     function solve(bTestCase::Bool = false)::Tuple{Any, Any};
-        lines       = @getInputs(bTestCase);
+        lines       = @getinputs(bTestCase);
         blockages   = parseInputs(lines);
 
         cave        = initialiseCave(blockages);
