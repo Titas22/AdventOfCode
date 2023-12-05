@@ -21,9 +21,9 @@ module AoC_2023_xx
         return nothing;
     end
 
-    function solve(bTestCase::Bool = false)::Tuple{Any, Any};
-        lines       = @getinputs(bTestCase);
-        # lines2      = @getinputs(bTestCase, "_2"); # Use if 2nd problem test case inputs are different
+    function solve(btest::Bool = false)::Tuple{Any, Any};
+        lines       = @getinputs(btest);
+        # lines2      = @getinputs(btest, "_2"); # Use if 2nd problem test case inputs are different
         inputs      = parse_inputs(lines);
 
         solution    = solve_common(inputs);
