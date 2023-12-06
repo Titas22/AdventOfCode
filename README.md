@@ -25,7 +25,7 @@ include("./src/AoC_2023/AoC_2023_xx.jl") # use to run & re-run the actual script
 |----:|:-------:|-----:|-----------------:|:------:|:----:|
 | 01 | [:white_check_mark:](https://adventofcode.com/2023/day/1) | 2.515 ms | 3.79 MiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_01.jl) | Trebuchet?! | 
 | 02 | [:white_check_mark:](https://adventofcode.com/2023/day/2) | 695.400 μs | 432.23 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_02.jl) | Cube Conundrum | 
-| 03 | [:white_check_mark:](https://adventofcode.com/2023/day/3) | 424.300 μs | 585.84 KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_03.jl) | Gear Ratios | 
+| 03 | [:white_check_mark:](https://adventofcode.com/2023/day/3) | 424.300 μs | 585.84 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_03.jl) | Gear Ratios | 
 | 04 | [:white_check_mark:](https://adventofcode.com/2023/day/4) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
 | 05 | [:white_check_mark:](https://adventofcode.com/2023/day/5) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
 | 06 | [:white_check_mark:](https://adventofcode.com/2023/day/6) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
