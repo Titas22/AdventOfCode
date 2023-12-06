@@ -22,7 +22,7 @@ include("./src/AoC_2023/AoC_2023_xx.jl") # use to run & re-run the actual script
 ## Summary
 
 | Day | Problem | Time | Allocated memory | Source |
-|----:|:-------:|-----:|-----------------:|:------:|:----:|
+|----:|:-------:|-----:|-----------------:|:------:|
 | 01 | [Trebuchet?!](https://adventofcode.com/2023/day/1) | 2.515 ms | 3.79 MiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_01.jl) |
 | 02 | [Cube Conundrum](https://adventofcode.com/2023/day/2) | 695.400 μs | 432.23 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_02.jl) |
 | 03 | [Gear Ratios](https://adventofcode.com/2023/day/3) | 424.300 μs | 585.84 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_03.jl) |
