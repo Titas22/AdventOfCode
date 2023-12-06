@@ -26,28 +26,28 @@ include("./src/AoC_2023/AoC_2023_xx.jl") # use to run & re-run the actual script
 | 01 | [:white_check_mark:](https://adventofcode.com/2023/day/1) | 2.515 ms | 3.79 MiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_01.jl) | Trebuchet?! | 
 | 02 | [:white_check_mark:](https://adventofcode.com/2023/day/2) | 695.400 μs | 432.23 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_02.jl) | Cube Conundrum | 
 | 03 | [:white_check_mark:](https://adventofcode.com/2023/day/3) | 424.300 μs | 585.84 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_03.jl) | Gear Ratios | 
-| 04 | [:white_check_mark:](https://adventofcode.com/2023/day/4) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
-| 05 | [:white_check_mark:](https://adventofcode.com/2023/day/5) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
-| 06 | [:white_check_mark:](https://adventofcode.com/2023/day/6) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
-| 07 | [:white_check_mark:](https://adventofcode.com/2023/day/7) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
-| 08 | [:white_check_mark:](https://adventofcode.com/2023/day/8) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
-| 09 | [:white_check_mark:](https://adventofcode.com/2023/day/9) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
-| 10 | [:white_check_mark:](https://adventofcode.com/2023/day/10) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
-| 11 | [:white_check_mark:](https://adventofcode.com/2023/day/11) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
-| 12 | [:white_check_mark:](https://adventofcode.com/2023/day/12) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
-| 13 | [:white_check_mark:](https://adventofcode.com/2023/day/13) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
-| 14 | [:white_check_mark:](https://adventofcode.com/2023/day/14) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
-| 15 | [:white_check_mark:](https://adventofcode.com/2023/day/15) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
-| 16 | [:white_check_mark:](https://adventofcode.com/2023/day/16) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
-| 17 | [:white_check_mark:](https://adventofcode.com/2023/day/17) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
-| 18 | [:white_check_mark:](https://adventofcode.com/2023/day/18) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
-| 19 | [:white_check_mark:](https://adventofcode.com/2023/day/19) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
-| 20 | [:white_check_mark:](https://adventofcode.com/2023/day/20) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
-| 21 | [:white_check_mark:](https://adventofcode.com/2023/day/21) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
-| 22 | [:white_check_mark:](https://adventofcode.com/2023/day/22) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
-| 23 | [:white_check_mark:](https://adventofcode.com/2023/day/23) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
-| 24 | [:white_check_mark:](https://adventofcode.com/2023/day/24) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
-| 25 | [:white_check_mark:](https://adventofcode.com/2023/day/25) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
+| 04 | [:white_check_mark:](https://adventofcode.com/2023/day/4) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | Scratchcards | 
+| 05 | [:white_check_mark:](https://adventofcode.com/2023/day/5) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | If You Give A Seed A Fertilizer | 
+| 06 | [:x:](https://adventofcode.com/2023/day/6) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
+| 07 | [:x:](https://adventofcode.com/2023/day/7) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
+| 08 | [:x:](https://adventofcode.com/2023/day/8) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
+| 09 | [:x:](https://adventofcode.com/2023/day/9) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
+| 10 | [:x:](https://adventofcode.com/2023/day/10) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
+| 11 | [:x:](https://adventofcode.com/2023/day/11) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
+| 12 | [:x:](https://adventofcode.com/2023/day/12) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
+| 13 | [:x:](https://adventofcode.com/2023/day/13) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
+| 14 | [:x:](https://adventofcode.com/2023/day/14) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
+| 15 | [:x:](https://adventofcode.com/2023/day/15) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
+| 16 | [:x:](https://adventofcode.com/2023/day/16) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
+| 17 | [:x:](https://adventofcode.com/2023/day/17) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
+| 18 | [:x:](https://adventofcode.com/2023/day/18) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
+| 19 | [:x:](https://adventofcode.com/2023/day/19) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
+| 20 | [:x:](https://adventofcode.com/2023/day/20) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
+| 21 | [:x:](https://adventofcode.com/2023/day/21) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
+| 22 | [:x:](https://adventofcode.com/2023/day/22) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
+| 23 | [:x:](https://adventofcode.com/2023/day/23) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
+| 24 | [:x:](https://adventofcode.com/2023/day/24) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
+| 25 | [:x:](https://adventofcode.com/2023/day/25) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) | - | 
 
 
 
