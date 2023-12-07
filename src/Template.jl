@@ -38,3 +38,4 @@ module AoC_2023_xx
     println("\nPart 1 answer: $(part1)");
     println("\nPart 2 answer: $(part2)");
 end
+# lines = @getinputs(true)
