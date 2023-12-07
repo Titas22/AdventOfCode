@@ -26,9 +26,9 @@ include("./src/AoC_2023/AoC_2023_xx.jl") # use to run & re-run the actual script
 | 01 | [Trebuchet?!](https://adventofcode.com/2023/day/1) | 2.515 ms | 3.79 MiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_01.jl) |
 | 02 | [Cube Conundrum](https://adventofcode.com/2023/day/2) | 695.400 μs | 432.23 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_02.jl) |
 | 03 | [Gear Ratios](https://adventofcode.com/2023/day/3) | 424.300 μs | 585.84 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_03.jl) |
-| 04 | [Scratchcards](https://adventofcode.com/2023/day/4) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
+| 04 | [Scratchcards](https://adventofcode.com/2023/day/4) | 640.800 μs | 507.35 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_04.jl) |
 | 05 | [If You Give A Seed A Fertilizer](https://adventofcode.com/2023/day/5) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
-| 06 | [:x:](https://adventofcode.com/2023/day/6) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
+| 06 | [Wait For It](https://adventofcode.com/2023/day/6) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 07 | [:x:](https://adventofcode.com/2023/day/7) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 08 | [:x:](https://adventofcode.com/2023/day/8) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 09 | [:x:](https://adventofcode.com/2023/day/9) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
