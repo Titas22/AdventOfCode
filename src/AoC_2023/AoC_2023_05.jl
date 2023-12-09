@@ -8,8 +8,9 @@ module AoC_2023_05
         dst::Vector{Int}
         n::Vector{Int}
     end
+
     function Map(src, dst, n)::Map
-        Map(src, src.+n, dst, n)
+        return Map(src, src.+n.-1, dst, n)
     end
 
     function parse_inputs(lines::Vector{String})::Tuple{Vector{Map}, Vector{Int}}
@@ -21,65 +22,59 @@ module AoC_2023_05
         sizehint!(maps, length(idxEmpty))
         
         for (from, to) in zip(idxEmpty, [idxEmpty[2:end]; [length(lines)+1]])
-            mat = parse.(Int, reduce(hcat, split.(sort(lines[(from+2):(to-1)]))));
-            mat = parse.(Int, reduce(hcat, split.(sort(lines[(from+2):(to-1)]))));
             mat = parse.(Int, reduce(hcat, split.(lines[(from+2):(to-1)])));
-            dst = mat[1,:];
-            src = mat[2,:];
-            n = mat[3, :];
-            push!(maps, Map(src, dst, n))
+            mat = mat[:, sortperm(mat[2,:])];
+            push!(maps, Map(mat[2,:], mat[1,:], mat[3, :]))
         end
-
 
         return (maps, seed_numbers);
     end
 
-    function map_numbers(maps::AbstractVector, nums::Vector{Int})::Vector{Int}
-        nums = copy(nums);
-        for idx in eachindex(nums)
-            nums[idx] = map_number(maps, nums[idx]);
-        end
-        return nums;
-    end
-    
+    Base.:+(rng::UnitRange{Int}, offset::Int)::UnitRange{Int} = (rng[1]+offset) : (rng[end]+offset);
+    map_src_to_dst(rng::UnitRange{Int}, src::Int, dst::Int)::UnitRange{Int} = rng + (dst - src);
 
-    function map_number(maps::AbstractVector, num::Int)::Int
+    function map_range(srng::UnitRange{Int}, m::AoC_2023_05.Map)::Vector{UnitRange{Int}}
+        drng = UnitRange{Int}[]
+        for idx in eachindex(m.src)
+            from = m.src[idx];
+            to   = m.srcend[idx];
+
+            nomap = srng[1] : min(srng[end], from-1);
+            remap = max(srng[1], from) : min(to, srng[end]);
+            srng  = max(to+1, srng[1]) : srng[end];
+
+            isempty(nomap) || push!(drng, nomap) 
+            isempty(remap) || push!(drng, map_src_to_dst(remap, from, m.dst[idx]))
+            isempty(srng) && break;
+        end
+        isempty(srng) || push!(drng, srng)
+        return drng
+    end
+
+    function map_ranges(orgrng::Vector{UnitRange{Int}}, maps::Vector{AoC_2023_05.Map})
+        newrng = UnitRange{Int}[];
         for m in maps
-            num = map_number(m, num);
+            newrng = UnitRange{Int}[];
+            for s in orgrng
+                append!(newrng, map_range(s, m))
+            end
+            orgrng = newrng;
         end
-        return num;
-    
-        # seed_number = map_number(maps[1], seed_number);
-        # return length(maps) > 1 ? map_number(maps[2:end], seed_number) : seed_number;
-    end
-    
-
-    function map_number(m, seed_number::Int)::Int    
-        b_in_range = m.src .<= seed_number .< m.srcend;
-        
-        if any(b_in_range)
-            idx = findfirst(b_in_range)
-            seed_number = seed_number - m.src[idx] + m.dst[idx]
-        end
-    
-        return seed_number;
+        return newrng
     end
 
-    solve_part_1(maps, seed_numbers) = minimum(map_numbers(maps, seed_numbers));
+    solve_minimum_location(maps, seed_ranges)::Int = minimum((x->x[1]).(map_ranges(seed_ranges, maps)));
 
-    function solve_part_2(maps, seed_numbers)
-
-        return nothing;
-    end
+    get_seed_ranges(nums::Vector{Int})  = (x->(x[1]:(x[1]+x[2]))).(Iterators.partition(nums, 2))
+    solve_part_1(maps, seed_numbers)    = solve_minimum_location(maps, (x->x:x).(seed_numbers))
+    solve_part_2(maps, seed_numbers)    = solve_minimum_location(maps, get_seed_ranges(seed_numbers))
 
     function solve(btest::Bool = false)::Tuple{Any, Any};
         lines       = @getinputs(btest);
-        # lines2      = @getinputs(btest, "_2"); # Use if 2nd problem test case inputs are different
         (maps, seed_numbers)      = parse_inputs(lines);
 
-        # solution    = solve_common(inputs);
-        part1       = solve_part_1(maps, seed_numbers);
-        part2       = 0; #solve_part_2(solution);
+        part1 = solve_part_1(maps, seed_numbers);
+        part2 = solve_part_2(maps, seed_numbers);
 
         return (part1, part2);
     end
