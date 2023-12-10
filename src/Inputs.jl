@@ -2,7 +2,7 @@
     calling_file = String(__source__.file);
     @assert(!startswith(calling_file, "REPL"), "Cannot use @getinputs macro from REPL. Use getinputs(day, year, btest).")
     ex = quote
-        getinputs($(calling_file), $(esc(btest)))
+        getinputs($(calling_file), $(esc(btest)), $(esc(extra)))
     end
     # @show ex
 end
