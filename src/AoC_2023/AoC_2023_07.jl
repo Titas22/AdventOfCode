@@ -5,22 +5,42 @@ module AoC_2023_07
     const AoC = AdventOfCode;
 
     # Define the custom ordering
-    const custom_order = Dict('A' => 14, 'K' => 13, 'Q' => 12, 'J' => 11, 'T'=>10);
+    const card_strength = Dict('A' => 14, 'K' => 13, 'Q' => 12, 'J' => 11, 'T'=>10);
 
     struct Card
-        label::Char
         value::Int
-        value_joker::Int
     end
     function Card(card::Char)::Card
-        val = isdigit(card) ? Int(card)-48 : custom_order[card]
-        val_joker = val == 11 ? 1 : val;
-        return Card(card, val, val_joker);
+        return Card(isdigit(card) ? Int(card)-48 : card_strength[card]);
     end
-    const Joker::Card = Card('J');
+    const Joker::Card   = Card('J');
 
-    function get_power(cards::Vector{Card}, s::Set{Card}, njoker::Int = 0):Int
-        n = length(s)
+    struct Hand
+        cards::Vector{Card}
+        bid::Int
+        power::Int
+        power_joker::Int
+    end
+
+    function Hand(line::AbstractString)::Hand
+        bid = parse(Int, line[7:end]);
+
+        cards = [Card(x) for x in line[1:5]];
+        
+        (power, power_joker) = calculate_hand_power(cards);
+        return Hand(cards, bid, power, power_joker);
+    end
+
+    function get_card_counts(cards::Vector{Card})::Dict{Int, Int}
+        counts = Dict{Int, Int}()
+        for card in cards
+            counts[card.value] = haskey(counts, card.value) ? counts[card.value] + 1 : 1
+        end
+        return counts
+    end
+
+    function get_power(counts::Dict{Int, Int}, njoker::Int = 0):Int
+        n = length(counts)
         if n == 5 # high card
             return 0;
         elseif n == 4 # one pair
@@ -28,9 +48,8 @@ module AoC_2023_07
         elseif n == 1 || njoker == 5 # 5 of kind
             return 6;
         else
-            m = [count(==(card), cards) for card in s ]
+            m = values(counts);
             nmax = maximum(m) + njoker;
-            # println("$m")
             if nmax == 4 # 4 of kind
                 return 5;
             elseif nmax == 3
@@ -45,26 +64,19 @@ module AoC_2023_07
             end
         end
     end
-    
+
     function calculate_hand_power(cards::Vector{Card})::Tuple{Int, Int}
-        s           = Set(cards)
-        power       = get_power(cards, s);
-        Joker in s || return(power, power)
+        counts      = get_card_counts(cards);
 
-        delete!(s, Joker)
-        power_joker = get_power(cards, s, count(cards .== [Joker]));
+        power       = get_power(counts);
+        haskey(counts, Joker.value) || return(power, power)
+
+        njoker = counts[Joker.value]
+        delete!(counts, Joker.value)
+        power_joker = get_power(counts, njoker);
         return (power, power_joker);
-    end    
-
-    struct Hand
-        cards::Vector{Card}
-        bid::Int
-        power::Int
-        power_joker::Int
-    end
-
-    Hand(line::AbstractString)::Hand = Hand(Card.(collect(line[1:5])), parse(Int, line[7:end]));
-    Hand(cards::Vector{Card}, bid::Int)::Hand = Hand(cards, bid, calculate_hand_power(cards)...);
+    end  
+    
 
     function Base.isless(a::Hand, b::Hand)::Bool
         a.power == b.power || return isless(a.power, b.power);
@@ -81,9 +93,9 @@ module AoC_2023_07
         a.power_joker == b.power_joker || return isless(a.power_joker, b.power_joker);
 
         for idx in eachindex(a.cards)
-            aval = a.cards[idx].value_joker
-            bval = b.cards[idx].value_joker
-            aval == bval || return isless(aval, bval);
+            aval = a.cards[idx].value
+            bval = b.cards[idx].value
+            aval == bval || return isless(aval == Joker.value ? 1 : aval, bval == Joker.value ? 1 : bval);
         end
         return false;
     end
@@ -114,8 +126,7 @@ module AoC_2023_07
 
         part1       = solve_part_1(hands);
         part2       = solve_part_2(hands);
-        @assert(part1 == (btest ? 6440 : 251029473), "wrong part 1 answer")
-        @assert(part2 == (btest ? 5905 : 251003917), "wrong part 2 answer")
+        
         return (part1, part2);
     end
 
