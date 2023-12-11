@@ -30,7 +30,7 @@ include("./src/AoC_2023/AoC_2023_xx.jl") # use to run & re-run the actual script
 | 05 | [If You Give A Seed A Fertilizer](https://adventofcode.com/2023/day/5) | 258.100 μs | 251.56 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_05.jl) |
 | 06 | [Wait For It](https://adventofcode.com/2023/day/6) | 97.100 μs | 6.26 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_06.jl) |
 | 07 | [Camel Cards](https://adventofcode.com/2023/day/7) | 713.100 μs | 839.16 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_07.jl) |
-| 08 | [Haunted Wasteland](https://adventofcode.com/2023/day/8) | 1.482 ms | 264.93 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_08.jl) |
+| 08 | [Haunted Wasteland](https://adventofcode.com/2023/day/8) | 619.600 μs | 223.01 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_08.jl) |
 | 09 | [Mirage Maintenance](https://adventofcode.com/2023/day/9) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 10 | [Pipe Maze](https://adventofcode.com/2023/day/10) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 11 | [:x:](https://adventofcode.com/2023/day/11) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
