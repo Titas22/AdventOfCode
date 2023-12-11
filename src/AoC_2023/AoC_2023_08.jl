@@ -7,12 +7,6 @@ module AoC_2023_08
         Moves::Tuple{Symbol, Symbol}
         EndNode::Bool
     end
-    struct LinkedNode
-        Name::AbstractString
-        Moves::Tuple{Symbol, Symbol}
-        Nodes::Ref{Tuple{Node, Node}}
-        EndNode::Bool
-    end
 
     function Node(line::AbstractString)::Node
         Node(line[1:3], (Symbol(line[8:10]), Symbol(line[13:15])), line[3] == 'Z')
