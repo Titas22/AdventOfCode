@@ -4,15 +4,25 @@ module AoC_2023_08
 
     struct Node
         Name::AbstractString
-        Moves::Tuple{AbstractString, AbstractString}
+        Moves::Tuple{Symbol, Symbol}
+        EndNode::Bool
+    end
+    struct LinkedNode
+        Name::AbstractString
+        Moves::Tuple{Symbol, Symbol}
+        Nodes::Ref{Tuple{Node, Node}}
+        EndNode::Bool
     end
 
+    function Node(line::AbstractString)::Node
+        Node(line[1:3], (Symbol(line[8:10]), Symbol(line[13:15])), line[3] == 'Z')
+    end
     function parse_inputs(lines::Vector{String})
         moves = lines[1];
-        nodes = Dict{AbstractString, Node}()
+        nodes = Dict{Symbol, Node}()
         sizehint!(nodes, length(lines)-2)
         for line in lines[3:end]
-            nodes[line[1:3]] = Node(line[1:3], (line[8:10], line[13:15]))
+            nodes[Symbol(line[1:3])] = Node(line);
         end
         return (moves, nodes);
     end
@@ -31,7 +41,7 @@ module AoC_2023_08
             for move in moves
                 n += 1;
                 current = make_move(nodes, current, move);
-                if endswith(current.Name, 'Z')
+                if current.EndNode
                     done = true;
                     break;
                 end
@@ -40,10 +50,10 @@ module AoC_2023_08
         return n;
     end
 
-    solve_part_1(moves, nodes) = count_moves_to_finish(nodes, moves, nodes["AAA"]);
+    solve_part_1(moves, nodes) = count_moves_to_finish(nodes, moves, nodes[:AAA]);
 
     function solve_part_2(moves, nodes)
-        current_nodes = [nodes[k] for k in keys(nodes) if endswith(k, 'A')];
+        current_nodes = [k for k in values(nodes) if endswith(k.Name, 'A')];
         cycle_length = Vector{Int}(undef, length(current_nodes));
         for idx in eachindex(current_nodes)
             cycle_length[idx] = count_moves_to_finish(nodes, moves, current_nodes[idx]);
