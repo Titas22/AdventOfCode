@@ -29,39 +29,25 @@ module AoC_2023_10
         'L' => [(-1, 0), (0, 1)], 
         'J' => [(-1, 0), (0, -1)], 
         '7' => [(1, 0), (0, -1)], 
-        'F' => [(1, 0), (0, 1)], 
-        '.' => []);
+        'F' => [(1, 0), (0, 1)]);
     
-    function solve_common(tiles, current)::Tuple{Int, Int}
-        
-        start_dir = get_start_dir(tiles, current);
+    get_next_step(step_options::Vector{Tuple{Int, Int}}, previous_step::Tuple{Int, Int})::Tuple{Int, Int} = step_options[ (0 .- previous_step) == step_options[1] ? 2 : 1 ]
     
-        step = start_dir;
+    function solve_common(tiles, current)::Tuple{Int, Int}        
+        step = start_dir = get_start_dir(tiles, current);
         next = current + step
-    
         dist = area = 0;
-        while true #tiles[next] != 'S'
+        while true
             dist += 1;
-    
             area += current[1]*next[2] - next[1]*current[2]; # Shoelace Algorithm
-    
-            tiles[next] == 'S' && break
-    
-            step_options = connections[tiles[next]]
-            opposite = (0 .- step)
-            # opposite2 = (-step[1], -step[2])
 
-            b = opposite == step_options[1];
-            if b
-                step = step_options[2]
-            else
-                step = step_options[1]
-            end
+            next_tile = tiles[next];
+            next_tile == 'S' && break
     
-            current = next;
-            next = current + step;
+            step    = get_next_step(connections[next_tile], step);
+            current = next;    
+            next    = current + step;
         end
-
         return (dist/2, area/2);
     end
 
@@ -76,7 +62,6 @@ module AoC_2023_10
         end
         return (tiles, start_index);
     end
-
 
     function solve(btest::Bool = false)::Tuple{Any, Any};
         lines       = @getinputs(btest);
@@ -94,50 +79,4 @@ module AoC_2023_10
     @time (part1, part2) = solve();
     println("\nPart 1 answer: $(part1)");
     println("\nPart 2 answer: $(part2)\n");
-    # Part 1 answer: 6838
-    
-    # Part 2 answer: 451
 end
-# lines = @getinputs(false)
-
-# (tiles, start_index) = AoC_2023_10.parse_inputs(lines)
-
-
-
-# function process_tiles(tiles, current, start_direction)
-#     connections = Dict(
-#         '|' => [(1, 0), (-1, 0)], 
-#         '-' => [(0, -1), (0, 1)], 
-#         'L' => [(-1, 0), (0, 1)], 
-#         'J' => [(-1, 0), (0, -1)], 
-#         '7' => [(1, 0), (0, -1)], 
-#         'F' => [(1, 0), (0, 1)], 
-#         '.' => [], 'S' => [start_direction] );
-
-#     (n, m)  = size(tiles)
-#     bprocessed      = falses(n, m);
-#     distances       = zeros(Int, n, m) .* NaN;
-
-#     searchList          = Queue{Tuple{CartesianIndex{2}, Int}}();
-#     enqueue!(searchList, (current, 0));
-    
-#     # println("processing $current")
-#     while !isempty(searchList)
-#         (current, dist)     = dequeue!(searchList);
-#         (bprocessed[current] || tiles[current] == '.') && continue;
-        
-#         distances[current]       = dist;
-#         bprocessed[current]      = true;
-#         for didx in connections[tiles[current]]
-            
-#             next = current + didx;
-#             ((0 < next[1] <= n && 0 < next[2] <= m) && !bprocessed[next]) || continue
-#             enqueue!(searchList, (next, dist+1));
-#         end
-#     end
-
-#     return (distances, bprocessed);
-# end
-
-# (distances, bprocessed) = process_tiles(tiles, start_index, (0, -1))
-
