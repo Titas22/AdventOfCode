@@ -35,7 +35,7 @@ include("./src/AoC_2023/AoC_2023_xx.jl") # use to run & re-run the actual script
 | 10 | [Pipe Maze](https://adventofcode.com/2023/day/10) | 385.100 μs | 260.59 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_10.jl) |
 | 11 | [Cosmic Expansion](https://adventofcode.com/2023/day/11) | 47.581 ms | 56.35 MiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_11.jl) |
 | 12 | [Hot Springs](https://adventofcode.com/2023/day/12) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
-| 13 | [Point of Incidence](https://adventofcode.com/2023/day/13) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
+| 13 | [Point of Incidence](https://adventofcode.com/2023/day/13) | 584.600 μs | 143.34 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_11.jl) |
 | 14 | [:x:](https://adventofcode.com/2023/day/14) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 15 | [:x:](https://adventofcode.com/2023/day/15) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 16 | [:x:](https://adventofcode.com/2023/day/16) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
