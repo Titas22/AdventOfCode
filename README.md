@@ -36,7 +36,7 @@ include("./src/AoC_2023/AoC_2023_xx.jl") # use to run & re-run the actual script
 | 11 | [Cosmic Expansion](https://adventofcode.com/2023/day/11) | 47.581 ms | 56.35 MiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_11.jl) |
 | 12 | [Hot Springs](https://adventofcode.com/2023/day/12) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 13 | [Point of Incidence](https://adventofcode.com/2023/day/13) | 584.600 μs | 143.34 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_13.jl) |
-| 14 | [Parabolic Reflector Dish](https://adventofcode.com/2023/day/14) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
+| 14 | [Parabolic Reflector Dish](https://adventofcode.com/2023/day/14) | 28.153 ms | 847.11 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_14.jl) |
 | 15 | [Lens Library](https://adventofcode.com/2023/day/15) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 16 | [The Floor Will Be Lava](https://adventofcode.com/2023/day/16) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 17 | [:x:](https://adventofcode.com/2023/day/17) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
