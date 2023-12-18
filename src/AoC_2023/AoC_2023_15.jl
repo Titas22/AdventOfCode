@@ -3,29 +3,45 @@ module AoC_2023_15
     using OrderedCollections;
     const AoC = AdventOfCode;
 
-    parse_inputs(lines::Vector{String})::Vector{<:AbstractString} = split(lines[1], ',');
+    function parse_inputs(lines::Vector{String})::Vector{Vector{Int}}
+        steps = Int.(collect(lines[1]));
+        
+        idx = [0; findall(steps .== Int(',')); lastindex(steps)+1];
+        idx_sets = (:).(idx[1:end-1].+1,idx[2:end].-1);
+
+        return (x->steps[x]).(idx_sets);
+    end
     
-    function elf_hash(str::SubString{String})::Int
+    function elf_hash(step::Vector{Int})::Int
         current = 0;
-        for ii in eachindex(str)
-            current += Int(str[ii]);
+        for val in step
+            current += val;
             current *= 17;
             current %= 256;
         end
         return current;
     end
 
-    function process_step!(boxes::Vector{OrderedDict{SubString{String}, Int}}, step::SubString{String})
-        if endswith(step, '-')
+    function hash_vec(vals::Vector{Int})::Int
+        out = 0;
+        for ii in eachindex(vals)
+            out *= 100
+            out += vals[ii]
+        end
+        return out
+    end
+
+    function process_step!(boxes::Vector{OrderedDict{UInt, Int}}, step::Vector{Int})
+        if step[end] == Int('-')
             label = step[1:end-1]
             nbox = elf_hash(label)+1
-            delete!(boxes[nbox], label);
+            delete!(boxes[nbox], hash_vec(label));
         else
             label = step[1:end-2]
             nbox = elf_hash(label)+1
-            val = step[end] - '0'
+            val = step[end]
             box = boxes[nbox];
-            box[label] = val;
+            box[hash_vec(label)] = val;
         end
     end
 
@@ -35,16 +51,16 @@ module AoC_2023_15
             box = boxes[nbox]
             isempty(box) && continue;
             for (ilens, power) in enumerate(values(box))
-                total += nbox * ilens * power;
+                total += nbox * ilens * (power - 48);
             end
         end
         return total;
     end
 
-    solve_part_1(steps::Vector{<:AbstractString})::Int = sum(elf_hash.(steps));
+    solve_part_1(steps::Vector{Vector{Int64}})::Int = sum(elf_hash.(steps));
 
-    function solve_part_2(steps::Vector{<:AbstractString})::Int
-        boxes = [OrderedDict{SubString{String}, Int}() for _ = 0 : 255]
+    function solve_part_2(steps::Vector{Vector{Int64}})::Int
+        boxes = [OrderedDict{UInt, Int}() for _ = 0 : 255]
         sizehint!.(boxes, 9);
 
         for step in steps
