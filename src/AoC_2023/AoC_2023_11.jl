@@ -1,6 +1,5 @@
 module AoC_2023_11
     using AdventOfCode;
-    using Combinatorics
     const AoC = AdventOfCode;
 
     function get_offsets(bempty::BitVector)::Vector{Int}
@@ -15,27 +14,26 @@ module AoC_2023_11
     end
 
     function parse_inputs(lines::Vector{String})
-        galaxies = CartesianIndex[];
+        galaxies = Tuple{Int, Int}[];
         empty_rows = trues(size(lines, 1));
         empty_cols = trues(length(lines[1]));
         for ii in eachindex(empty_rows)
             empty_row = true;
             for jj in eachindex(empty_cols)
                 lines[ii][jj] == '.' && continue;
-                push!(galaxies, CartesianIndex(ii, jj))
+                push!(galaxies, (ii, jj))
                 empty_row       = false;
                 empty_cols[jj]  = false;
             end
             empty_rows[ii] = empty_row;
         end
-        combs = [(a, b) for (a, b) in combinations(1:length(galaxies), 2)];
         
         row_offsets = get_offsets(empty_rows)
         col_offsets = get_offsets(empty_cols);
-        return (galaxies, combs, row_offsets, col_offsets);
+        return (galaxies, row_offsets, col_offsets);
     end
 
-    function get_distance(a::CartesianIndex, b::CartesianIndex, row_offsets, col_offsets, multiplier)::Int
+    function get_distance(a::Tuple{Int, Int}, b::Tuple{Int, Int}, row_offsets::Vector{Int}, col_offsets::Vector{Int}, multiplier::Int)::Int
         a_row = a[1] + row_offsets[a[1]] * multiplier;
         b_row = b[1] + row_offsets[b[1]] * multiplier;
         a_col = a[2] + col_offsets[a[2]] * multiplier;
@@ -43,10 +41,10 @@ module AoC_2023_11
         return abs(a_col - b_col) + abs(a_row - b_row)
     end
 
-    function find_distance_sum(galaxies, combs::Vector{Tuple{Int64, Int64}}, row_offsets, col_offsets, empty_euivalent_to)::Int
+    function find_distance_sum(galaxies::Vector{Tuple{Int, Int}}, row_offsets::Vector{Int}, col_offsets::Vector{Int}, empty_euivalent_to::Int)::Int
         multiplier      = empty_euivalent_to - 1;
         total           = 0
-        for (ia, ib) in combs
+        for ia in eachindex(galaxies), ib in ia+1 : lastindex(galaxies)
             total += get_distance(galaxies[ia], galaxies[ib], row_offsets, col_offsets, multiplier);
         end
     
@@ -55,10 +53,10 @@ module AoC_2023_11
 
     function solve(btest::Bool = false)::Tuple{Any, Any};
         lines       = @getinputs(btest);
-        (galaxies, combs, row_offsets, col_offsets)      = parse_inputs(lines);
+        (galaxies, row_offsets, col_offsets)      = parse_inputs(lines);
 
-        part1 = find_distance_sum(galaxies, combs, row_offsets, col_offsets, 2);
-        part2 = find_distance_sum(galaxies, combs, row_offsets, col_offsets, 1000000);
+        part1 = find_distance_sum(galaxies, row_offsets, col_offsets, 2);
+        part2 = find_distance_sum(galaxies, row_offsets, col_offsets, 1000000);
 
         return (part1, part2);
     end
