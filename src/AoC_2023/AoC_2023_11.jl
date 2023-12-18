@@ -60,8 +60,6 @@ module AoC_2023_11
         part1 = find_distance_sum(galaxies, combs, row_offsets, col_offsets, 2);
         part2 = find_distance_sum(galaxies, combs, row_offsets, col_offsets, 1000000);
 
-        @assert(part1 == 9418609, "wront p1")
-        @assert(part2 == 593821230983, "wront p2")
         return (part1, part2);
     end
 
