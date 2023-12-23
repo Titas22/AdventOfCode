@@ -11,47 +11,52 @@ module AoC_2023_17
 
     parse_inputs(lines::Vector{String}) = parse.(Int,reduce(hcat, collect.(lines)));
     
-    function enqueue_state!(pq::PriorityQueue{State, Int}, visited::Set{State}, s::State, heat::Int)
-        s ∉ visited || return;
+    function enqueue_state!(pq::PriorityQueue, cumheat::Array{UInt8, 5}, visited::Set, heatmap::Matrix, s::State, heat::Int)
+        checkbounds(Bool, heatmap, s.pos[1], s.pos[2]) || return;
+
+        h = hash(s);
+        heat += heatmap[s.pos]
+        if h in visited 
+            cumheat[s.pos[1], s.pos[2], s.straight, 2 + s.dir[1], 2 + s.dir[2]] > heat || return;
+            if haskey(pq, s)
+                pq[s] = heat;
+                return
+            end
+        end
+
         enqueue!(pq, s => heat);
-        push!(visited, s);
+        push!(visited, h);
     end    
     
     function find_shortest_path(heatmap::Matrix{Int}, min_straight::Int, max_straight::Int)
         (n,m) = size(heatmap);
+
+        visited = Set{UInt64}();
+        # visited = Dict{State, Int}();
+        cumheat = zeros(UInt8, n, m, max_straight, 3, 3)
+
         pq = PriorityQueue{State, Int}();
-        start = CartesianIndex(1, 1);
-        enqueue!(pq, State(0, start, CartesianIndex(1, 0)), 0)
-        enqueue!(pq, State(0, start, CartesianIndex(0, 1)), 0)
-
-        visited = Set{State}();
-        cumheat = zeros(n, m, max_straight, 3, 3)
-
+        enqueue_state!(pq, cumheat, visited, heatmap, State(2, CartesianIndex(2, 1), CartesianIndex(1, 0)), 0)
+        enqueue_state!(pq, cumheat, visited, heatmap, State(2, CartesianIndex(1, 2), CartesianIndex(0, 1)), 0)
+        
         while !isempty(pq)
-            (s, h) = dequeue_pair!(pq);
+            (s, heat) = dequeue_pair!(pq);
     
-            # next_moves = get_next_moves(s)
-            pos = s.pos + s.dir;
-            checkbounds(Bool, heatmap, pos[1], pos[2]) || continue;
-    
-            heat = h + heatmap[pos[1], pos[2]];
-    
-            if s.straight+1 >= min_straight && pos[1] == n && pos[2] == m
+            if s.pos[1] == n && s.pos[2] == m
+                s.straight < min_straight && continue;
                 return heat;
             end
     
-            straight = s.straight + 1;
-            cumheat[pos[1], pos[2], straight, 2 + s.dir[1], 2 + s.dir[2]] < heat || continue;
-            cumheat[pos[1], pos[2], straight, 2 + s.dir[1], 2 + s.dir[2]] = heat;
+            next_pos = s.pos + s.dir;
             
-            if straight < min_straight
-                enqueue_state!(pq, visited, State(straight, pos, s.dir), heat) # add straight
+            if s.straight < min_straight
+                enqueue_state!(pq, cumheat, visited, heatmap, State(s.straight+1, next_pos, s.dir), heat) # add straight
             else
-                if straight < max_straight
-                    enqueue_state!(pq, visited, State(straight, pos, s.dir), heat) # add straight
+                if s.straight < max_straight
+                    enqueue_state!(pq, cumheat, visited, heatmap, State(s.straight+1, next_pos, s.dir), heat) # add straight
                 end
-                enqueue_state!(pq, visited, State(0, pos, CartesianIndex(s.dir[2], s.dir[1])), heat) # add turn
-                enqueue_state!(pq, visited, State(0, pos, CartesianIndex(-s.dir[2], -s.dir[1])), heat) # add turn
+                enqueue_state!(pq, cumheat, visited, heatmap, State(1, next_pos, CartesianIndex(s.dir[2], s.dir[1])), heat) # add turn
+                enqueue_state!(pq, cumheat, visited, heatmap, State(1, next_pos, CartesianIndex(-s.dir[2], -s.dir[1])), heat) # add turn
             end
         end
     end
