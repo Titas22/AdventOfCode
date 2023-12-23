@@ -14,14 +14,14 @@ module AoC_2023_11
     end
 
     function parse_inputs(lines::Vector{String})
-        galaxies = Tuple{Int, Int}[];
+        galaxies = CartesianIndex{2}[];
         empty_rows = trues(size(lines, 1));
         empty_cols = trues(length(lines[1]));
         for ii in eachindex(empty_rows)
             empty_row = true;
             for jj in eachindex(empty_cols)
                 lines[ii][jj] == '.' && continue;
-                push!(galaxies, (ii, jj))
+                push!(galaxies, CartesianIndex{2}(ii, jj))
                 empty_row       = false;
                 empty_cols[jj]  = false;
             end
@@ -33,7 +33,7 @@ module AoC_2023_11
         return (galaxies, row_offsets, col_offsets);
     end
 
-    function get_distance(a::Tuple{Int, Int}, b::Tuple{Int, Int}, row_offsets::Vector{Int}, col_offsets::Vector{Int}, multiplier::Int)::Int
+    function get_distance(a::CartesianIndex{2}, b::CartesianIndex{2}, row_offsets::Vector{Int}, col_offsets::Vector{Int}, multiplier)::Int
         a_row = a[1] + row_offsets[a[1]] * multiplier;
         b_row = b[1] + row_offsets[b[1]] * multiplier;
         a_col = a[2] + col_offsets[a[2]] * multiplier;
@@ -41,7 +41,7 @@ module AoC_2023_11
         return abs(a_col - b_col) + abs(a_row - b_row)
     end
 
-    function find_distance_sum(galaxies::Vector{Tuple{Int, Int}}, row_offsets::Vector{Int}, col_offsets::Vector{Int}, empty_euivalent_to::Int)::Int
+    function find_distance_sum(galaxies, row_offsets, col_offsets, empty_euivalent_to)::Int
         multiplier      = empty_euivalent_to - 1;
         total           = 0
         for ia in eachindex(galaxies), ib in ia+1 : lastindex(galaxies)
