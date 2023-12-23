@@ -34,7 +34,7 @@ include("./src/AoC_2023/AoC_2023_xx.jl") # use to run & re-run the actual script
 | 08 | [Haunted Wasteland](https://adventofcode.com/2023/day/8) | 619.600 μs | 223.01 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_08.jl) |
 | 09 | [Mirage Maintenance](https://adventofcode.com/2023/day/9) | 621.100 μs | 686.77 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_09.jl) |
 | 10 | [Pipe Maze](https://adventofcode.com/2023/day/10) | 385.100 μs | 260.59 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_10.jl) |
-| 11 | [Cosmic Expansion](https://adventofcode.com/2023/day/11) | 620.200 μs | 48.61 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_11.jl) |
+| 11 | [Cosmic Expansion](https://adventofcode.com/2023/day/11) | 586.500 μs | 48.63 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_11.jl) |
 | 12 | [Hot Springs](https://adventofcode.com/2023/day/12) | 60.142 ms | 18.40 MiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_12.jl) |
 | 13 | [Point of Incidence](https://adventofcode.com/2023/day/13) | 584.600 μs | 143.34 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_13.jl) |
 | 14 | [Parabolic Reflector Dish](https://adventofcode.com/2023/day/14) | 28.153 ms | 847.11 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_14.jl) |
@@ -45,8 +45,8 @@ include("./src/AoC_2023/AoC_2023_xx.jl") # use to run & re-run the actual script
 | 19 | [Aplenty](https://adventofcode.com/2023/day/19) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 20 | [Pulse Propagation](https://adventofcode.com/2023/day/20) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 21 | [Step Counter](https://adventofcode.com/2023/day/21) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
-| 22 | [:x:](https://adventofcode.com/2023/day/22) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
-| 23 | [:x:](https://adventofcode.com/2023/day/23) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
+| 22 | [Sand Slabs](https://adventofcode.com/2023/day/22) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
+| 23 | [A Long Walk](https://adventofcode.com/2023/day/23) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 24 | [:x:](https://adventofcode.com/2023/day/24) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 25 | [:x:](https://adventofcode.com/2023/day/25) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 
