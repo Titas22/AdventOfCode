@@ -40,7 +40,7 @@ include("./src/AoC_2023/AoC_2023_xx.jl") # use to run & re-run the actual script
 | 14 | [Parabolic Reflector Dish](https://adventofcode.com/2023/day/14) | 28.153 ms | 847.11 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_14.jl) |
 | 15 | [Lens Library](https://adventofcode.com/2023/day/15) | 886.300 μs | 1.52 MiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_15.jl) |
 | 16 | [The Floor Will Be Lava](https://adventofcode.com/2023/day/16) | 17.967 ms | 5.43 MiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_16.jl) |
-| 17 | [Clumsy Crucible](https://adventofcode.com/2023/day/17) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
+| 17 | [Clumsy Crucible](https://adventofcode.com/2023/day/17) | 934.803 ms | 273.44 MiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_16.jl) |
 | 18 | [Lavaduct Lagoon](https://adventofcode.com/2023/day/18) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 19 | [Aplenty](https://adventofcode.com/2023/day/19) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 20 | [Pulse Propagation](https://adventofcode.com/2023/day/20) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
