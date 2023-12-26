@@ -1,6 +1,8 @@
 module AoC_2023_19
     using AdventOfCode;
+    using DataStructures;
     const AoC = AdventOfCode;
+    import Base.length
 
     struct Part
         x::Int
@@ -8,7 +10,22 @@ module AoC_2023_19
         a::Int
         s::Int
     end
+    struct RangePart
+        x::UnitRange{Int}
+        m::UnitRange{Int}
+        a::UnitRange{Int}
+        s::UnitRange{Int}
+    end
+
+    length(p::RangePart)::Int = length(p.x) * length(p.m) * length(p.a) * length(p.s);
     
+    function RangePart(p::RangePart, var::Symbol, rng::UnitRange)::RangePart
+        var == :x && return RangePart(rng, p.m, p.a, p.s);
+        var == :m && return RangePart(p.x, rng, p.a, p.s);
+        var == :a && return RangePart(p.x, p.m, rng, p.s);
+        return RangePart(p.x, p.m, p.a, rng);
+    end
+
     function Part(line::AbstractString)
         args = split(line, ',')
         x = parse(Int, args[1][4:end])
@@ -18,35 +35,43 @@ module AoC_2023_19
         return Part(x, m, a, s);
     end
 
-    function parse_workflow!(w::Dict{Symbol, Vector{<:Tuple}}, line::AbstractString)
+    struct Condition
+        var::Symbol
+        out::Symbol
+        lim::Tuple{Int, Int}
+    end
+
+    struct Workflow
+        conditions::Vector{Condition}
+    end
+
+    function parse_workflow!(w::Dict{Symbol, Workflow}, line::AbstractString)
         pw = split(line, r"[{=:,}]")
-        conditions = Tuple{Any, Symbol, Symbol}[]
+        wf = Workflow(Condition[]);
     
         for ii in (firstindex(pw)+1 : 2 : lastindex(pw)-3)
             cond = pw[ii]
             var = Symbol(cond[1])
-            lim = parse(Int, cond[3:end])
             out = Symbol(pw[ii+1])
-    
+            lim = parse(Int, cond[3:end])
             if cond[2] == '<'
-                push!(conditions, (x -> x < lim, var, out))
-            elseif cond[2] == '>'
-                push!(conditions, (x -> x > lim, var, out))
-            else
-                println("wut")
+                lim = (typemin(Int), lim);
+            else #if cond[2] == '>'
+                lim = (lim, typemax(Int))
             end
+            push!(wf.conditions, Condition(var, out, lim))
         end
     
+        push!(wf.conditions, Condition(:x, Symbol(pw[end-1]), (typemin(Int), typemax(Int))))
+        
         workflow = Symbol(pw[1])
-        push!(conditions, (x -> true, :x, Symbol(pw[end-1])))
-    
-        w[workflow] = conditions;
+        w[workflow] = wf;
     end
 
     function parse_inputs(lines::Vector{String})::Tuple
-        workflows = Dict{Symbol, Vector{<:Tuple}}();
-        
-        idx_empty = findfirst(isempty.(lines));
+        idx_empty = findfirst(isempty.(lines));#
+
+        workflows = Dict{Symbol, Workflow}();
         for ii in firstindex(lines) : idx_empty-1
             parse_workflow!(workflows, lines[ii])
         end
@@ -59,36 +84,71 @@ module AoC_2023_19
         return (workflows, parts)
     end
 
+    function process_part(workflows::Dict{Symbol, Workflow}, p::Part)::Bool
+        wf = :in;
+        while true
+            wf = get_output(workflows[wf], p)
+            if wf == :A
+                return true;
+            elseif wf == :R
+                return false;
+            end
+        end
+    end
+
+    function get_output(wf::Workflow, p::Part)::Symbol
+        for cond in wf.conditions
+            if check_condition(cond, p)
+                return cond.out
+            end
+        end
+    end
+
+    check_condition(cond::Condition, p::Part)::Bool = cond.lim[1] < getproperty(p, cond.var) < cond.lim[2];
+
     function solve_part_1(workflows, parts)
         sum = 0;
         for part in parts
-            wf = :in;
-            accepted = false;
-            while true
-                workflow = workflows[wf]
-                wf = Symbol("");
-                for cond in workflow
-                    if cond[1](getproperty(part, cond[2]))
-                        wf = cond[3]
-                        break;
-                    end
-                end
-                if wf == :A
-                    accepted = true;
-                    break;
-                elseif wf == :R
-                    break;
-                end
-            end
-            accepted || continue;
+            process_part(workflows, part) || continue;
             sum += part.x + part.m + part.a + part.s;
         end
         return sum;
     end
 
-    function solve_part_2(inputs)
+    function solve_part_2(workflows)
+        rpc = Queue{Tuple{RangePart, Workflow}}();
+        accepted = RangePart[];
+        enqueue!(rpc, (RangePart(1:4000, 1:4000, 1:4000, 1:4000), workflows[:in]));
 
-        return nothing;
+        while !isempty(rpc)
+            (p, wf) = dequeue!(rpc);
+            for cond in wf.conditions
+                rng = getproperty(p, cond.var)
+                (from, to) = cond.lim
+                
+                from = max(cond.lim[1]+1, rng[1]);
+                to = min(cond.lim[2]-1, rng[end]);
+                rng_passed = from:to;
+
+                if !isempty(rng_passed) 
+                    passed_part = RangePart(p, cond.var, from:to);
+                    if cond.out == :A
+                        push!(accepted, passed_part);
+                    elseif cond.out != :R
+                        enqueue!(rpc, (passed_part, workflows[cond.out]))
+                    end
+                end
+
+                other = rng[1] : from-1
+                if isempty(other)
+                    other = to+1 : rng[end]
+                    isempty(other) && break;
+                end
+                p = RangePart(p, cond.var, other);
+            end
+        end
+
+        return sum(length.(accepted));
     end
 
     function solve(btest::Bool = false)::Tuple{Any, Any};
@@ -101,8 +161,8 @@ module AoC_2023_19
         return (part1, part2);
     end
 
-    @time (part1, part2) = solve(true); # Test
-    # @time (part1, part2) = solve();
+    # @time (part1, part2) = solve(true); # Test
+    @time (part1, part2) = solve();
     println("\nPart 1 answer: $(part1)");
     println("\nPart 2 answer: $(part2)\n");
 end
