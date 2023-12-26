@@ -1,8 +1,9 @@
 module AoC_2023_19
     using AdventOfCode;
     using DataStructures;
-    const AoC = AdventOfCode;
     import Base.length
+    
+    const AoC = AdventOfCode;
 
     struct Part
         x::Int
