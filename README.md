@@ -47,8 +47,8 @@ include("./src/AoC_2023/AoC_2023_xx.jl") # use to run & re-run the actual script
 | 21 | [Step Counter](https://adventofcode.com/2023/day/21) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 22 | [Sand Slabs](https://adventofcode.com/2023/day/22) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 23 | [A Long Walk](https://adventofcode.com/2023/day/23) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
-| 24 | [:x:](https://adventofcode.com/2023/day/24) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
-| 25 | [:x:](https://adventofcode.com/2023/day/25) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
+| 24 | [Never Tell Me The Odds](https://adventofcode.com/2023/day/24) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
+| 25 | [Snowverload](https://adventofcode.com/2023/day/25) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 
 
 
