@@ -9,6 +9,15 @@ module AoC_2023_17
         dir::CartesianIndex{2}
     end
 
+    function hash(s::State)::UInt64
+        h = s.pos[1] * 1000 + s.pos[2];
+        h *= 1000;
+        h += s.dir[1] * 10 + s.dir[2]
+        h *= 100;
+        h += s.straight;
+        return h;
+    end
+
     parse_inputs(lines::Vector{String}) = parse.(Int,reduce(hcat, collect.(lines)));
     
     function enqueue_state!(pq::PriorityQueue, cumheat::Array{UInt8, 5}, visited::Set, heatmap::Matrix, s::State, heat::Int)
@@ -32,7 +41,6 @@ module AoC_2023_17
         (n,m) = size(heatmap);
 
         visited = Set{UInt64}();
-        # visited = Dict{State, Int}();
         cumheat = zeros(UInt8, n, m, max_straight, 3, 3)
 
         pq = PriorityQueue{State, Int}();
@@ -71,6 +79,8 @@ module AoC_2023_17
         part1       = solve_part_1(heatmap);
         part2       = solve_part_2(heatmap);
 
+        @assert(part1 == 916, "p1 wrong")
+        @assert(part2 == 1067, "p2 wrong")
         return (part1, part2);
     end
 
