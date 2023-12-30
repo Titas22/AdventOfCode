@@ -40,10 +40,10 @@ include("./src/AoC_2023/AoC_2023_xx.jl") # use to run & re-run the actual script
 | 14 | [Parabolic Reflector Dish](https://adventofcode.com/2023/day/14) | 26.026 ms | 847.11 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_14.jl) |
 | 15 | [Lens Library](https://adventofcode.com/2023/day/15) | 777.600 μs | 1.52 MiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_15.jl) |
 | 16 | [The Floor Will Be Lava](https://adventofcode.com/2023/day/16) | 14.321 ms | 5.43 MiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_16.jl) |
-| 17 | [Clumsy Crucible](https://adventofcode.com/2023/day/17) | 795.596 ms | 64.69 MiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_17.jl) |
+| 17 | [Clumsy Crucible](https://adventofcode.com/2023/day/17) | 720.349 ms | 64.69 MiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_17.jl) |
 | 18 | [Lavaduct Lagoon](https://adventofcode.com/2023/day/18) | 344.800 μs | 256.59 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_18.jl) |
 | 19 | [Aplenty](https://adventofcode.com/2023/day/19) | 1.413 ms | 948.12 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_19.jl) |
-| 20 | [Pulse Propagation](https://adventofcode.com/2023/day/20) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
+| 20 | [Pulse Propagation](https://adventofcode.com/2023/day/20) | 23.604 ms | 30.82 MiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_20.jl) |
 | 21 | [Step Counter](https://adventofcode.com/2023/day/21) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 22 | [Sand Slabs](https://adventofcode.com/2023/day/22) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 23 | [A Long Walk](https://adventofcode.com/2023/day/23) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
