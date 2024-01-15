@@ -38,7 +38,10 @@ module AoC_2023_22
     println("\nPart 1 answer: $(part1)");
     println("\nPart 2 answer: $(part2)\n");
 end
-lines = @getinputs(false)
+lines = @getinputs(true)
+
+using Graphs
+using GraphPlot
 
 struct Block
     from::CartesianIndex{3}
@@ -143,3 +146,41 @@ function count_safe_to_disintegrate(blocks::Vector{Block})::Int
 end
 
 count_safe_to_disintegrate(blocks)
+
+g = SimpleDiGraph(length(blocks))
+for (ii, block) in enumerate(blocks)
+    for supported in block.supports
+        add_edge!(g, ii, supported)
+    end
+end
+
+
+# vec::Tuple{Bool, Set{Int}} = []
+# fill!(vec, )
+
+# xs, ys, paths = solve_positions(Zarate(), g);
+# gplot(g, nodelabel=vertices(g); x=xs, y=ys)
+
+
+function count_total_disintegration(idx::Int, block::Block, blocks::Vector{Block})
+    n = 0;
+    for ii in block.supports
+        supported = blocks[ii];
+        delete!(supported.supported_by, idx)
+        isempty(supported.supported_by) || continue;
+        
+        n += 1 + count_total_disintegration(ii, supported, blocks)
+        println(blocks)
+    end
+
+    return n;
+end
+
+total = 0;
+for (idx, block) in enumerate(blocks)
+    idx > 1 && continue
+    blocks_copy = deepcopy(blocks);
+    global total += count_total_disintegration(idx, block, blocks_copy)
+end
+
+println(total)
