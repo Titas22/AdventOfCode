@@ -60,8 +60,7 @@ module AoC_2023_21
         start = start + CartesianIndex(offset, offset);
 
         distances = find_distances(charmat, start);
-
-        x1 = 65
+        x1 = n_org ÷ 2
         x2 = x1 + n_org
         x3 = x2 + n_org
         

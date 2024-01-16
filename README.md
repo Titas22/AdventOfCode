@@ -45,7 +45,7 @@ include("./src/AoC_2023/AoC_2023_xx.jl") # use to run & re-run the actual script
 | 19 | [Aplenty](https://adventofcode.com/2023/day/19) | 1.413 ms | 948.12 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_19.jl) |
 | 20 | [Pulse Propagation](https://adventofcode.com/2023/day/20) | 23.604 ms | 30.82 MiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_20.jl) |
 | 21 | [Step Counter](https://adventofcode.com/2023/day/21) | 17.289 ms | 21.03 MiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_21.jl) |
-| 22 | [Sand Slabs](https://adventofcode.com/2023/day/22) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
+| 22 | [Sand Slabs](https://adventofcode.com/2023/day/22) | 9.125 ms | 4.41 MiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2023/AoC_2023_22.jl) |
 | 23 | [A Long Walk](https://adventofcode.com/2023/day/23) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 24 | [Never Tell Me The Odds](https://adventofcode.com/2023/day/24) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 25 | [Snowverload](https://adventofcode.com/2023/day/25) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
