@@ -1,4 +1,4 @@
-module AoC_2023_xx
+module AoC_2024_xx
     using AdventOfCode;
     const AoC = AdventOfCode;
 
@@ -21,7 +21,7 @@ module AoC_2023_xx
         return nothing;
     end
 
-    function solve(btest::Bool = false)::Tuple{Any, Any};
+    function solve(btest::Bool = false)::Tuple{Any, Any}
         lines       = @getinputs(btest);
         # lines2      = @getinputs(btest, "_2"); # Use if 2nd problem test case inputs are different
         inputs      = parse_inputs(lines);
