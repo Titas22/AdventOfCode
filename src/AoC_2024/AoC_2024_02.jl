@@ -1,9 +1,27 @@
 module AoC_2024_02
     using AdventOfCode;
-    const AoC = AdventOfCode;
+    using Parsers;
+    
+    function parse_line(line::AbstractString, opt)::Vector{Int}
+        io = IOBuffer(line)
+        vals = Int[]
+        sizehint!(vals, count(==( ' '), line) + 1)
+        while !eof(io)
+            push!(vals, Parsers.parse(Int64, io, opt))
+        end
+        return vals
+    end
 
-    function parse_inputs(lines::Vector{String})
-        return (x->parse.(Int, x)).(split.(lines));
+    function parse_inputs(lines::Vector{String})::Vector{Vector{Int}}
+        inputs  = Vector{Int}[];
+        sizehint!(inputs, length(lines));
+
+        opt = Parsers.Options(delim=' ', ignorerepeated=true)
+        for line in lines
+            push!(inputs, parse_line(line, opt))
+        end
+
+        return inputs
     end
 
     function is_safe_report(v::Vector{Int64}, recurse::Bool = false)
