@@ -42,3 +42,27 @@ lines = @getinputs(true)
 
 inputs = (x->parse.(Int, x)).(split.(lines))
 
+function is_safe_report(v::Vector{Int64}, recurse::Bool = false)
+    dv = diff(v)
+    if dv[1] > 0
+        b = dv .> 0 .&& dv .<= 3
+    else
+        b = dv .< 0 .&& dv .>= -3
+    end
+
+    ~all(b) || return true
+    recurse || return false
+    for ii in eachindex(v)
+        ~is_safe_report(v[1:end .!= ii], false) || return true
+    end
+    println(b)
+
+
+
+    return false
+end
+b = is_safe_report.(inputs)
+count(b)
+
+b = is_safe_report.(inputs, true)
+count(b)
