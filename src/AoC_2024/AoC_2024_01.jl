@@ -1,38 +1,31 @@
 module AoC_2024_01
     using AdventOfCode;
     using DataStructures;
-    const AoC = AdventOfCode;
 
-    function parse_inputs(lines::Vector{String})::Tuple{Vector{Int}, Vector{Int}}    
-        split_lines = split.(lines);        
-        
+
+    function parse_inputs(lines::Vector{String})::Tuple{Vector{Int}, Vector{Int}}   
         inputs  = (Int[], Int[]);
         sizehint!.(inputs, length(lines));
         
-        for line in split_lines
-            line_int = parse.(Int, line);
-        
-            push!(inputs[1], line_int[1]);
-            push!(inputs[2], line_int[2]);
+        for line in lines
+            split_idx = findfirst("   ", line);
+            
+            num_left = parse(Int, line[1:(split_idx[1]-1)]);
+            num_right = parse(Int, line[split_idx[end]+1:end]);
+
+            push!(inputs[1], num_left);
+            push!(inputs[2], num_right);
         end
         sort!.(inputs)
+
         return inputs;
     end
 
-    function solve_part_1(inputs::Tuple{Vector{Int}, Vector{Int}})::Int
-        tot = 0;
-        for pair in zip(inputs[1], inputs[2])
-            tot += abs(pair[2] - pair[1]);
-        end
-        return tot;
-    end
+    solve_part_1(inputs::Tuple{Vector{Int}, Vector{Int}})::Int = mapreduce(ii -> abs(inputs[2][ii] - inputs[1][ii]), +, eachindex(inputs[1]))
 
     function solve_part_2(inputs::Tuple{Vector{Int}, Vector{Int}})::Int
-        tot = 0
         right_counts = counter(inputs[2])
-        for x in inputs[1]
-            tot += x * right_counts[x]
-        end
+        tot = foldl((acc, x) -> acc + x * right_counts[x], inputs[1]; init=0)
         return tot;
     end
 
