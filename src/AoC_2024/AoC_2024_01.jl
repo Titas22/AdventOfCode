@@ -1,20 +1,18 @@
 module AoC_2024_01
     using AdventOfCode;
     using DataStructures;
+    using Parsers;
 
 
     function parse_inputs(lines::Vector{String})::Tuple{Vector{Int}, Vector{Int}}   
         inputs  = (Int[], Int[]);
         sizehint!.(inputs, length(lines));
         
+        opt = Parsers.Options(delim=' ', ignorerepeated=true)
         for line in lines
-            split_idx = findfirst("   ", line);
-            
-            num_left = parse(Int, line[1:(split_idx[1]-1)]);
-            num_right = parse(Int, line[split_idx[end]+1:end]);
-
-            push!(inputs[1], num_left);
-            push!(inputs[2], num_right);
+            io = IOBuffer(line)            
+            push!(inputs[1], Parsers.parse(Int64, io, opt));
+            push!(inputs[2], Parsers.parse(Int64, io, opt));
         end
         sort!.(inputs)
 
