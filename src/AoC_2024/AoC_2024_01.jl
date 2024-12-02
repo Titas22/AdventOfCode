@@ -8,7 +8,10 @@ module AoC_2024_01
         sizehint!.(inputs, length(lines));
         
         for line in lines
-            num_left, num_right = parse.(Int, split(line))
+            split_idx = findfirst("   ", line);
+            
+            num_left = parse(Int, line[1:(split_idx[1]-1)]);
+            num_right = parse(Int, line[split_idx[end]+1:end]);
 
             push!(inputs[1], num_left);
             push!(inputs[2], num_right);
