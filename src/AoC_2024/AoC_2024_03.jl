@@ -38,7 +38,7 @@ module AoC_2024_03
     println("\nPart 1 answer: $(part1)");
     println("\nPart 2 answer: $(part2)\n");
 end
-lines = @getinputs(false)
+lines = @getinputs(true)
 
 input  = join(lines);
 # m = findall(r"mul\((\d+),(\d+)\)", lines[1])
@@ -46,5 +46,24 @@ input  = join(lines);
 
 a = [ parse.(Int, split(m.match[5:end-1], ',')) for m in eachmatch(r"mul\((\d+),(\d+)\)", input)]
 
-
+p1 = sum([x[1] * x[2] for x in a])
 # parse.(Int, split(b[5:end-1], ','))
+
+do_blocks = split(input, "do()")
+
+mul_vals = Vector{Int}[]
+for do_block in do_blocks
+    a1 = split(do_block, "don't()")[1]
+    b1 = [ parse.(Int, split(m.match[5:end-1], ',')) for m in eachmatch(r"mul\((\d+),(\d+)\)", a1)]
+    push!(mul_vals, b1...)
+end
+
+# do_block = do_blocks[1]
+
+# x = split(do_block, "don't()")[1]
+
+mul_vals
+
+# a = split(do_block, "don't()")[1]
+# b = [ parse.(Int, split(m.match[5:end-1], ',')) for m in eachmatch(r"mul\((\d+),(\d+)\)", a)]
+p2 = sum([x[1] * x[2] for x in mul_vals])
