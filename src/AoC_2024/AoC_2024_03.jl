@@ -1,37 +1,32 @@
 module AoC_2024_03
     using AdventOfCode;
+    using Parsers;
 
-    function parse_inputs(lines::Vector{String})::String 
-        return join(lines);
-    end
-    
+    parse_inputs(lines::Vector{String})::String  = join(lines);
+
     function find_muls(input)
-        pattern = r"mul\((\d+),(\d+)\)";
-        a = [ parse.(Int, split(m.match[5:end-1], ',')) for m in eachmatch(pattern, input)]
-        return a;
+        tot = 0;
+        for m in eachmatch(r"mul\((\d+),(\d+)\)", input)
+            a = Parsers.parse(Int64, m[1])
+            b = Parsers.parse(Int64, m[2])
+            tot += a * b
+        end
+        return tot;
     end
 
-    function solve_part_1(inputs)
-
-        a = find_muls(inputs)
-        p1 = sum([x[1] * x[2] for x in a])
-        return p1;
-    end
+    solve_part_1(inputs) = find_muls(inputs);
 
     function solve_part_2(inputs)
 
         do_blocks = split(inputs, "do()")
-
-        mul_vals = Vector{Int}[]
+        
+        tot = 0;
         for do_block in do_blocks
             a1 = split(do_block, "don't()")[1]
-            b1 = find_muls(a1)
-            push!(mul_vals, b1...)
+            tot += find_muls(a1)
         end
-        
-        p2 = sum([x[1] * x[2] for x in mul_vals])
 
-        return p2;
+        return tot;
     end
 
     function solve(btest::Bool = false)::Tuple{Any, Any}
