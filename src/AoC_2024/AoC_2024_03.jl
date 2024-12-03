@@ -3,27 +3,30 @@ module AoC_2024_03
     using Parsers;
 
     parse_inputs(lines::Vector{String})::String  = join(lines);
-
+    
     function find_muls(input)
         tot = 0;
-        for m in eachmatch(r"mul\((\d+),(\d+)\)", input)
-            a = Parsers.parse(Int64, m[1])
-            b = Parsers.parse(Int64, m[2])
+
+        for m in eachmatch(r"mul\(\d+,\d+\)", input)
+            idx = findfirst(',', m.match)
+            a = Parsers.parse(Int64, m.match[5 : idx-1])
+            b = Parsers.parse(Int64, m.match[idx+1 : end-1])
             tot += a * b
         end
+
         return tot;
     end
 
     solve_part_1(inputs) = find_muls(inputs);
 
     function solve_part_2(inputs)
-
-        do_blocks = split(inputs, "do()")
-        
         tot = 0;
+        do_blocks = split(inputs, "do()")
+
         for do_block in do_blocks
-            a1 = split(do_block, "don't()")[1]
-            tot += find_muls(a1)
+            idx = findfirst("don't()", do_block);
+            do_block = isnothing(idx) ? do_block : do_block[1 : idx[1]-1]
+            tot += find_muls(do_block)
         end
 
         return tot;
