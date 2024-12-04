@@ -24,7 +24,7 @@ include("./src/AoC_2024/AoC_2024_xx.jl") # use to run & re-run the actual script
 | Day | Problem | Time | Allocated memory | Source |
 |----:|:-------:|-----:|-----------------:|:------:|
 | 01 | [Historian Hysteria](https://adventofcode.com/2024/day/1) | 379.100 μs | 222.67 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2024/AoC_2024_01.jl) |
-| 02 | [Red-Nosed Reports](https://adventofcode.com/2024/day/2) | 1.010 ms | 1.41 MiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2024/AoC_2024_02.jl) |
+| 02 | [Red-Nosed Reports](https://adventofcode.com/2024/day/2) | 675.100 μs | 688.72 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2024/AoC_2024_02.jl) |
 | 03 | [Mull It Over](https://adventofcode.com/2024/day/3) | 551.100 μs | 226.07 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/master/src/AoC_2024/AoC_2024_03.jl) |
 | 04 | [:x:](https://adventofcode.com/2024/day/4) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 05 | [:x:](https://adventofcode.com/2024/day/5) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
