@@ -2,10 +2,11 @@ module AoC_2024_02
     using AdventOfCode;
     using Parsers;
     
-    function parse_line(line::AbstractString, opt)::Vector{Int}
+    function parse_line(line::AbstractString, opt::Parsers.Options)::Vector{Int}
         io = IOBuffer(line)
         vals = Int[]
-        sizehint!(vals, count(==( ' '), line) + 1)
+        n = count(==( ' '), line) + 1
+        sizehint!(vals, n)
         while !eof(io)
             push!(vals, Parsers.parse(Int64, io, opt))
         end
@@ -18,37 +19,58 @@ module AoC_2024_02
 
         opt = Parsers.Options(delim=' ', ignorerepeated=true)
         for line in lines
-            push!(inputs, parse_line(line, opt))
+            parsed_line = parse_line(line, opt)
+            push!(inputs, parsed_line)
         end
 
         return inputs
     end
 
-    function is_safe_report(v::Vector{Int64}, recurse::Bool = false)
-        dv = diff(v)
-        if dv[1] > 0
-            b = dv .> 0 .&& dv .<= 3
-        else
-            b = dv .< 0 .&& dv .>= -3
-        end
-    
-        ~all(b) || return true
-        recurse || return false
-        for ii in eachindex(v)
-            ~is_safe_report(v[1:end .!= ii], false) || return true
-        end
-        return false
+    function check_pair(a::Int, b::Int)::Tuple{Bool, Int}
+        dx = a-b
+        (dx == 0 || abs(dx) > 3) && return (false, 0)
+        return (true, sign(dx))
     end
 
-    solve_part_1(inputs) = count(is_safe_report.(inputs));
-    solve_part_2(inputs) = count(is_safe_report.(inputs, true));
+    function is_safe_report(v::Vector{Int64})
+        length(v) > 1 || return true # 
+
+        (b, s) = check_pair(v[2], v[1])
+        b || return false
+        for ii in 3 : length(v)
+            (b, s2) = check_pair(v[ii], v[ii-1])
+            b || return false
+            s == s2 || return false
+        end
+        return true
+    end
+
+    function solve_part_2(inputs, fully_safe)
+        tot = solve_part_1(fully_safe)
+        to_check = @view inputs[.!fully_safe];
+        for v in to_check
+            for ii in eachindex(v)
+                w = v[1:end .!= ii]
+
+                is_safe_report(w) || continue
+                
+                tot += 1
+                break
+            end
+        end
+        return tot
+    end
+
+    solve_part_1(fully_safe) = count(fully_safe);
 
     function solve(btest::Bool = false)::Tuple{Any, Any}
         lines       = @getinputs(btest);
         inputs      = parse_inputs(lines);
 
-        part1       = solve_part_1(inputs);
-        part2       = solve_part_2(inputs);
+        fully_safe  = is_safe_report.(inputs)
+
+        part1       = solve_part_1(fully_safe);
+        part2       = solve_part_2(inputs, fully_safe);
 
         return (part1, part2);
     end
