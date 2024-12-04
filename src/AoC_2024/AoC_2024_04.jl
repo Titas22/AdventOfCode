@@ -37,7 +37,7 @@ module AoC_2024_04
     println("\nPart 1 answer: $(part1)");
     println("\nPart 2 answer: $(part2)\n");
 end
-lines = @getinputs(true)
+lines = @getinputs(false)
 chmat = hcat(collect.(lines)...)
 
 (n, m) = size(chmat)
@@ -58,46 +58,62 @@ for x in findall('X' .== chmat)
                     end
                 end
             end
-            
-            
-            # @printf("%d %d\n", r, c)
         end
     end
-
-    # if x[1] > 3
-    #     # Search Left - reverse
-    #     println(x)
-    # end
-    # if x[1] < m-2
-    #     #Search right
-    # end
-    
-    
-
 end
 
-
-# linesT = join.(eachrow(chmat))
-# linesTp = copy(linesT)
-# linesTn = copy(linesT)
-
-# for ii = 1 : size(linesTp, 1)
-#     lines
-
-
-# line = lines[1];
-# tot = 0
-# for line in lines
-#     global tot
-#     tot += length(collect(findall(r"(XMAS)|(SAMX)", line)))
-# end
-# for line in linesT
-#     global tot
-#     tot += length(collect(findall(r"(XMAS)|(SAMX)", line)))
-# end
+println(tot)
 
 
 
 
+tot = 0
+d = Dict('M'=>'S', 'S'=>'M')
+for x in findall('A' .== chmat)
+    (x[1] > 1 && x[1] < n && x[2] > 1 && x[2] < m) || continue;
+
+    for b in [(1, -1)] # [(0, 1), (1, -1)]
+
+        # @printf("(%d, %d):   (%+d, %+d) - (%+d, %+d) - (%+d, %+d) - (%+d, %+d)\n", 
+        #     x[1], x[2], b[1], b[2], -b[1], -b[2], -b[2], b[1], b[2], -b[1])
+
+
+        ch = chmat[x[1] + b[1], x[2] + b[2]]
+        ch in keys(d) || continue;
+        chmat[x[1] - b[1], x[2] - b[2]] == d[ch] || continue;
+
+        ch = chmat[x[1] - b[2], x[2] + b[1]]
+        ch in keys(d) || continue;
+        chmat[x[1] + b[2], x[2] - b[1]] == d[ch] || continue;
+
+
+        # @printf("%sA%s, %sA%s\n", chmat[x[1] + b[1], x[2] + b[2]], chmat[x[1] - b[1], x[2] - b[2]], ch, chmat[x[1] + b[2], x[2] - b[1]])
+        
+        global tot
+        tot += 1
+    end
+    #     if 
+    #     for a in [()]
+    #     for c in [1, ]
+    # if chmat[x[1]+1, x[1]]
+    # for r in [1, 0, -1]
+    #     rx = x[1] + r*3
+    #     (rx <= n && rx > 0) || continue;
+    #     for c in [1, 0, -1]
+    #         cx = x[2] + c*3
+    #         (cx <= m && cx > 0) || continue;
+    #         global tot
+    #         if chmat[x[1]+r, x[2]+c] == 'M'
+    #             if chmat[x[1]+2*r, x[2]+2*c] == 'A'
+    #                 if chmat[x[1]+3*r, x[2]+3*c] == 'S'
+    #                     tot += 1
+    #                 end
+    #             end
+    #         end
+    #     end
+    # end
+end
 
 println(tot)
+
+# 1928 - too high
