@@ -60,12 +60,13 @@ end
 deps
 
 tot = 0
-for l in lists
-    bOk = true
+bOk = falses(length(lists))
+for (jj, l) in pairs(lists)
+    bOk[jj] = true
     for ii in eachindex(l)
         if haskey(deps, l[ii]) && findfirst(x -> x in deps[l[ii]], l[ii+1:end]) !== nothing
             # l[ii+1:end] deps[l[ii]] in 
-            bOk = false
+            bOk[jj] = false
 
             # @printf("Current index %d: value %d requires %s\n", ii, l[ii], string(deps[l[ii]]))
             # println(l)
@@ -73,11 +74,32 @@ for l in lists
             break;
         end
     end
-    bOk || continue;
-    global tot
-    tot += l[length(l)÷2 + 1]
+    bOk[jj] || continue;
     # println(l)
     # println(l[length(l)÷2 + 1])
+end
+
+tot = 0
+for l in @view lists[bOk]
+    global tot
+    tot += l[length(l)÷2 + 1]
+end
+
+println(tot)
+
+bad_lists = @view lists[.!bOk]
+
+for l in bad_lists
+    @printf("Pre-sort: %s\n", string(l))
+    sort!(l; lt=(x, y) -> haskey(deps, x) && y in deps[x])
+    @printf("Post-sort: %s\n", string(l))
+
+end
+
+tot = 0
+for l in bad_lists
+    global tot
+    tot += l[length(l)÷2 + 1]
 end
 
 println(tot)
