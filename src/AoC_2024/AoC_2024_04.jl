@@ -20,13 +20,10 @@ module AoC_2024_04
         end
         return tot;
     end
-
-    const d = Dict('M'=>'S', 'S'=>'M')
-    const kd = keys(d)
-
+    
     function is_MAS(chmat::Matrix{Char}, x::CartesianIndex{2}, offset::CartesianIndex{2})
-        ch = chmat[x + offset]
-        return ch in kd && chmat[x - offset] == d[ch];
+        chmat[x + offset] == 'S' && chmat[x - offset] == 'M' && return true;
+        return chmat[x + offset] == 'M' && chmat[x - offset] == 'S'
     end
 
     function solve_part_2(chmat::Matrix{Char})::Int
