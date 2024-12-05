@@ -1,119 +1,63 @@
 module AoC_2024_04
     using AdventOfCode;
 
-    function parse_inputs(lines::Vector{String})
+    parse_inputs(lines::Vector{String})::Matrix{Char} = reduce(hcat, collect.(lines));
 
-        return lines;
+    function solve_part_1(chmat::Matrix{Char})::Int
+        directions = CartesianIndices((-1:1, -1:1))
+
+        tot = 0
+        for x in findall(ch -> ch == 'X', chmat)
+            for d in directions
+                checkbounds(Bool, chmat, x+3*d) || continue
+                
+                chmat[x+3*d] == 'S' || continue;
+                chmat[x+2*d] == 'A' || continue;
+                chmat[x+d]   == 'M' || continue;
+                
+                tot += 1
+            end
+        end
+        return tot;
     end
-    function solve_common(inputs)
 
-        return inputs;
+    const d = Dict('M'=>'S', 'S'=>'M')
+    const kd = keys(d)
+
+    function is_MAS(chmat::Matrix{Char}, x::CartesianIndex{2}, offset::CartesianIndex{2})
+        ch = chmat[x + offset]
+        return ch in kd && chmat[x - offset] == d[ch];
     end
 
-    function solve_part_1(inputs)
+    function solve_part_2(chmat::Matrix{Char})::Int
+        (n, m) = size(chmat)
 
-        return nothing;
-    end
+        tot = 0
+        for x in findall(ch -> ch == 'A', chmat)
+            (x[1] > 1 && x[1] < n && x[2] > 1 && x[2] < m) || continue;
+            
+            is_MAS(chmat, x, CartesianIndex(1, -1)) || continue;
+            is_MAS(chmat, x, CartesianIndex(1, 1)) || continue
+            
+            tot += 1
+        end
 
-    function solve_part_2(inputs)
-
-        return nothing;
+        return tot;
     end
 
     function solve(btest::Bool = false)::Tuple{Any, Any}
         lines       = @getinputs(btest);
         # lines2      = @getinputs(btest, "_2"); # Use if 2nd problem test case inputs are different
-        inputs      = parse_inputs(lines);
+        chmat      = parse_inputs(lines);
 
-        solution    = solve_common(inputs);
-        part1       = solve_part_1(solution);
-        part2       = solve_part_2(solution);
+        part1       = solve_part_1(chmat);
+        part2       = solve_part_2(chmat);
 
         return (part1, part2);
     end
 
-    @time (part1, part2) = solve(true); # Test
-    # @time (part1, part2) = solve();
+    # @time (part1, part2) = solve(true); # Test
+    @time (part1, part2) = solve();
     println("\nPart 1 answer: $(part1)");
     println("\nPart 2 answer: $(part2)\n");
 end
-lines = @getinputs(false)
-chmat = hcat(collect.(lines)...)
-
-(n, m) = size(chmat)
-
-tot = 0
-for x in findall('X' .== chmat)
-    for r in [1, 0, -1]
-        rx = x[1] + r*3
-        (rx <= n && rx > 0) || continue;
-        for c in [1, 0, -1]
-            cx = x[2] + c*3
-            (cx <= m && cx > 0) || continue;
-            global tot
-            if chmat[x[1]+r, x[2]+c] == 'M'
-                if chmat[x[1]+2*r, x[2]+2*c] == 'A'
-                    if chmat[x[1]+3*r, x[2]+3*c] == 'S'
-                        tot += 1
-                    end
-                end
-            end
-        end
-    end
-end
-
-println(tot)
-
-
-
-
-tot = 0
-d = Dict('M'=>'S', 'S'=>'M')
-for x in findall('A' .== chmat)
-    (x[1] > 1 && x[1] < n && x[2] > 1 && x[2] < m) || continue;
-
-    for b in [(1, -1)] # [(0, 1), (1, -1)]
-
-        # @printf("(%d, %d):   (%+d, %+d) - (%+d, %+d) - (%+d, %+d) - (%+d, %+d)\n", 
-        #     x[1], x[2], b[1], b[2], -b[1], -b[2], -b[2], b[1], b[2], -b[1])
-
-
-        ch = chmat[x[1] + b[1], x[2] + b[2]]
-        ch in keys(d) || continue;
-        chmat[x[1] - b[1], x[2] - b[2]] == d[ch] || continue;
-
-        ch = chmat[x[1] - b[2], x[2] + b[1]]
-        ch in keys(d) || continue;
-        chmat[x[1] + b[2], x[2] - b[1]] == d[ch] || continue;
-
-
-        # @printf("%sA%s, %sA%s\n", chmat[x[1] + b[1], x[2] + b[2]], chmat[x[1] - b[1], x[2] - b[2]], ch, chmat[x[1] + b[2], x[2] - b[1]])
-        
-        global tot
-        tot += 1
-    end
-    #     if 
-    #     for a in [()]
-    #     for c in [1, ]
-    # if chmat[x[1]+1, x[1]]
-    # for r in [1, 0, -1]
-    #     rx = x[1] + r*3
-    #     (rx <= n && rx > 0) || continue;
-    #     for c in [1, 0, -1]
-    #         cx = x[2] + c*3
-    #         (cx <= m && cx > 0) || continue;
-    #         global tot
-    #         if chmat[x[1]+r, x[2]+c] == 'M'
-    #             if chmat[x[1]+2*r, x[2]+2*c] == 'A'
-    #                 if chmat[x[1]+3*r, x[2]+3*c] == 'S'
-    #                     tot += 1
-    #                 end
-    #             end
-    #         end
-    #     end
-    # end
-end
-
-println(tot)
-
-# 1928 - too high
