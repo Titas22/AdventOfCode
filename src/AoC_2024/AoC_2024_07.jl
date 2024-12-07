@@ -38,7 +38,9 @@ module AoC_2024_07
             end
         else
             for op in operators
-                try_operators(operators, target, op(num, inputs[1]), @view inputs[2:end]) && return true;
+                new_num = op(num, inputs[1])
+                new_num > target && continue
+                try_operators(operators, target, new_num, @view inputs[2:end]) && return true;
             end
         end
         return false;
