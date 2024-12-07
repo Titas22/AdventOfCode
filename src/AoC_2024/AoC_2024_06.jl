@@ -21,44 +21,56 @@ module AoC_2024_06
         return (falses(sz), falses(sz), falses(sz), falses(sz))
     end
 
-    function run_guard_path(charmat, pos)
-        visdir = init_visited(charmat)
-        idx_dir = 1;
-        dir = directions[idx_dir];
+    function run_guard_path(charmat::Matrix{Char}, pos::CartesianIndex{2}, idx_dir::Int=1, ispart2::Bool=false)::Tuple{Bool, NTuple{4, BitMatrix}, Matrix{Int64}}
+        visdir      = init_visited(charmat)
+        dir         = directions[idx_dir];
+        if !ispart2
+            firstvisit  = zeros(Int, size(charmat))
+        else
+            firstvisit  = zeros(Int, 0, 0)
+        end
         while true
             checkbounds(Bool, charmat, pos) || break;
-            visdir[idx_dir][pos] && return (true, visdir)
+            ispart2 && visdir[idx_dir][pos] && return (true, visdir, firstvisit)
             if charmat[pos] == '#'
                 pos  -= dir
                 idx_dir     = mod(idx_dir, 4) + 1
                 dir         = directions[idx_dir]
             else
                 visdir[idx_dir][pos] = true
+                if !ispart2 && firstvisit[pos] == 0
+                    firstvisit[pos] = idx_dir;
+                end
             end
 
             pos += dir
         end
 
-        return (false, visdir);
+        return (false, visdir, firstvisit);
     end
 
     function solve_part_1(charmat, pos)
-        (_, visdir) = run_guard_path(charmat, pos)
+        (_, visdir, firstvisit) = run_guard_path(charmat, pos)
         visited = visdir[1] .|| visdir[2] .|| visdir[3] .|| visdir[4]
-        return (count(visited), visdir)
+        return (count(visited), firstvisit)
     end
 
-    function solve_part_2(charmat, start_pos, org_visdir)
+    function solve_part_2(charmat, start_pos, first_dir)
         nloops = 0
-        org_visited = org_visdir[1] .|| org_visdir[2] .|| org_visdir[3] .|| org_visdir[4]
-        org_path = findall(org_visited)
-        for block in org_path
-            charmat[block] = '#'
-            (isloop, _) = run_guard_path(charmat, start_pos) 
+        first_dir[start_pos] = 0;
+
+        org_path = findall(x-> x>0, first_dir);
+
+        for new_obstacle in org_path
+            idx_dir = first_dir[new_obstacle]
+            dir = directions[idx_dir];
+            start_pos = new_obstacle - dir;
+            charmat[new_obstacle] = '#'
+            (isloop, _, _) = run_guard_path(charmat, start_pos, idx_dir, true) 
             if isloop
                 nloops += 1;
             end
-            charmat[block] = '.'
+            charmat[new_obstacle] = '.'
         end
         return nloops
     end
@@ -66,9 +78,9 @@ module AoC_2024_06
     function solve(btest::Bool = false)::Tuple{Any, Any}
         lines                   = @getinputs(btest);
         (charmat, idx_start)    = parse_inputs(lines);
-
-        (part1, org_visdir)     = solve_part_1(charmat, idx_start);
-        part2                   = solve_part_2(charmat, idx_start, org_visdir);
+        # println(typeof(idx_start))
+        (part1, first_dir)      = solve_part_1(charmat, idx_start);
+        part2                   = solve_part_2(charmat, idx_start, first_dir);
 
         return (part1, part2);
     end
@@ -78,13 +90,3 @@ module AoC_2024_06
     println("\nPart 1 answer: $(part1)");
     println("\nPart 2 answer: $(part2)\n");
 end
-
-# 4826
-# 1721
-
-# Don't start search from beginning each time, start in front of the inserted obstacle.
-# Jump lookup table to shortcut between points (6 ms -> 1 ms)
-# Parallelization (1 ms -> 386 µs)
-
-# lines = @getinputs(true)
-# (charmat, idx_start)    = AoC_2024_06.parse_inputs(lines);
