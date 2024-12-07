@@ -64,20 +64,16 @@ lines = @getinputs(false)
 
 calibrations = AoC_2024_07.parse_inputs(lines)
 
-# cal = calibrations[1]
+numcat(a::Int, b::Int)::Int = a * 10^(floor(Int, log10(b)) + 1) + b;
 
-Dict{Int, Vector{Vector{Function}}}
-operators = (+, *)
-
-num = cal.inputs[1]
-function try_operators(target, num, inputs::AbstractArray{Int})::Bool
+function try_operators(operators, target, num, inputs::AbstractArray{Int})::Bool
     if length(inputs) == 1
         for op in operators
             op(num, inputs[1]) == target && return true
         end
     else
         for op in operators
-            try_operators(target, op(num, inputs[1]), @view inputs[2:end]) && return true;
+            try_operators(operators, target, op(num, inputs[1]), @view inputs[2:end]) && return true;
         end
     end
     return false;
@@ -85,9 +81,18 @@ end
 
 tot = 0
 for cb in calibrations
-    try_operators(cb.output, cb.inputs[1], @view cb.inputs[2:end]) || continue
+    try_operators((+, *), cb.output, cb.inputs[1], @view cb.inputs[2:end]) || continue
     global tot
     tot += cb.output
 end
 
-tot
+println(tot)
+
+tot = 0
+for cb in calibrations
+    try_operators((+, *, numcat), cb.output, cb.inputs[1], @view cb.inputs[2:end]) || continue
+    global tot
+    tot += cb.output
+end
+
+println(tot)
