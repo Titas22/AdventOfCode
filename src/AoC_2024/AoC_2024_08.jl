@@ -8,16 +8,20 @@ module AoC_2024_08
             for jj in eachindex(line)
                 line[jj] == '.' && continue;
                 ch = line[jj]
-                if haskey(antennas, ch)
-                    push!(antennas[ch], CartesianIndex(ii, jj))
-                else
-                    antennas[ch] = [CartesianIndex(ii, jj)]
-                    sizehint!(antennas[ch], 10)
+                if !haskey(antennas, ch)
+                    antennas[ch] = CartesianIndex{2}[]
+                    sizehint!(antennas[ch], 4)
                 end
+                push!(antennas[ch], CartesianIndex(ii, jj))
             end
         end
         sz = (length(lines), length(lines[1]))
         return (antennas, sz);
+    end
+
+    function check_antinode!(antinodes, pos)
+        checkbounds(Bool, antinodes, pos) || return false;
+        antinodes[pos] = true;
     end
 
     function solve_part_1(antennas, sz)
@@ -29,20 +33,21 @@ module AoC_2024_08
                 a = v[ii]
                 for jj = (ii+1) : n
                     b = v[jj]
-        
                     d = b - a
-        
-                    if checkbounds(Bool, antinodes, a - d)
-                        antinodes[a-d] = true;
-                    end
-                    if checkbounds(Bool, antinodes, b + d)
-                        antinodes[b+d] = true;
-                    end
+                    check_antinode!(antinodes, a-d)
+                    check_antinode!(antinodes, b+d)
                 end
             end
         end
         
         return count(antinodes);
+    end
+
+    function find_all_antinodes!(antinodes, antenna, step)
+        kk = 1
+        while check_antinode!(antinodes, antenna + step * kk)
+            kk += 1
+        end
     end
 
     function solve_part_2(antennas, sz)
@@ -53,22 +58,13 @@ module AoC_2024_08
             n > 1 || continue
             for ii in eachindex(v)
                 a = v[ii]
-                antinodes[a] = true;
                 for jj = (ii+1) : n
                     b = v[jj]
-        
                     d = b - a
-                    kk = 1
-                    while checkbounds(Bool, antinodes, a - kk*d)
-                        antinodes[a-kk*d] = true;
-                        kk += 1
-                    end
-                    kk = 1
-                    while checkbounds(Bool, antinodes, b + kk*d)
-                        antinodes[b+kk*d] = true;
-                        kk += 1
-                    end
+                    find_all_antinodes!(antinodes, a, -d)
+                    find_all_antinodes!(antinodes, b, d)
                 end
+                antinodes[a] = true;
             end
         end
         
@@ -78,7 +74,7 @@ module AoC_2024_08
     function solve(btest::Bool = false)::Tuple{Any, Any}
         lines       = @getinputs(btest);
         (antennas, sz)      = parse_inputs(lines);
-         
+        
         part1       = solve_part_1(antennas, sz);
         part2       = solve_part_2(antennas, sz);
 
