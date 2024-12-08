@@ -42,39 +42,50 @@ module AoC_2024_07
     numcat_cached(a::Int, b::Int)::Int = a * get_order_of_magnitude(b) + b;
     # numcat(a::Int, b::Int)::Int = a * 10^(floor(Int, log10(b)) + 1) + b;
 
-    function try_operators(operators, cb::Calibration)::Bool
+    function try_operators(cb::Calibration, ispart2::Bool)::Bool
         target = cb.output;
         s::Vector{Tuple{Int, Int}} = [(cb.inputs[1], 2)]
         n = length(cb.inputs)
-        nop = length(operators)
         while !isempty(s)
             current_num, idx = pop!(s)
             if idx > n
                 current_num == target && return true
             else
-                for ii = 1 : nop
-                    op = operators[ii]
-                    new_num = op(current_num, cb.inputs[idx])
+                # Conatenate
+                if ispart2 
+                    new_num = numcat_cached(current_num,  cb.inputs[idx])
                     if new_num <= target
                         push!(s, (new_num, idx + 1))
                     end
+                end
+
+                # Multiply
+                new_num = current_num * cb.inputs[idx]
+                if new_num <= target
+                    push!(s, (new_num, idx + 1))
+                end
+
+                # Sum
+                new_num = current_num + cb.inputs[idx]
+                if new_num <= target
+                    push!(s, (new_num, idx + 1))
                 end
             end
         end
         return false;
     end
     
-    function solve_common(calibrations, operators)
+    function solve_common(calibrations, ispart2)
         tot = 0
         for cb in calibrations
-            try_operators(operators, cb) || continue
+            try_operators(cb, ispart2) || continue
             tot += cb.output
         end
         return tot;
     end
 
-    solve_part_1(cals) = solve_common(cals, (*, +));
-    solve_part_2(cals) = solve_common(cals, (*, +, numcat_cached));
+    solve_part_1(cals) = solve_common(cals, false);
+    solve_part_2(cals) = solve_common(cals, true);
 
     function solve(btest::Bool = false)::Tuple{Any, Any}
         lines   = @getinputs(btest);
@@ -91,7 +102,3 @@ module AoC_2024_07
     println("\nPart 1 answer: $(part1)");
     println("\nPart 2 answer: $(part2)\n");
 end
-
-# lines = @getinputs(false)
-
-# calibrations = AoC_2024_07.parse_inputs(lines)
