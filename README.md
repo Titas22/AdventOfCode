@@ -29,7 +29,7 @@ include("./src/AoC_2024/AoC_2024_xx.jl") # use to run & re-run the actual script
 | 04 | [Ceres Search](https://adventofcode.com/2024/day/4) | 566.400 μs | 338.98 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_04.jl) |
 | 05 | [Print Queue](https://adventofcode.com/2024/day/5) | 868.900 μs | 414.94 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_05.jl) |
 | 06 | [Guard Gallivant](https://adventofcode.com/2024/day/6) | 12.341 ms | 646.80 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_06.jl) |
-| 07 | [Bridge Repair](https://adventofcode.com/2024/day/7) | 214.528 ms | 338.82 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_07.jl) |
+| 07 | [Bridge Repair](https://adventofcode.com/2024/day/7) | 170.464 ms | 338.82 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_07.jl) |
 | 08 | [Resonant Collinearity](https://adventofcode.com/2024/day/8) | 230.200 μs | 25.80 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_08.jl) |
 | 09 | [:x:](https://adventofcode.com/2024/day/9) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 10 | [:x:](https://adventofcode.com/2024/day/10) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |

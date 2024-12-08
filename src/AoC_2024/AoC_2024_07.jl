@@ -29,7 +29,18 @@ module AoC_2024_07
         return calibrations;
     end
     
-    numcat(a::Int, b::Int)::Int = a * 10^(floor(Int, log10(b)) + 1) + b;
+    const orders_of_magnitude = Dict{Int, Int}();
+    function get_order_of_magnitude(b::Int)::Int
+        if !haskey(orders_of_magnitude, b)
+            p = 10^(floor(Int, log10(b)) + 1);
+            orders_of_magnitude[b] = p;
+        else
+            p = orders_of_magnitude[b]
+        end
+        return p;
+    end
+    numcat_cached(a::Int, b::Int)::Int = a * get_order_of_magnitude(b) + b;
+    # numcat(a::Int, b::Int)::Int = a * 10^(floor(Int, log10(b)) + 1) + b;
 
     function try_operators(operators, target, num, inputs::AbstractArray{Int})::Bool
         if length(inputs) == 1
@@ -56,7 +67,7 @@ module AoC_2024_07
     end
 
     solve_part_1(cals) = solve_common(cals, (*, +));
-    solve_part_2(cals) = solve_common(cals, (*, +, numcat));
+    solve_part_2(cals) = solve_common(cals, (*, +, numcat_cached));
 
     function solve(btest::Bool = false)::Tuple{Any, Any}
         lines   = @getinputs(btest);
@@ -73,3 +84,7 @@ module AoC_2024_07
     println("\nPart 1 answer: $(part1)");
     println("\nPart 2 answer: $(part2)\n");
 end
+
+# lines = @getinputs(false)
+
+# calibrations = AoC_2024_07.parse_inputs(lines)
