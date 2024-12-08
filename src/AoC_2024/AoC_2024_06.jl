@@ -13,49 +13,44 @@ module AoC_2024_06
         charmat = lines2charmat(lines)
         idx_start::CartesianIndex{2} = findfirst(charmat .== '^')
         charmat[idx_start] = '.';
+
         return (charmat, idx_start);
     end
 
-    function init_visited(charmat::Matrix{Char})::NTuple{4, BitMatrix}
-        sz = size(charmat)
-        return (falses(sz), falses(sz), falses(sz), falses(sz))
-    end
-
-    function run_guard_path(charmat::Matrix{Char}, pos::CartesianIndex{2}, idx_dir::Int=1, ispart2::Bool=false)::Tuple{Bool, NTuple{4, BitMatrix}, Matrix{Int64}}
-        visdir      = init_visited(charmat)
+    function run_guard_path!(visdir, charmat::Matrix{Char}, pos::CartesianIndex{2}, idx_dir::Int=1, ispart2::Bool=false)::Tuple{Bool, Matrix{Int64}}
+        fill!.(visdir, false)
         dir         = directions[idx_dir];
-        if !ispart2
-            firstvisit  = zeros(Int, size(charmat))
-        else
-            firstvisit  = zeros(Int, 0, 0)
-        end
+        curvisdir   = visdir[idx_dir];
+        first_dir   = zeros(Int, ispart2 ? (0,0) : size(charmat))
+        
         while true
             checkbounds(Bool, charmat, pos) || break;
-            ispart2 && visdir[idx_dir][pos] && return (true, visdir, firstvisit)
+            ispart2 && @inbounds curvisdir[pos] && return (true, first_dir)
+            
             if charmat[pos] == '#'
                 pos  -= dir
                 idx_dir     = mod(idx_dir, 4) + 1
                 dir         = directions[idx_dir]
+                curvisdir   = visdir[idx_dir];
             else
-                visdir[idx_dir][pos] = true
-                if !ispart2 && firstvisit[pos] == 0
-                    firstvisit[pos] = idx_dir;
+                curvisdir[pos] = true
+                if !ispart2 && first_dir[pos] == 0
+                    first_dir[pos] = idx_dir;
                 end
             end
 
             pos += dir
         end
 
-        return (false, visdir, firstvisit);
+        return (false, first_dir);
     end
 
-    function solve_part_1(charmat, pos)
-        (_, visdir, firstvisit) = run_guard_path(charmat, pos)
-        visited = visdir[1] .|| visdir[2] .|| visdir[3] .|| visdir[4]
-        return (count(visited), firstvisit)
+    function solve_part_1!(visdir, charmat, pos)
+        (_, first_dir) = run_guard_path!(visdir, charmat, pos)
+        return (count(x-> x>0, first_dir), first_dir)
     end
 
-    function solve_part_2(charmat, start_pos, first_dir)
+    function solve_part_2!(visdir, charmat, start_pos, first_dir)
         nloops = 0
         first_dir[start_pos] = 0;
 
@@ -66,7 +61,7 @@ module AoC_2024_06
             dir = directions[idx_dir];
             start_pos = new_obstacle - dir;
             charmat[new_obstacle] = '#'
-            (isloop, _, _) = run_guard_path(charmat, start_pos, idx_dir, true) 
+            (isloop, _) = run_guard_path!(visdir, charmat, start_pos, idx_dir, true) 
             if isloop
                 nloops += 1;
             end
@@ -76,11 +71,15 @@ module AoC_2024_06
     end
 
     function solve(btest::Bool = false)::Tuple{Any, Any}
-        lines                   = @getinputs(btest);
+        lines                           = @getinputs(btest);
         (charmat, idx_start)    = parse_inputs(lines);
-        # println(typeof(idx_start))
-        (part1, first_dir)      = solve_part_1(charmat, idx_start);
-        part2                   = solve_part_2(charmat, idx_start, first_dir);
+        
+        sz = size(charmat)
+        visdir = (collect(falses(sz)), collect(falses(sz)), collect(falses(sz)), collect(falses(sz)))
+        # visdir                  = (falses(sz), falses(sz), falses(sz), falses(sz))
+
+        (part1, first_dir)      = solve_part_1!(visdir, charmat, idx_start);
+        part2                   = solve_part_2!(visdir, charmat, idx_start, first_dir);
 
         return (part1, part2);
     end
