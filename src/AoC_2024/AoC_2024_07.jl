@@ -42,16 +42,23 @@ module AoC_2024_07
     numcat_cached(a::Int, b::Int)::Int = a * get_order_of_magnitude(b) + b;
     # numcat(a::Int, b::Int)::Int = a * 10^(floor(Int, log10(b)) + 1) + b;
 
-    function try_operators(operators, target, num, inputs::AbstractArray{Int})::Bool
-        if length(inputs) == 1
-            for op in operators
-                op(num, inputs[1]) == target && return true
-            end
-        else
-            for op in operators
-                new_num = op(num, inputs[1])
-                new_num > target && continue
-                try_operators(operators, target, new_num, @view inputs[2:end]) && return true;
+    function try_operators(operators, cb::Calibration)::Bool
+        target = cb.output;
+        s::Vector{Tuple{Int, Int}} = [(cb.inputs[1], 2)]
+        n = length(cb.inputs)
+        nop = length(operators)
+        while !isempty(s)
+            current_num, idx = pop!(s)
+            if idx > n
+                current_num == target && return true
+            else
+                for ii = 1 : nop
+                    op = operators[ii]
+                    new_num = op(current_num, cb.inputs[idx])
+                    if new_num <= target
+                        push!(s, (new_num, idx + 1))
+                    end
+                end
             end
         end
         return false;
@@ -60,7 +67,7 @@ module AoC_2024_07
     function solve_common(calibrations, operators)
         tot = 0
         for cb in calibrations
-            try_operators(operators, cb.output, cb.inputs[1], @view cb.inputs[2:end]) || continue
+            try_operators(operators, cb) || continue
             tot += cb.output
         end
         return tot;
