@@ -76,4 +76,33 @@ for (k, v) in antennas
     end
 end
 
-count(antinodes)
+println(count(antinodes))
+
+
+antinodes2 = falses(length(lines), length(lines[1]))
+
+for (k, v) in antennas
+    n = length(v)
+    n > 1 || continue
+    for ii in eachindex(v)
+        a = v[ii]
+        antinodes2[a] = true;
+        for jj = (ii+1) : n
+            b = v[jj]
+
+            d = b - a
+            kk = 1
+            while checkbounds(Bool, antinodes, a - kk*d)
+                antinodes2[a-kk*d] = true;
+                kk += 1
+            end
+            kk = 1
+            while checkbounds(Bool, antinodes, b + kk*d)
+                antinodes2[b+kk*d] = true;
+                kk += 1
+            end
+        end
+    end
+end
+
+println(count(antinodes2))
