@@ -40,48 +40,40 @@ module AoC_2024_07
         return p;
     end
 
-    function check_calibration!(s::Vector{Tuple{Int, Int}}, cb::Calibration, ispart2::Bool)::Bool
-        while !isempty(s)
-            current_total, idx = pop!(s)
-            if idx == 1
-                # println(current_total)
-                current_total == cb.inputs[1] && return true
-            else
-                current_num = cb.inputs[idx];
-                # Conatenate
-                if ispart2
-                    divisor = get_order_of_magnitude(current_num)
-                    # Check if current_total ends with current_num
-                    if current_total % divisor == current_num
-                        new_total = current_total ÷ divisor
-                        new_total > 0 && push!(s, (new_total, idx - 1))
-                    end
+    function check_calibration(current_total::Int, idx::Int, inputs::Vector{Int}, ispart2::Bool)::Bool
+        if idx == 1
+            return current_total == inputs[1]
+        else
+            current_num = inputs[idx]
+    
+            # Concatenate
+            if ispart2
+                divisor = get_order_of_magnitude(current_num)
+                if current_total % divisor == current_num
+                    new_total = current_total ÷ divisor
+                    new_total > 0 && check_calibration(new_total, idx - 1, inputs, ispart2) && return true
                 end
-
-                # Divide
-                if current_total % current_num == 0
-                    new_total = current_total / current_num
-                    new_total > 0 && push!(s, (new_total, idx - 1))
-                end
-
-                # Subtract
-                new_total = current_total - current_num
-                new_total > 0 && push!(s, (new_total, idx - 1))
             end
+    
+            # Divide
+            new_total, remainder = divrem(current_total, current_num)
+            remainder == 0 && new_total > 0 && check_calibration(new_total, idx - 1, inputs, ispart2) && return true
+    
+            # Subtract
+            new_total = current_total - current_num
+            new_total > 0 && check_calibration(new_total, idx - 1, inputs, ispart2) && return true
+    
+            return false
         end
-        return false;
     end
     
-    function solve_common(calibrations, ispart2)
+    function solve_common(calibrations, ispart2::Bool)::Int
         tot = 0
-        s::Vector{Tuple{Int, Int}} = [];
         for cb in calibrations
-            empty!(s)
-            push!(s,  (cb.output, length(cb.inputs)))
-            check_calibration!(s, cb, ispart2) || continue
+            check_calibration(cb.output, length(cb.inputs), cb.inputs, ispart2) || continue
             tot += cb.output
         end
-        return tot;
+        return tot
     end
 
     solve_part_1(cals) = solve_common(cals, false);
