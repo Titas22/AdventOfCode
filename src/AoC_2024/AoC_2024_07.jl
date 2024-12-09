@@ -6,55 +6,71 @@ module AoC_2024_07
         output::Int
         inputs::Vector{Int}
     end
-
+    
     function Calibration(line::String)::Calibration
-        idx = findfirst(x->x==':', line)
-        return Calibration(Parsers.parse(Int64, line[1:idx-1]), parse_right(line[idx+2:end]))
+        idx = findfirst(':', line)  # Find the delimiter
+        output = Parsers.parse(Int, line[1:idx-1])  # Parse the output part
+        inputs = parse_right(line[idx+2:end])  # Parse the inputs
+        return Calibration(output, inputs)
     end
     
     const parse_opt = Parsers.Options(delim=' ', ignorerepeated=true)
+    
     function parse_right(line::AbstractString)::Vector{Int64}
         io = IOBuffer(line)
-        vals = Int[]
-        n = count(==( ' '), line) + 1
-        sizehint!(vals, n)
-        while !eof(io)
-            push!(vals, Parsers.parse(Int64, io, parse_opt))
+        n = count(==(' '), line) + 1;
+        vals::Vector{Int64} = Vector{Int64}(undef, n)
+        for ii in eachindex(vals)
+            vals[ii] = Parsers.parse(Int64, io, parse_opt)
         end
         return vals
     end
-
-    function parse_inputs(lines::Vector{String})
-        calibrations = Calibration.(lines)
-        return calibrations;
-    end
     
-    numcat(a::Int, b::Int)::Int = a * 10^(floor(Int, log10(b)) + 1) + b;
+    parse_inputs(lines::Vector{String}) = Calibration.(lines)
+    
+    function get_order_of_magnitude(b::Int)::Int
+        b < 10 && return 10;
+        b < 100 && return 100;
+        b < 1000 && return 1000;
+        return 10^(floor(Int, log10(b)) + 1); # Backup
+    end
 
-    function try_operators(operators, target, num, inputs::AbstractArray{Int})::Bool
-        if length(inputs) == 1
-            for op in operators
-                op(num, inputs[1]) == target && return true
-            end
+    function check_calibration(current_total::Int, idx::Int, inputs::Vector{Int}, ispart2::Bool)::Bool
+        if idx == 1
+            return current_total == inputs[1]
         else
-            for op in operators
-                try_operators(operators, target, op(num, inputs[1]), @view inputs[2:end]) && return true;
+            @inbounds current_num = inputs[idx]
+    
+            # Concatenate
+            if ispart2
+                divisor = get_order_of_magnitude(current_num)
+                new_total, remainder = divrem(current_total, divisor)
+                remainder == current_num && new_total > 0 && check_calibration(new_total, idx - 1, inputs, ispart2) && return true
             end
+    
+            # Divide
+            new_total, remainder = divrem(current_total, current_num)
+            remainder == 0 && new_total > 0 && check_calibration(new_total, idx - 1, inputs, ispart2) && return true
+    
+            # Subtract
+            new_total = current_total - current_num
+            new_total > 0 && check_calibration(new_total, idx - 1, inputs, ispart2) && return true
+    
+            return false
         end
-        return false;
     end
     
-    function solve_common(calibrations, operators)
+    function solve_common(calibrations, ispart2::Bool)::Int
         tot = 0
         for cb in calibrations
-            try_operators(operators, cb.output, cb.inputs[1], @view cb.inputs[2:end]) || continue
+            check_calibration(cb.output, length(cb.inputs), cb.inputs, ispart2) || continue
             tot += cb.output
         end
-        return tot;
+        return tot
     end
 
-    solve_part_1(cals) = solve_common(cals, (*, +));
-    solve_part_2(cals) = solve_common(cals, (*, +, numcat));
+    solve_part_1(cals) = solve_common(cals, false);
+    solve_part_2(cals) = solve_common(cals, true);
 
     function solve(btest::Bool = false)::Tuple{Any, Any}
         lines   = @getinputs(btest);

@@ -24,12 +24,23 @@ end
 
 @export getinputs(solution_file::String, btest::Bool = false, extra::AbstractString = "") = getinputs(get_day_year(solution_file)..., btest, extra);
 
+@export function fast_readlines(filepath::String)::Vector{String}
+    io = open(filepath, "r")
+    lines = String[]  # Preallocate storage for lines
+    while !eof(io)
+        push!(lines, readline(io))  # Read lines directly
+    end
+    close(io)
+    return lines
+end
+
 @export function getinputs(day::Integer, year::Integer = DEFAULT_YEAR, btest::Bool = false, extra::AbstractString = "")::Vector{String}
     filepath = _year_day_inputs_path(day, year, btest, extra);
     
     isfile(filepath) || _download_inputs(day, year, btest);
     
-    return readlines(filepath);
+    return fast_readlines(filepath);
+    # return readlines(filepath);
 end
 
 function _download_inputs(day::Integer, year::Integer, btest::Bool)
