@@ -19,7 +19,7 @@ module AoC_2024_07
     function parse_right(line::AbstractString)::Vector{Int64}
         io = IOBuffer(line)
         n = count(==(' '), line) + 1;
-        vals = Vector{Int64}(undef, n)
+        vals::Vector{Int64} = Vector{Int64}(undef, n)
         for ii in eachindex(vals)
             vals[ii] = Parsers.parse(Int64, io, parse_opt)
         end
