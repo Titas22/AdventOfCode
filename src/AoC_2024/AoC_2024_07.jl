@@ -39,37 +39,34 @@ module AoC_2024_07
         end
         return p;
     end
-    numcat_cached(a::Int, b::Int)::Int = a * get_order_of_magnitude(b) + b;
-    # numcat(a::Int, b::Int)::Int = a * 10^(floor(Int, log10(b)) + 1) + b;
 
-    function try_operators(cb::Calibration, ispart2::Bool)::Bool
-        target = cb.output;
-        s::Vector{Tuple{Int, Int}} = [(cb.inputs[1], 2)]
-        n = length(cb.inputs)
+    function check_calibration!(s::Vector{Tuple{Int, Int}}, cb::Calibration, ispart2::Bool)::Bool
         while !isempty(s)
-            current_num, idx = pop!(s)
-            if idx > n
-                current_num == target && return true
+            current_total, idx = pop!(s)
+            if idx == 1
+                # println(current_total)
+                current_total == cb.inputs[1] && return true
             else
+                current_num = cb.inputs[idx];
                 # Conatenate
-                if ispart2 
-                    new_num = numcat_cached(current_num,  cb.inputs[idx])
-                    if new_num <= target
-                        push!(s, (new_num, idx + 1))
+                if ispart2
+                    divisor = get_order_of_magnitude(current_num)
+                    # Check if current_total ends with current_num
+                    if current_total % divisor == current_num
+                        new_total = current_total ÷ divisor
+                        new_total > 0 && push!(s, (new_total, idx - 1))
                     end
                 end
 
-                # Multiply
-                new_num = current_num * cb.inputs[idx]
-                if new_num <= target
-                    push!(s, (new_num, idx + 1))
+                # Divide
+                if current_total % current_num == 0
+                    new_total = current_total / current_num
+                    new_total > 0 && push!(s, (new_total, idx - 1))
                 end
 
-                # Sum
-                new_num = current_num + cb.inputs[idx]
-                if new_num <= target
-                    push!(s, (new_num, idx + 1))
-                end
+                # Subtract
+                new_total = current_total - current_num
+                new_total > 0 && push!(s, (new_total, idx - 1))
             end
         end
         return false;
@@ -77,8 +74,11 @@ module AoC_2024_07
     
     function solve_common(calibrations, ispart2)
         tot = 0
+        s::Vector{Tuple{Int, Int}} = [];
         for cb in calibrations
-            try_operators(cb, ispart2) || continue
+            empty!(s)
+            push!(s,  (cb.output, length(cb.inputs)))
+            check_calibration!(s, cb, ispart2) || continue
             tot += cb.output
         end
         return tot;
