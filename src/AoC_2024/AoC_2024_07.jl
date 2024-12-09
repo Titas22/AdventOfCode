@@ -6,53 +6,46 @@ module AoC_2024_07
         output::Int
         inputs::Vector{Int}
     end
-
+    
     function Calibration(line::String)::Calibration
-        idx = findfirst(x->x==':', line)
-        return Calibration(Parsers.parse(Int64, line[1:idx-1]), parse_right(line[idx+2:end]))
+        idx = findfirst(':', line)  # Find the delimiter
+        output = Parsers.parse(Int, line[1:idx-1])  # Parse the output part
+        inputs = parse_right(line[idx+2:end])  # Parse the inputs
+        return Calibration(output, inputs)
     end
     
     const parse_opt = Parsers.Options(delim=' ', ignorerepeated=true)
+    
     function parse_right(line::AbstractString)::Vector{Int64}
         io = IOBuffer(line)
-        vals = Int[]
-        n = count(==( ' '), line) + 1
-        sizehint!(vals, n)
-        while !eof(io)
-            push!(vals, Parsers.parse(Int64, io, parse_opt))
+        n = count(==(' '), line) + 1;
+        vals = Vector{Int64}(undef, n)
+        for ii in eachindex(vals)
+            vals[ii] = Parsers.parse(Int64, io, parse_opt)
         end
         return vals
     end
-
-    function parse_inputs(lines::Vector{String})
-        calibrations = Calibration.(lines)
-        return calibrations;
-    end
     
-    const orders_of_magnitude = Dict{Int, Int}();
+    parse_inputs(lines::Vector{String}) = Calibration.(lines)
+    
     function get_order_of_magnitude(b::Int)::Int
-        if !haskey(orders_of_magnitude, b)
-            p = 10^(floor(Int, log10(b)) + 1);
-            orders_of_magnitude[b] = p;
-        else
-            p = orders_of_magnitude[b]
-        end
-        return p;
+        b < 10 && return 10;
+        b < 100 && return 100;
+        b < 1000 && return 1000;
+        return 10^(floor(Int, log10(b)) + 1); # Backup
     end
 
     function check_calibration(current_total::Int, idx::Int, inputs::Vector{Int}, ispart2::Bool)::Bool
         if idx == 1
             return current_total == inputs[1]
         else
-            current_num = inputs[idx]
+            @inbounds current_num = inputs[idx]
     
             # Concatenate
             if ispart2
                 divisor = get_order_of_magnitude(current_num)
-                if current_total % divisor == current_num
-                    new_total = current_total ÷ divisor
-                    new_total > 0 && check_calibration(new_total, idx - 1, inputs, ispart2) && return true
-                end
+                new_total, remainder = divrem(current_total, divisor)
+                remainder == current_num && new_total > 0 && check_calibration(new_total, idx - 1, inputs, ispart2) && return true
             end
     
             # Divide
