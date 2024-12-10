@@ -7,18 +7,19 @@ module AoC_2024_10
     const directions::Vector{CartesianIndex{2}} = CartesianIndex.([(-1,0), (1,0), (0,-1), (0,1)]);
 
     function solve_common(heights::Matrix{Int})::Tuple{Int, Int}
-        scores1 = scores2 = 0;
+        n_unique_paths = n_peaks_reached = 0;
+        searchList = Tuple{CartesianIndex{2}, Int}[];
 
         for start_point in findall(x->x==0, heights)
-            searchList = Queue{Tuple{CartesianIndex{2}, Int}}();
-            enqueue!(searchList, (start_point, 0));
-        
-            peaks = CartesianIndex{2}[];
+            push!(searchList, (start_point, 0));
+            
+            peaks = Set{CartesianIndex{2}}()
         
             while !isempty(searchList)
-                (pos, height)          = dequeue!(searchList);
+                (pos, height)          = popfirst!(searchList);
                 if height == 9
                     push!(peaks, pos)
+                    n_unique_paths += 1
                     continue;
                 end
                 
@@ -28,15 +29,13 @@ module AoC_2024_10
         
                     heights[next] - height == 1 || continue;
         
-                    enqueue!(searchList, (next, heights[next]));
+                    push!(searchList, (next, heights[next]));
                 end
             end
-            
-            scores1 += length(unique(peaks));
-            scores2 += length(peaks);
+            n_peaks_reached += length(peaks);
         end
 
-        return (scores1, scores2);
+        return (n_peaks_reached, n_unique_paths);
     end
 
     function solve(btest::Bool = false)::Tuple{Any, Any}
