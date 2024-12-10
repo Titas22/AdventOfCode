@@ -45,7 +45,8 @@ start_points = findall(x->x==0, heights)
 
 directions = CartesianIndex.([(-1,0), (1,0), (0,-1), (0,1)]);
 
-scores = 0
+scores1 = 0
+scores2 = 0
 for start_point in start_points
     searchList          = Queue{Tuple{CartesianIndex{2}, Int}}();
     enqueue!(searchList, (start_point, 0));
@@ -68,7 +69,9 @@ for start_point in start_points
             enqueue!(searchList, (next, heights[next]));
         end
     end
-    global scores
-    scores += length(unique(peaks));
+    global scores1, scores2
+    scores1 += length(unique(peaks));
+    scores2 += length(peaks);
 end
-scores
+println(scores1)
+println(scores2)
