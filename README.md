@@ -32,7 +32,7 @@ include("./src/AoC_2024/AoC_2024_xx.jl") # use to run & re-run the actual script
 | 07 | [Bridge Repair](https://adventofcode.com/2024/day/7) | 980.100 μs | 313.20 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_07.jl) |
 | 08 | [Resonant Collinearity](https://adventofcode.com/2024/day/8) | 230.200 μs | 25.80 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_08.jl) |
 | 09 | [:x:](https://adventofcode.com/2024/day/9) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
-| 10 | [:x:](https://adventofcode.com/2024/day/10) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
+| 10 | [Hoof It](https://adventofcode.com/2024/day/10) | 361.600 μs | 132.01 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_10.jl) |
 | 11 | [:x:](https://adventofcode.com/2024/day/11) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 12 | [:x:](https://adventofcode.com/2024/day/12) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 13 | [:x:](https://adventofcode.com/2024/day/13) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
