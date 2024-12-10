@@ -58,11 +58,23 @@ disk = zeros(Int, ntotal) .- 1
 idx = diskmap[1]
 disk[1:idx] .= 0
 
+# spaces = [Int[] for ii = 1 : 9]
+# blocks = [Int[] for ii = 1 : 9]
+spaces = Tuple{Int, Int}[] # (index, size)
+blocks = Tuple{Int, Int, Int}[(1, diskmap[1], 0)] # (index, size, ID)
 for ii = 2 : 2 : length(diskmap)
     global idx
     global disk
+    # diskmap[ii] != 0 && push!(spaces, (idx+1, diskmap[ii]))
+    if diskmap[ii] != 0 
+        @printf("Adding space: idx=%d, sz=%d\n", idx+1, diskmap[ii])
+        push!(spaces, (idx+1, diskmap[ii]))
+    end
     idx += diskmap[ii]
     disk[idx+1 : idx+diskmap[ii+1]] .= ii ÷ 2
+
+    push!(blocks, (idx+1, diskmap[ii+1], ii ÷ 2))
+    # push!(blocks[diskmap[ii+1]], idx+1)
     idx += diskmap[ii+1]
 end
 
@@ -89,40 +101,71 @@ while ii < jj
     jj -= 1
 
 end
-if ii == jj && disk[ii] == -1
-    final = @view disk[1:ii-1]
-else
-    final = @view disk[1:jj]
+
+function checksum(final)
+    tot = 0
+    for ii in eachindex(final)
+        tot += (ii-1) * final[ii]
+    end
+    return tot
 end
-# display(final)
+
+if ii == jj && disk[ii] == -1
+    p1_disk = @view disk[1:ii-1]
+else
+    p1_disk = @view disk[1:jj]
+end
+part1 = checksum(p1_disk)
+display(part1) #6435922584968
+
+
+ii = jj = diskmap[1]
+jj += 1
+
+insert_and_dedup!(v::Vector, x) = (splice!(v, searchsorted(v,x), [x]); v)
+
+newblocks = Tuple{Int, Int, Int}[] # (index, size, ID)
+println("Blocks:")
+display(blocks)
+println("Spaces:")
+display(spaces)
+
+
+while !isempty(blocks)
+    (idx, sz, id) = pop!(blocks)
+    # @printf("Processing: block #%d (idx=%d, sz=%d)\n", id, idx, sz)
+    # println("Blocks:")
+    # display(blocks)
+    # println("Spaces:")
+    # display(spaces)
+    for ii in eachindex(spaces)
+        spaces[ii][2] < sz && continue;
+
+
+        spaces[ii][1] < idx || break;
+
+        idx = spaces[ii][1]
+        # @printf("Moving to space %d (idx=%d). Org sz=%d, new=%d\n", ii, idx, s)
+        remspace = spaces[ii][2] - sz
+        if remspace == 0
+            deleteat!(spaces, ii)
+        else
+            spaces[ii] = (idx+sz, remspace)
+        end
+        break;
+    end
+
+    push!(newblocks, (idx, sz, id))
+end
+
+block_lt(x::Tuple{Int, Int, Int}, y::Tuple{Int, Int, Int})::Bool = x[1] < y[1]
+sort!(newblocks; lt=block_lt)
+
+display(newblocks)
 
 tot = 0
-for ii in eachindex(final)
+for block in newblocks
     global tot
-    tot += (ii-1) * final[ii]
+    tot += sum(block[3] .* ((1 : block[2]) .+ (block[1] - 2)))
 end
 println(tot)
-
-
-
-# ii, jj = disk[1]+1, ntaken
-
-# while ii < jj
-
-
-
-
-
-# end
-
-
-# compacted = zeros(Int, n)
-
-# idx = diskmap[1]
-
-# ii, jj = (0, n)
-# while ii < jj
-
-
-# for ii = 1 : diskmap[1]
-
