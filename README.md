@@ -33,7 +33,7 @@ include("./src/AoC_2024/AoC_2024_xx.jl") # use to run & re-run the actual script
 | 08 | [Resonant Collinearity](https://adventofcode.com/2024/day/8) | 230.200 μs | 25.80 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_08.jl) |
 | 09 | [Disk Fragmenter](https://adventofcode.com/2024/day/9) | 3.663 ms | 4.51 MiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_09.jl) |
 | 10 | [Hoof It](https://adventofcode.com/2024/day/10) | 361.600 μs | 132.01 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_10.jl) |
-| 11 | [:x:](https://adventofcode.com/2024/day/11) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
+| 11 | [Plutonian Pebbles](https://adventofcode.com/2024/day/11) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_10.jl) |
 | 12 | [:x:](https://adventofcode.com/2024/day/12) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 13 | [:x:](https://adventofcode.com/2024/day/13) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 14 | [:x:](https://adventofcode.com/2024/day/14) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
