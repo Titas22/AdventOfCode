@@ -12,8 +12,8 @@ module AoC_2024_11
         end
     end
     
-    function blink(stonecounts::Dict{Int, Int})::Dict{Int, Int}
-        newcounts = Dict{Int, Int}()
+    function blink!(newcounts::Dict{Int, Int}, stonecounts::Dict{Int, Int})
+        empty!(newcounts)
 
         for (stone, counts) in stonecounts
             if stone == 0 
@@ -29,21 +29,25 @@ module AoC_2024_11
                 end
             end
         end
-        return newcounts
     end
 
     function solve_common(stones::Vector{Int})::Tuple{Int, Int}
         stonecounts = Dict{Int, Int}([(x, 1) for x in stones])
+        newcounts = Dict{Int, Int}()
         
-        for _ = 1 : 25
-            stonecounts = blink(stonecounts)
+        part1 = 0
+        for ii = 1 : 75
+            if mod(ii, 2) == 1
+                blink!(newcounts, stonecounts)
+            else
+                blink!(stonecounts, newcounts)
+            end
+            if ii == 25
+                part1 = sum(values(newcounts));
+            end 
         end
-        part1 = sum(values(stonecounts));
-
-        for _ = 26 : 75
-            stonecounts = blink(stonecounts)
-        end
-        part2 = sum(values(stonecounts));
+        
+        part2 = sum(values(newcounts));
 
         return (part1, part2)
     end
