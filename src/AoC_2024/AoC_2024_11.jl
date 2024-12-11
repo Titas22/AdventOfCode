@@ -4,8 +4,6 @@ module AoC_2024_11
 
     parse_inputs(lines::Vector{String})::Vector{Int} = Parsers.parse.(Int, collect(split.(lines[1])))
 
-    number_of_digits(val::Int) = floor(Int, log10(val)) + 1
-
     function insert_count!(stonecounts::Dict{Int, Int}, stone::Int, count_to_add::Int)
         if haskey(stonecounts, stone)
             stonecounts[stone] += count_to_add
@@ -21,9 +19,9 @@ module AoC_2024_11
             if stone == 0 
                 insert_count!(newcounts, 1, counts);
             else 
-                ndigits = number_of_digits(stone)
-                if ndigits % 2 == 0
-                    power = 10^(ndigits ÷ 2)
+                ndig = number_of_digits(stone)
+                if ndig % 2 == 0
+                    power = 10^(ndig ÷ 2)
                     insert_count!(newcounts, stone ÷ power, counts);
                     insert_count!(newcounts, mod(stone, power), counts);
                 else

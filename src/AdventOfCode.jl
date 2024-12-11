@@ -32,4 +32,20 @@ module AdventOfCode
         return inputs
     end
 
+    @export function number_of_digits(b::Int)::Int
+        b < 10 && return 1;
+        b < 100 && return 2;
+        b < 1000 && return 3;
+        b < 10000 && return 4;
+        b < 100000 && return 5;
+        b < 1000000 && return 6;
+        b < 10000000 && return 7;
+        b < 100000000 && return 8;
+        b < 1000000000 && return 9;
+        b < 10000000000 && return 10;
+        b < 100000000000 && return 11;
+        b < 1000000000000 && return 12;
+        return floor(Int, log10(b)) + 1; # Backup
+    end
+
 end # module AdventOfCode
