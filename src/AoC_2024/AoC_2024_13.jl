@@ -8,12 +8,16 @@ module AoC_2024_13
         Prize::CartesianIndex{2}
     end
 
+    function parse_line(line::AbstractString, chsplit::Char = '+')::CartesianIndex{2}
+        idx1 = findfirst(chsplit, line)
+        idx2 = findlast(chsplit, line)
+        return CartesianIndex(
+            Parsers.parse(Int, line[(idx1+1) : (idx2-4)]), 
+            Parsers.parse(Int, line[(idx2+1) : end]))
+    end
+
     function ClawMachine(three_lines::Vector{<:AbstractString})::ClawMachine
-        m   = match.(r"X[\+\=](\d+), Y[\+\=](\d+)", three_lines)
-        btnA  = CartesianIndex(Parsers.parse(Int, m[1][1]), Parsers.parse(Int, m[1][2]))
-        btnB  = CartesianIndex(Parsers.parse(Int, m[2][1]), Parsers.parse(Int, m[2][2]))
-        prize = CartesianIndex(Parsers.parse(Int, m[3][1]), Parsers.parse(Int, m[3][2]))
-        return ClawMachine(btnA, btnB, prize)
+        return ClawMachine(parse_line(three_lines[1]), parse_line(three_lines[2]), parse_line(three_lines[3], '='))
     end
 
     parse_inputs(lines::Vector{String})::Vector{ClawMachine} = ClawMachine.(split_at_empty_lines(lines))
