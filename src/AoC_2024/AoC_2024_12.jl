@@ -5,6 +5,7 @@ module AoC_2024_12
         Symbol::Char
         Area::Int
         Perimeter::Int
+        Sides::Int
     end
 
     function parse_inputs(lines::Vector{String})
@@ -47,40 +48,57 @@ lines = @getinputs(false)
 
 chmat = lines2charmat(lines)
 
-const directions::Vector{CartesianIndex{2}} = CartesianIndex.([(-1,0), (1,0), (0,-1), (0,1)]);
+const directions::Vector{CartesianIndex{2}} = CartesianIndex.([(-1,0), (0,-1), (1,0), (0,1)]);
 
 notprocessed = trues(size(chmat))
 
 searchList = CartesianIndex{2}[];
 regions = AoC_2024_12.Region[];
 
+function is_same_plant_type(chmat::Matrix{Char}, pos::CartesianIndex{2}, symbol::Char)::Bool
+    return checkbounds(Bool, chmat, pos) && chmat[pos] == symbol
+end
 
 for idx in CartesianIndices(chmat)
     notprocessed[idx] || continue
     push!(searchList, idx);
 
     symbol = chmat[idx]
-    perimeter = 0;
-    area = 0;
-
+    area = perimeter = corners = 0;
+    global coords
+    coords = CartesianIndex{2}[]
     while !isempty(searchList)
         pos = popfirst!(searchList);
         notprocessed[pos] || continue
         notprocessed[pos] = false
+        push!(coords, pos)
         area += 1
 
-        for dir in directions
+        for (ii, dir) in pairs(directions)
             next = pos + dir;
-            if !checkbounds(Bool, chmat, next) || chmat[next] != symbol
+            ccw_pos = pos + directions[mod(ii, 4)+1];
+            diag_pos = ccw_pos + dir 
+
+            isnext  = is_same_plant_type(chmat, next, symbol);
+            isadj   = is_same_plant_type(chmat, ccw_pos, symbol)
+            isdiag  = is_same_plant_type(chmat, diag_pos, symbol)
+
+            if !isnext
                 perimeter += 1
+                if !isadj #&& !isdiag
+                    corners += 1
+                end
                 continue
+            else
+                if !isadj && isdiag
+                    corners += 1
+                end
             end
 
             push!(searchList, next);
         end
     end
-
-    push!(regions, AoC_2024_12.Region(symbol, area, perimeter))
+    push!(regions, AoC_2024_12.Region(symbol, area, perimeter, corners))
 end
 
 
@@ -88,4 +106,14 @@ end
 
 display(regions)
 
-mapreduce(r -> r.Area * r.Perimeter, +, regions)
+p1 = mapreduce(r -> r.Area * r.Perimeter, +, regions)
+p2 = mapreduce(r -> r.Area * r.Sides, +, regions)
+
+
+# for (ii, dir) in pairs(directions)
+#     jj = mod(ii, 4)+1
+#     @printf("%d->%d dir: %s   cw_dir: %s\n", ii, jj, dir, directions[jj])
+# end
+
+# # 865044 - too low
+# 872382
