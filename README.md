@@ -34,9 +34,9 @@ include("./src/AoC_2024/AoC_2024_xx.jl") # use to run & re-run the actual script
 | 09 | [Disk Fragmenter](https://adventofcode.com/2024/day/9) | 3.663 ms | 4.51 MiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_09.jl) |
 | 10 | [Hoof It](https://adventofcode.com/2024/day/10) | 361.600 μs | 132.01 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_10.jl) |
 | 11 | [Plutonian Pebbles](https://adventofcode.com/2024/day/11) | 8.681 ms | 732.12 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_11.jl) |
-| 12 | [:x:](https://adventofcode.com/2024/day/12) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
-| 13 | [:x:](https://adventofcode.com/2024/day/13) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
-| 14 | [:x:](https://adventofcode.com/2024/day/14) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
+| 12 | [Garden Groups](https://adventofcode.com/2024/day/12) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_12.jl) |
+| 13 | [Claw Contraption](https://adventofcode.com/2024/day/13) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_13.jl) |
+| 14 | [Restroom Redoubt](https://adventofcode.com/2024/day/14) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_14.jl) |
 | 15 | [:x:](https://adventofcode.com/2024/day/15) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 16 | [:x:](https://adventofcode.com/2024/day/16) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 17 | [:x:](https://adventofcode.com/2024/day/17) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
