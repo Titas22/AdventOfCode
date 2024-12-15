@@ -13,6 +13,7 @@ Graphs = "86223c79-3864-5bf0-83f7-82e725a168b6"
 HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
 InlineExports = "809d7502-0c9d-5bc2-962a-5201dc498f73"
 IterTools = "c8e1da08-722c-5040-9ed9-7db0dc04731e"
+JET = "c3a54625-cd67-489e-a8e7-0a5a0ff4e31b"
 JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
 LayeredLayouts = "f4a74d36-062a-4d48-97cd-1356bad1de4e"
 Match = "7eb4fadd-790c-5f42-8a69-bfa0b872bfbf"
@@ -31,4 +32,5 @@ Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 TimerOutputs = "a759f4b9-e2f1-59dc-863e-4aeb61b1ea8f"
 
 [compat]
+JET = "0.9.12"
 Parsers = "2.8.1"

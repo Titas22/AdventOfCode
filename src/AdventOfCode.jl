@@ -3,6 +3,7 @@ module AdventOfCode
     using Profile
     using BenchmarkTools
     using InlineExports
+    using JET
     import Dates
 
     const TIMEZONE_OFFSET       = Dates.Hour(5); # Advent of Code problem is available @ midnight EST (UTC-5)
