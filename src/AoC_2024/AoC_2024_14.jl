@@ -39,71 +39,44 @@ module AoC_2024_14
         
         return prod(qcounts)
     end
-    function solve_common(inputs)
 
-        return inputs;
+    function solve_part_1(robots::Vector{Robot}, sz::Tuple{Int, Int}, t::Int = 100)::Int
+        [move!(robot, t, sz) for robot in robots]
+        sf = calculate_safety_factor(robots, sz)
+        
+        # Reset back
+        [move!(robot, -t, sz) for robot in robots]
+
+        return sf
     end
 
-    function solve_part_1(inputs)
+    function solve_part_2(robots::Vector{Robot}, sz::Tuple{Int, Int})::Int
+        min_safety = (0, Inf)
+        for ii in 1 : prod(sz)
+            for robot in robots
+                move!(robot, 1, sz)
+            end
+            sf = calculate_safety_factor(robots, sz)
 
-        return nothing;
-    end
-
-    function solve_part_2(inputs)
-
-        return nothing;
+            sf < min_safety[2] || continue
+            min_safety = (ii, sf)
+        end
+        return min_safety[1];
     end
 
     function solve(btest::Bool = false)::Tuple{Any, Any}
         lines       = @getinputs(btest);
-        # lines2      = @getinputs(btest, "_2"); # Use if 2nd problem test case inputs are different
-        inputs      = parse_inputs(lines);
+        robots      = parse_inputs(lines);
+        sz          = btest ? (7, 11) : (103, 101)
 
-        solution    = solve_common(inputs);
-        part1       = solve_part_1(solution);
-        part2       = solve_part_2(solution);
+        part1       = solve_part_1(robots, sz);
+        part2       = solve_part_2(robots, sz);
 
         return (part1, part2);
     end
 
-    @time (part1, part2) = solve(true); # Test
-    # @time (part1, part2) = solve();
+    # @time (part1, part2) = solve(true); # Test
+    @time (part1, part2) = solve();
     println("\nPart 1 answer: $(part1)");
     println("\nPart 2 answer: $(part2)\n");
 end
-bTest = false
-lines = @getinputs(bTest)
-
-robots = AoC_2024_14.parse_inputs(lines)
-
-# org_robots = deepcopy(robots)
-
-sz = bTest ? (7, 11) : (103, 101)
-
-t = 100
-[AoC_2024_14.move!(robot, t, sz) for robot in robots]
-
-AoC_2024_14.calculate_safety_factor(robots, sz)
-
-[AoC_2024_14.move!(robot, -t, sz) for robot in robots]
-
-min_safety = (0, Inf)
-max_safety = (0, -Inf)
-for ii in 1 : prod(sz)
-    for robot in robots
-        AoC_2024_14.move!(robot, 1, sz)
-    end
-
-    sf = AoC_2024_14.calculate_safety_factor(robots, sz)
-
-    global min_safety, max_safety
-    if sf < min_safety[2]
-        min_safety = (ii, sf)
-    end
-    if sf > max_safety[2]
-        max_safety = (ii, sf)
-    end    
-end
-println(min_safety)
-println(max_safety)
-
