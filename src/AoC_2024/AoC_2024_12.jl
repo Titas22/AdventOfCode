@@ -12,16 +12,18 @@ module AoC_2024_12
     parse_inputs(lines::Vector{String})::Matrix{Char} = lines2charmat(lines)
     
     function is_same_plant_type(chmat::Matrix{Char}, pos::CartesianIndex{2}, symbol::Char)::Bool
-        return checkbounds(Bool, chmat, pos) && chmat[pos] == symbol
+        checkbounds(Bool, chmat, pos) || return false
+        @inbounds return chmat[pos] == symbol
     end
 
     function solve_common(chmat::Matrix{Char})::Vector{Region}
-        notprocessed = trues(size(chmat))
+        notprocessed = fill(true, size(chmat))
 
         searchList = CartesianIndex{2}[];
         regions = Region[];
+        sizehint!(regions, 600) # a bit of a cheat 👀
         
-        for idx in CartesianIndices(chmat)
+        @inbounds for idx in CartesianIndices(chmat)
             notprocessed[idx] || continue
             push!(searchList, idx);
         
@@ -40,20 +42,18 @@ module AoC_2024_12
         
                     isnext  = is_same_plant_type(chmat, next, symbol);
                     isadj   = is_same_plant_type(chmat, ccw_pos, symbol)
-                    isdiag  = is_same_plant_type(chmat, diag_pos, symbol)
         
                     if !isnext
                         perimeter += 1
-                        if !isadj #&& !isdiag
+                        if !isadj
                             corners += 1
                         end
                         continue
-                    else
-                        if !isadj && isdiag
-                            corners += 1
-                        end
+                    elseif !isadj && is_same_plant_type(chmat, diag_pos, symbol)
+                        corners += 1
                     end
         
+                    notprocessed[next] || continue
                     push!(searchList, next);
                 end
             end
