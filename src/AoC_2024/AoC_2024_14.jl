@@ -21,9 +21,11 @@ module AoC_2024_14
     end
 
     function move!(robot::Robot, t::Int, sz::Tuple{Int, Int})
-        new_pos = robot.position .+ robot.velocity .* t
-        robot.position[1] = mod(new_pos[1], sz[1])
-        robot.position[2] = mod(new_pos[2], sz[2])
+        displacement = robot.velocity .* t;
+        new_x = robot.position[1] + displacement[1]
+        new_y = robot.position[2] + displacement[2]
+        robot.position[1] = mod(new_x, sz[1])
+        robot.position[2] = mod(new_y, sz[2])
     end
 
     parse_inputs(lines::Vector{String})::Vector{Robot} = Robot.(lines);
