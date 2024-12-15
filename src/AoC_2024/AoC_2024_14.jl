@@ -51,9 +51,12 @@ module AoC_2024_14
     function calculate_safety_factor(robots::Vector{Robot}, sz::Tuple{Int, Int})::Int
         qcounts = zeros(Int, 4, 1)
         mid = sz .÷ 2
-        for robot in robots
+        @inbounds for robot in robots
             (robot.position[1] == mid[1] || robot.position[2] == mid[2]) && continue
-            idx_quadrant = (robot.position[2] < mid[2] ? 1 : 2) + (robot.position[1] < mid[1] ? 0 : 2)    
+            idx_quadrant = (robot.position[2] < mid[2] ? 1 : 2) 
+            if robot.position[1] > mid[1]
+                idx_quadrant += 2
+            end
             qcounts[idx_quadrant] += 1
         end
         
