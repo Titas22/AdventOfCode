@@ -29,8 +29,15 @@ module AoC_2024_14
     parse_inputs(lines::Vector{String})::Vector{Robot} = Robot.(lines);
 
     function calculate_safety_factor(robots::Vector{Robot}, sz::Tuple{Int, Int})::Int
+        qcounts = zeros(Int, 4, 1)
         mid = sz .÷ 2
-
+        for robot in robots
+            (robot.position[1] == mid[1] || robot.position[2] == mid[2]) && continue
+            idx_quadrant = (robot.position[2] < mid[2] ? 1 : 2) + (robot.position[1] < mid[1] ? 0 : 2)    
+            qcounts[idx_quadrant] += 1
+        end
+        
+        return prod(qcounts)
     end
     function solve_common(inputs)
 
@@ -69,23 +76,34 @@ lines = @getinputs(bTest)
 
 robots = AoC_2024_14.parse_inputs(lines)
 
+# org_robots = deepcopy(robots)
+
 sz = bTest ? (7, 11) : (103, 101)
 
 t = 100
+[AoC_2024_14.move!(robot, t, sz) for robot in robots]
 
-for robot in robots
-    AoC_2024_14.move!(robot, t, sz)
+AoC_2024_14.calculate_safety_factor(robots, sz)
+
+[AoC_2024_14.move!(robot, -t, sz) for robot in robots]
+
+min_safety = (0, Inf)
+max_safety = (0, -Inf)
+for ii in 1 : prod(sz)
+    for robot in robots
+        AoC_2024_14.move!(robot, 1, sz)
+    end
+
+    sf = AoC_2024_14.calculate_safety_factor(robots, sz)
+
+    global min_safety, max_safety
+    if sf < min_safety[2]
+        min_safety = (ii, sf)
+    end
+    if sf > max_safety[2]
+        max_safety = (ii, sf)
+    end    
 end
+println(min_safety)
+println(max_safety)
 
-# AoC_2024_14.calculate_safety_factor(robots)
-
-qcounts = zeros(Int, 4, 1)
-mid = sz .÷ 2
-for robot in robots
-    (robot.position[1] == mid[1] || robot.position[2] == mid[2]) && continue
-    idx_quadrant = (robot.position[2] < mid[2] ? 1 : 2) + (robot.position[1] < mid[1] ? 0 : 2)    
-    qcounts[idx_quadrant] += 1
-end
-qcounts
-
-prod(qcounts)
