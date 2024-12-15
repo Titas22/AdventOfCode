@@ -9,7 +9,7 @@ module AoC_2024_13
     end
 
     function ClawMachine(three_lines::Vector{<:AbstractString})::ClawMachine
-        m = match.(r"X[\+\=](\d+), Y[\+\=](\d+)", three_lines)
+        m   = match.(r"X[\+\=](\d+), Y[\+\=](\d+)", three_lines)
         btnA  = CartesianIndex(Parsers.parse(Int, m[1][1]), Parsers.parse(Int, m[1][2]))
         btnB  = CartesianIndex(Parsers.parse(Int, m[2][1]), Parsers.parse(Int, m[2][2]))
         prize = CartesianIndex(Parsers.parse(Int, m[3][1]), Parsers.parse(Int, m[3][2]))
@@ -18,55 +18,37 @@ module AoC_2024_13
 
     parse_inputs(lines::Vector{String})::Vector{ClawMachine} = ClawMachine.(split_at_empty_lines(lines))
 
-    function solve_common(inputs)
+    function find_cheapest_win(machine::ClawMachine, prize_offset::Int = 0)::Int
+        prize = machine.Prize + CartesianIndex(prize_offset, prize_offset);
 
-        return inputs;
+        # Cramer's rule (https://en.wikipedia.org/wiki/Cramer%27s_rule)
+        D  = machine.ButtonA[1] * machine.ButtonB[2] - machine.ButtonA[2] * machine.ButtonB[1]
+        Da = prize[1] * machine.ButtonB[2] - prize[2] * machine.ButtonB[1]
+        Db = machine.ButtonA[1] * prize[2] - machine.ButtonA[2] * prize[1]
+
+        A = Da ÷ D
+        B = Db ÷ D
+
+        (A * D != Da || B * D != Db) && return 0;
+        return 3*A + B
     end
 
-    function solve_part_1(inputs)
-
-        return nothing;
-    end
-
-    function solve_part_2(inputs)
-
-        return nothing;
+    function solve_common(machines::Vector{ClawMachine}, prize_offset::Int = 0)::Int
+        return mapreduce(machine -> find_cheapest_win(machine, prize_offset), +, machines)
     end
 
     function solve(btest::Bool = false)::Tuple{Any, Any}
         lines       = @getinputs(btest);
-        # lines2      = @getinputs(btest, "_2"); # Use if 2nd problem test case inputs are different
-        inputs      = parse_inputs(lines);
+        machines    = parse_inputs(lines);
 
-        solution    = solve_common(inputs);
-        part1       = solve_part_1(solution);
-        part2       = solve_part_2(solution);
+        part1       = solve_common(machines, 0);
+        part2       = solve_common(machines, 10000000000000);
 
         return (part1, part2);
     end
 
-    @time (part1, part2) = solve(true); # Test
-    # @time (part1, part2) = solve();
+    # @time (part1, part2) = solve(true); # Test
+    @time (part1, part2) = solve();
     println("\nPart 1 answer: $(part1)");
     println("\nPart 2 answer: $(part2)\n");
 end
-lines = @getinputs(false)
-
-machines = AoC_2024_13.parse_inputs(lines)
-
-function find_cheapest_win(machine::AoC_2024_13.ClawMachine)::Int
-    min_cost = 1000
-    for iA = 0 : 100
-        for iB = 0 : 100
-            if machine.ButtonA * iA + machine.ButtonB * iB == machine.Prize  
-                cost = iA * 3 + iB;
-                cost < min_cost || continuel
-                min_cost = cost;
-            end
-        end
-    end
-    return min_cost
-end
-
-costs = find_cheapest_win.(machines)
-mapreduce(x -> x == 1000 ? 0 : x, +, costs)
