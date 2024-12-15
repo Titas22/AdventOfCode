@@ -36,7 +36,7 @@ include("./src/AoC_2024/AoC_2024_xx.jl") # use to run & re-run the actual script
 | 11 | [Plutonian Pebbles](https://adventofcode.com/2024/day/11) | 8.681 ms | 732.12 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_11.jl) |
 | 12 | [Garden Groups](https://adventofcode.com/2024/day/12) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_12.jl) |
 | 13 | [Claw Contraption](https://adventofcode.com/2024/day/13) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_13.jl) |
-| 14 | [Restroom Redoubt](https://adventofcode.com/2024/day/14) | 112.407 ms | 1.27 MiB | [:x:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_14.jl) |
+| 14 | [Restroom Redoubt](https://adventofcode.com/2024/day/14) | 23.328 ms | 1.27 MiB | [:x:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_14.jl) |
 | 15 | [:x:](https://adventofcode.com/2024/day/15) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 16 | [:x:](https://adventofcode.com/2024/day/16) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 17 | [:x:](https://adventofcode.com/2024/day/17) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |

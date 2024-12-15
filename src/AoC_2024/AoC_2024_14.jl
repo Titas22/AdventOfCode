@@ -28,6 +28,24 @@ module AoC_2024_14
         robot.position[2] = mod(new_y, sz[2])
     end
 
+    function move!(robot::Robot, sz::Tuple{Int, Int})
+        new_x = robot.position[1] + robot.velocity[1]
+        new_y = robot.position[2] + robot.velocity[2]
+        if new_x >= sz[1]
+            new_x -= sz[1]
+        elseif new_x < 0
+            new_x += sz[1]
+        end
+        if new_y >= sz[2]
+            new_y -= sz[2]
+        elseif new_y < 0
+            new_y += sz[2]
+        end
+        
+        robot.position[1] = new_x
+        robot.position[2] = new_y
+    end
+
     parse_inputs(lines::Vector{String})::Vector{Robot} = Robot.(lines);
 
     function calculate_safety_factor(robots::Vector{Robot}, sz::Tuple{Int, Int})::Int
@@ -56,7 +74,7 @@ module AoC_2024_14
         min_safety = (0, Inf)
         for ii in 1 : prod(sz)
             for robot in robots
-                move!(robot, 1, sz)
+                move!(robot, sz)
             end
             sf = calculate_safety_factor(robots, sz)
 
