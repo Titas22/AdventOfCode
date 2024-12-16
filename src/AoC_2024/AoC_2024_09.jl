@@ -108,6 +108,3 @@ module AoC_2024_09
     println("\nPart 1 answer: $(part1)");
     println("\nPart 2 answer: $(part2)\n");
 end
-
-# 6435922584968 - part 1
-# 6469636832766 - part 2

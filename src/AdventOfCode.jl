@@ -3,6 +3,7 @@ module AdventOfCode
     using Profile
     using BenchmarkTools
     using InlineExports
+    using JET
     import Dates
 
     const TIMEZONE_OFFSET       = Dates.Hour(5); # Advent of Code problem is available @ midnight EST (UTC-5)
@@ -15,7 +16,7 @@ module AdventOfCode
 
     
     
-    @export lines2charmat(a::Vector{<:AbstractString}) = [a[i][j] for i=1:length(first(a)), j=1:length(a)]
+    @export lines2charmat(a::Vector{<:AbstractString}) = [a[i][j] for i=1:length(a), j=1:length(first(a))]
 
     @export function split_at_empty_lines(lines::Vector{String})::Vector{Vector{String}}
         inputs          = Vector{Vector{String}}()
