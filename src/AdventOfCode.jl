@@ -16,7 +16,7 @@ module AdventOfCode
 
     
     
-    @export lines2charmat(a::Vector{<:AbstractString}) = [a[i][j] for i=1:length(first(a)), j=1:length(a)]
+    @export lines2charmat(a::Vector{<:AbstractString}) = [a[i][j] for i=1:length(a), j=1:length(first(a))]
 
     @export function split_at_empty_lines(lines::Vector{String})::Vector{Vector{String}}
         inputs          = Vector{Vector{String}}()
