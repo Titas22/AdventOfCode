@@ -38,7 +38,7 @@ include("./src/AoC_2024/AoC_2024_xx.jl") # use to run & re-run the actual script
 | 13 | [Claw Contraption](https://adventofcode.com/2024/day/13) | 400.800 μs | 171.54 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_13.jl) |
 | 14 | [Restroom Redoubt](https://adventofcode.com/2024/day/14) | 22.748 ms | 809.55 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_14.jl) |
 | 15 | [Warehouse Woes](https://adventofcode.com/2024/day/15) | 1.129 ms | 172.62 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_15.jl) |
-| 16 | [Reindeer Maze](https://adventofcode.com/2024/day/16) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_16.jl) |
+| 16 | [Reindeer Maze](https://adventofcode.com/2024/day/16) | 588.428 ms | 2.70 GiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_16.jl) |
 | 17 | [:x:](https://adventofcode.com/2024/day/17) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 18 | [:x:](https://adventofcode.com/2024/day/18) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 19 | [:x:](https://adventofcode.com/2024/day/19) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
