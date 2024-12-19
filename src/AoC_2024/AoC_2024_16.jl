@@ -7,7 +7,7 @@ module AoC_2024_16
     struct State
         pos::CartesianIndex{2}
         idx_dir::Int
-        dir::CartesianIndex{2}
+        history::Vector{CartesianIndex{2}}
     end
 
     function parse_inputs(lines::Vector{String})::Tuple{Matrix{Char}, CartesianIndex{2}, CartesianIndex{2}}
@@ -25,14 +25,15 @@ module AoC_2024_16
         return (charmat, start, finish)
     end
 
-    function explore_next!(pq::PriorityQueue{State, Int}, charmat::Matrix{Char}, visited::Matrix{Int}, pos::CartesianIndex{2}, idx_dir::Int, score::Int)
+    function explore_next!(pq::PriorityQueue{State, Int}, charmat::Matrix{Char}, visited::Matrix{Int}, prev_state::State, ddir::Int, score::Int)
+        idx_dir = prev_state.idx_dir + ddir
         if idx_dir == 0
             idx_dir = 4
         elseif idx_dir == 5
             idx_dir = 1;
         end
         
-        next = pos + directions[idx_dir]
+        next = prev_state.pos + directions[idx_dir]
         checkbounds(Bool, charmat, next) || return
         charmat[next] == '.' || return
         # if visited[next]
@@ -40,7 +41,9 @@ module AoC_2024_16
         # else
 
         # end
-        next_state = State(next, idx_dir, directions[idx_dir])
+
+        next_state = State(next, idx_dir, copy(prev_state.history))
+        push!(next_state.history, next)
         if haskey(pq, next_state) 
             pq[next_state] < score && return
             pq[next_state] = score
@@ -49,14 +52,15 @@ module AoC_2024_16
         end
     end
 
-    function solve_part_1(charmat::Matrix{Char}, start::CartesianIndex{2}, finish::CartesianIndex{2})
+    function solve_common(charmat::Matrix{Char}, start::CartesianIndex{2}, finish::CartesianIndex{2})::Tuple{Int, Vector{Vector{CartesianIndex{2}}}}
         # visited = fill(false, size(charmat))
         visited = fill(typemax(Int) - 1000, size(charmat))
         # display(visited)
         # pq = PriorityQueue{State, Int}(Base.Order.Reverse);
         pq = PriorityQueue{State, Int}(Base.Order.Forward);
         
-        enqueue!(pq, State(start, 1, directions[1]) => 0)
+        winning_states = [State(start, 1, [start])]
+        enqueue!(pq, winning_states[1] => 0)
         min_score = typemax(Int)
         while !isempty(pq)
             (cur, score) = dequeue_pair!(pq)
@@ -64,31 +68,66 @@ module AoC_2024_16
             # cur.pos == finish && return score
             score > min_score && continue
             if cur.pos == finish 
+                println("Reached finish @ " * string(score))
                 if score < min_score
                     min_score = score
+                    winning_states = [cur]
+                elseif score == min_score
+                    push!(winning_states, cur)
                 end
                 continue 
             end
-            # display(visited)
-            # visited[cur.pos] && continue;
-            if visited[cur.pos] + 1000 <= score
+            
+            if visited[cur.pos] + 1000 < score
                 # println("Skipping")
                 continue
             end
             
             visited[cur.pos] = score;
 
-            explore_next!(pq, charmat, visited, cur.pos, cur.idx_dir, score + 1)
-            explore_next!(pq, charmat, visited, cur.pos, cur.idx_dir+1, score + 1001)
-            explore_next!(pq, charmat, visited, cur.pos, cur.idx_dir-1, score + 1001)
+            explore_next!(pq, charmat, visited, cur, 0, score + 1)
+            explore_next!(pq, charmat, visited, cur, +1, score + 1001)
+            explore_next!(pq, charmat, visited, cur, -1, score + 1001)
         end
-        
-        return min_score;
+        winning_paths = Vector{CartesianIndex{2}}[]
+        for winning_path in winning_states
+            push!(winning_paths, winning_path.history)
+        end
+        return (min_score, winning_paths);
     end
 
-    function solve_part_2(charmat::Matrix{Char}, start::CartesianIndex{2}, finish::CartesianIndex{2})
+    function show_map(charmat::Matrix{Char}, path::Vector{CartesianIndex{2}})
+        map = copy(charmat);
+        for pos in path
+            map[pos] = 'O'
+        end
+        [println(join(row)) for row in eachrow(map)]
+    end
 
-        return nothing;
+    function solve_part_2(charmat::Matrix{Char}, winning_paths::Vector{Vector{CartesianIndex{2}}})
+        visited     = fill(false, size(charmat))
+        best_seats  = fill(false, size(charmat))
+        for winning_path in winning_paths
+            for pos in winning_path
+                visited[pos] = true
+                for dir in directions
+                    next = pos+dir
+                    checkbounds(Bool, best_seats, next) || continue
+                    charmat[next] == '#' || continue
+                    best_seats[next] = true
+                end
+            end
+            println("")
+            show_map(charmat, winning_path)
+        end
+        
+        charmat[visited] .= 'O'
+        charmat[best_seats] .= '+'
+        [println(join(row)) for row in eachrow(charmat)]
+
+
+
+        return count(visited);
     end
 
     function solve(btest::Bool = false)::Tuple{Any, Any}
@@ -96,14 +135,14 @@ module AoC_2024_16
         # lines2      = @getinputs(btest, "_2"); # Use if 2nd problem test case inputs are different
         (charmat, start, finish)      = parse_inputs(lines);
 
-        part1       = solve_part_1(charmat, start, finish);
-        part2       = solve_part_2(charmat, start, finish);
+        (part1, winning_paths)  = solve_common(charmat, start, finish);
+        part2                   = solve_part_2(charmat, winning_paths);
 
         return (part1, part2);
     end
 
-    # @time (part1, part2) = solve(true); # Test
-    @time (part1, part2) = solve();
+    @time (part1, part2) = solve(true); # Test
+    # @time (part1, part2) = solve();
     println("\nPart 1 answer: $(part1)");
     println("\nPart 2 answer: $(part2)\n");
 end
@@ -112,3 +151,5 @@ lines = @getinputs(true)
 (charmat, start, finish)      = AoC_2024_16.parse_inputs(lines)
 
 # 72428
+# 1210 - too high
+# 675 - too high
