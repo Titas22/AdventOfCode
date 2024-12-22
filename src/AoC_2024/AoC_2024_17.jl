@@ -66,7 +66,7 @@ module AoC_2024_17
         push!(c.output, combomod8(c, operand))
     end
 
-    const opcodes::Vector{Function} = [adv!; bxl; bst!; jnz!; bxc!; out!; bdv!; cdv!]
+    const opcodes::NTuple{8, Function} = (adv!, bxl, bst!, jnz!, bxc!, out!, bdv!, cdv!)
 
     function do_opcode!(c::Computer)
         opcode = c.program[c.pointer+1]
