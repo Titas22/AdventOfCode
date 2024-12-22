@@ -75,15 +75,15 @@ module AoC_2024_17
         c.pointer += 2
     end
 
-    output(c::Computer)::String = join(c.output, ',')
-
-    function run!(c::Computer)
+    function run!(c::Computer)::Vector{Int}
         c.pointer = c.B = c.C = 0;
         empty!(c.output)
 
         while c.pointer < length(c.program)
             do_opcode!(c)
         end
+
+        return c.output
     end
 
     # parse_registry(line::AbstractString)::Int = Parsers.parse(Int, match(r"(?>\:\s)(\d+)",line)[1])
@@ -98,25 +98,7 @@ module AoC_2024_17
         return Computer(regA, regB, regC, prog)
     end
 
-    function solve_part_1(c::Computer)::String 
-        run!(c)
-        return output(c)
-    end
-
-    function solve_part_2(c::Computer)::Int
-        for jj in 0 : 7
-            ii = 6308042*8 + jj
-            c.A = ii
-            run!(c)
-
-            n = length(c.output) - 1
-            c.program[end-n : end] == c.output || continue
-            println("A = " * string(ii) * "(" * bitstring(ii) * ") -> " * output(c))
-
-            c.program == c.output && return ii
-        end
-        return 0;
-    end
+    solve_part_1(c::Computer)::String = join(run!(c), ',')
 
     function solve_part_2(c::Computer)::Int
         q::Queue{Int} = Queue{Int}()
@@ -128,23 +110,15 @@ module AoC_2024_17
                 newA = prev*8 + ii
                 c.A = newA
 
-                run!(c)
-
-                # println("A = " * string(newA) * "(" * bitstring(newA) * ") -> " * output(c))
-
-                c.program == c.output && return newA
+                c.program == run!(c) && return newA
 
                 n = length(c.output) - 1
-                # println("A = " * string(newA) * "(" * bitstring(newA) * ") -> " * output(c))
                 c.program[end-n : end] == c.output || continue
 
                 enqueue!(q, newA)
-                println("A = " * string(newA) * "(" * bitstring(newA) * ") -> " * output(c))
+                # println("A = " * string(newA) * "(" * bitstring(newA) * ") -> " * string(c.output))
             end
-
-
         end
-
         return -1;
     end
 
