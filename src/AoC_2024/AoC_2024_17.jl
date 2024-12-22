@@ -1,6 +1,7 @@
 module AoC_2024_17
-    using AdventOfCode;
-    using Parsers;
+    using AdventOfCode
+    using DataStructures
+    using Parsers
 
     mutable struct Computer
         A::Int
@@ -74,13 +75,16 @@ module AoC_2024_17
         c.pointer += 2
     end
 
+    output(c::Computer)::String = join(c.output, ',')
+
     function run!(c::Computer)
+        c.pointer = c.B = c.C = 0;
+        empty!(c.output)
+
         while c.pointer < length(c.program)
             do_opcode!(c)
         end
     end
-
-    output(c::Computer)::String = join(c.output, ',')
 
     # parse_registry(line::AbstractString)::Int = Parsers.parse(Int, match(r"(?>\:\s)(\d+)",line)[1])
     parse_registry(line::AbstractString)::Int = Parsers.parse(Int, line[13:end])
@@ -94,14 +98,54 @@ module AoC_2024_17
         return Computer(regA, regB, regC, prog)
     end
 
-    function solve_part_1(c::Computer)::String
+    function solve_part_1(c::Computer)::String 
         run!(c)
         return output(c)
     end
 
-    function solve_part_2(inputs)
+    function solve_part_2(c::Computer)::Int
+        for jj in 0 : 7
+            ii = 6308042*8 + jj
+            c.A = ii
+            run!(c)
 
-        return nothing;
+            n = length(c.output) - 1
+            c.program[end-n : end] == c.output || continue
+            println("A = " * string(ii) * "(" * bitstring(ii) * ") -> " * output(c))
+
+            c.program == c.output && return ii
+        end
+        return 0;
+    end
+
+    function solve_part_2(c::Computer)::Int
+        q::Queue{Int} = Queue{Int}()
+        enqueue!(q, 0)
+        while !isempty(q)
+            prev = dequeue!(q)
+            
+            for ii in 0 : 7
+                newA = prev*8 + ii
+                c.A = newA
+
+                run!(c)
+
+                # println("A = " * string(newA) * "(" * bitstring(newA) * ") -> " * output(c))
+
+                c.program == c.output && return newA
+
+                n = length(c.output) - 1
+                # println("A = " * string(newA) * "(" * bitstring(newA) * ") -> " * output(c))
+                c.program[end-n : end] == c.output || continue
+
+                enqueue!(q, newA)
+                println("A = " * string(newA) * "(" * bitstring(newA) * ") -> " * output(c))
+            end
+
+
+        end
+
+        return -1;
     end
 
     function solve(btest::Bool = false)::Tuple{Any, Any}
@@ -120,4 +164,5 @@ module AoC_2024_17
     println("\nPart 1 answer: $(part1)");
     println("\nPart 2 answer: $(part2)\n");
 end
-#6,5,4,7,1,6,0,3,1
+# 6,5,4,7,1,6,0,3,1
+# 106086382266778
