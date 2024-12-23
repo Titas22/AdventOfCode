@@ -48,10 +48,11 @@ lines = @getinputs(istest)
 idx = AoC_2024_18.parse_inputs(lines)
 
 sz = istest ? (7, 7) : (71, 71)
-nbytes = istest ? 12 : 1024
+nbytes = istest ? 21 : 2994
 const directions::NTuple{4, CartesianIndex{2}} = CartesianIndex.(((0,1), (-1,0), (0,-1), (1,0)))
 
 corrupted = collect(falses(sz))
+visited = collect(falses(sz))
 corrupted[idx[1:nbytes]] .= true
 corrupted
 
@@ -63,7 +64,7 @@ distances = fill(typemax(Int), sz)
 function explore_next!(pq::PriorityQueue{CartesianIndex{2}, Int}, corrupted::Matrix{Bool}, next::CartesianIndex{2}, dist::Int)
     checkbounds(Bool, corrupted, next) || return
     corrupted[next] && return
-
+    
     if haskey(pq, next) 
         pq[next] > dist || return
         pq[next] = dist
@@ -77,8 +78,8 @@ enqueue!(pq, idx_start => 0)
 while !isempty(pq)
     (pos, d) = dequeue_pair!(pq)
 
-    d < distances[pos] || continue
-    
+    visited[pos] && continue
+    visited[pos] = true
     if pos == idx_end
         println("Finished: " * string(d))
         break;
@@ -89,4 +90,6 @@ while !isempty(pq)
     end
 end
 
-
+# 2994 - not correct
+# 30,57 - not correct
+println(string(idx[nbytes][2]-1) * "," * string(idx[nbytes][1]-1))
