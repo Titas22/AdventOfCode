@@ -40,11 +40,11 @@ include("./src/AoC_2024/AoC_2024_xx.jl") # use to run & re-run the actual script
 | 15 | [Warehouse Woes](https://adventofcode.com/2024/day/15) | 1.129 ms | 172.62 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_15.jl) |
 | 16 | [Reindeer Maze](https://adventofcode.com/2024/day/16) | 588.428 ms | 2.70 GiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_16.jl) |
 | 17 | [Chronospatial Computer](https://adventofcode.com/2024/day/17) | 462.900 μs | 9.74 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_17.jl) |
-| 18 | [:x:](https://adventofcode.com/2024/day/18) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
-| 19 | [:x:](https://adventofcode.com/2024/day/19) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
-| 20 | [:x:](https://adventofcode.com/2024/day/20) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
-| 21 | [:x:](https://adventofcode.com/2024/day/21) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
-| 22 | [:x:](https://adventofcode.com/2024/day/22) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
+| 18 | [RAM Run](https://adventofcode.com/2024/day/18) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
+| 19 | [Linen Layout](https://adventofcode.com/2024/day/19) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
+| 20 | [Race Condition](https://adventofcode.com/2024/day/20) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
+| 21 | [Keypad Conundrum](https://adventofcode.com/2024/day/21) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
+| 22 | [Monkey Market](https://adventofcode.com/2024/day/22) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 23 | [:x:](https://adventofcode.com/2024/day/23) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 24 | [:x:](https://adventofcode.com/2024/day/24) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 25 | [:x:](https://adventofcode.com/2024/day/25) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
