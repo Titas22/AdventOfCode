@@ -37,23 +37,31 @@ end
 lines = @getinputs(false)
 (patterns, designs) = AoC_2024_19.parse_inputs(lines)
 
-function ispossible(design::AbstractString, patterns::Vector{<:AbstractString})::Bool
+cache = Dict{AbstractString, Int}()
+
+function ispossible!(cache::Dict{<:AbstractString, Int}, design::AbstractString, patterns::Vector{<:AbstractString})::Int
+    haskey(cache, design) && return cache[design]
+    count = 0
     for pattern in patterns
         np = length(pattern)
         np > length(design) && continue
         if np == length(design)
-            design == pattern && return true
+            if design == pattern 
+                count += 1
+            end
             continue
         end
 
         startswith(design, pattern) || continue
-        ispossible(design[np+1 : end], patterns) && return true
+        count += ispossible!(cache, design[np+1 : end], patterns)
     end
-    return false
+    cache[design] = count
+    return count
 end
 
-ispossible(design::AbstractString)::Bool = ispossible(design, patterns)
+ispossible(design::AbstractString)::Int = ispossible!(cache, design, patterns)
 
-bpossible = ispossible.(designs)
+@time possibilities = ispossible.(designs)
 
-count(bpossible)
+part1 = count(possibilities .> 0 )
+part2 = sum(possibilities)
