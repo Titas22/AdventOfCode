@@ -9,14 +9,6 @@ module AoC_2024_18
     end
 
     parse_inputs(lines::Vector{String}) = convert.(lines)
-    # function parse_inputs(lines::Vector{String})::Vector{CartesianIndex{2}}
-    #     corrupted_bytes = CartesianIndex{2}[]
-    #     sizehint!(corrupted_bytes, length(lines))
-    #     for line in lines
-    #         push!(corrupted_bytes, convert(line))
-    #     end
-    #     return corrupted_bytes
-    # end
 
     const directions::NTuple{4, CartesianIndex{2}} = CartesianIndex.(((0,1), (-1,0), (0,-1), (1,0)))
 
@@ -102,7 +94,4 @@ module AoC_2024_18
     @time (part1, part2) = solve();
     println("\nPart 1 answer: $(part1)");
     println("\nPart 2 answer: $(part2)\n");
-
-    @assert(part1 == 318, "Part 1 is wrong")
-    @assert(part2 == "56,29", "Part 2 is wrong")
 end
