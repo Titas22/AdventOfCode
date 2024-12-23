@@ -13,8 +13,7 @@ module AoC_2024_19
         count = 0
         for pattern in patterns
             np = length(pattern)
-            np > length(design) && continue
-            if np == length(design)
+            if np >= length(design)
                 if design == pattern 
                     count += 1
                 end
@@ -57,4 +56,7 @@ module AoC_2024_19
     @time (part1, part2) = solve();
     println("\nPart 1 answer: $(part1)");
     println("\nPart 2 answer: $(part2)\n");
+
+    @assert(part1 == 333, "Part 1 is wrong")
+    @assert(part2 == 678536865274732, "Part 2 is wrong")
 end
