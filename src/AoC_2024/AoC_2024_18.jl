@@ -9,41 +9,53 @@ module AoC_2024_18
     end
 
     parse_inputs(lines::Vector{String}) = convert.(lines)
+    # function parse_inputs(lines::Vector{String})::Vector{CartesianIndex{2}}
+    #     corrupted_bytes = CartesianIndex{2}[]
+    #     sizehint!(corrupted_bytes, length(lines))
+    #     for line in lines
+    #         push!(corrupted_bytes, convert(line))
+    #     end
+    #     return corrupted_bytes
+    # end
 
     const directions::NTuple{4, CartesianIndex{2}} = CartesianIndex.(((0,1), (-1,0), (0,-1), (1,0)))
 
-    function explore_next!(pq::PriorityQueue{CartesianIndex{2}, Int}, corrupted::Matrix{Bool}, next::CartesianIndex{2}, dist::Int)
-        checkbounds(Bool, corrupted, next) || return
-        corrupted[next] && return
-        
-        if haskey(pq, next) 
-            pq[next] > dist || return
-            pq[next] = dist
-        else
-            enqueue!(pq, next => dist)
-        end
+    function explore_next!(q::Vector{CartesianIndex{2}}, corrupted_or_visited, distances::Matrix{Int}, next::CartesianIndex{2}, dist::Int)
+        checkbounds(Bool, corrupted_or_visited, next) || return
+        corrupted_or_visited[next] && return
+    
+        push!(q, next)
+        distances[next] = dist
+        corrupted_or_visited[next] = true
     end
 
     function find_shortest_path(corrupted_bytes::Vector{CartesianIndex{2}}, sz::Tuple{Int, Int}, nbytes::Int)
-        corrupted = collect(falses(sz))
-        visited = collect(falses(sz))
-        corrupted[corrupted_bytes[1:nbytes]] .= true
+        distances = zeros(Int, sz)
+        corrupted_or_visited = falses(sz)
+        return find_shortest_path!(distances, corrupted_or_visited, corrupted_bytes, sz, nbytes)
+    end
+
+    function find_shortest_path!(distances::Matrix{Int}, corrupted_or_visited, corrupted_bytes::Vector{CartesianIndex{2}}, sz::Tuple{Int, Int}, nbytes::Int)
+        fill!(corrupted_or_visited, false)
+        for ii in 1 : nbytes
+            corrupted_or_visited[corrupted_bytes[ii]] = true
+        end
 
         idx_start = CartesianIndex(1, 1)
         idx_end = CartesianIndex(sz)
-
-        pq = PriorityQueue{CartesianIndex{2}, Int}(Base.Order.Forward)
-        enqueue!(pq, idx_start => 0)
-        while !isempty(pq)
-            (pos, d) = dequeue_pair!(pq)
         
-            visited[pos] && continue
-            visited[pos] = true
+        q = [idx_start]
+        fill!(distances, 0)
+        distances[idx_start] = 0
 
+        while !isempty(q)
+            pos = popfirst!(q)
+            d = distances[pos]
+            
             pos == idx_end && return d
-        
+            
             for dir in directions
-                explore_next!(pq, corrupted, pos+dir, d+1)
+                explore_next!(q, corrupted_or_visited, distances, pos + dir, d+1)
             end
         end
 
@@ -61,10 +73,11 @@ module AoC_2024_18
         low = get_nbytes(istest) + 1
         high = length(corrupted_bytes)
         sz = get_grid_size(istest)
-        
+        distances = zeros(Int, sz)
+        corrupted_or_visited = collect(falses(sz))
         while low < high
             mid = (low + high) ÷ 2
-            if find_shortest_path(corrupted_bytes, sz, mid) > -1
+            if find_shortest_path!(distances, corrupted_or_visited, corrupted_bytes, sz, mid) > -1
                 low = mid + 1
             else
                 high = mid
@@ -89,4 +102,7 @@ module AoC_2024_18
     @time (part1, part2) = solve();
     println("\nPart 1 answer: $(part1)");
     println("\nPart 2 answer: $(part2)\n");
+
+    @assert(part1 == 318, "Part 1 is wrong")
+    @assert(part2 == "56,29", "Part 2 is wrong")
 end
