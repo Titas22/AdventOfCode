@@ -45,7 +45,7 @@ include("./src/AoC_2024/AoC_2024_xx.jl") # use to run & re-run the actual script
 | 20 | [Race Condition](https://adventofcode.com/2024/day/20) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 21 | [Keypad Conundrum](https://adventofcode.com/2024/day/21) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 22 | [Monkey Market](https://adventofcode.com/2024/day/22) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
-| 23 | [:x:](https://adventofcode.com/2024/day/23) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
+| 23 | [LAN Party](https://adventofcode.com/2024/day/23) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 24 | [:x:](https://adventofcode.com/2024/day/24) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 | 25 | [:x:](https://adventofcode.com/2024/day/25) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
 
