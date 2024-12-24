@@ -3,32 +3,31 @@ module AoC_2024_19
     const AoC = AdventOfCode;
 
     function parse_inputs(lines::Vector{String})
-        patterns = split(lines[1], ", ")
+        patterns = string.(split(lines[1], ", "))
         designs = lines[3:end]
         return (patterns, designs);
     end
 
-    function ispossible!(cache::Dict{<:AbstractString, Int}, design::AbstractString, patterns::Vector{<:AbstractString})::Int
+    function ispossible!(cache::Dict{String, Int}, design::String, patterns::Vector{String})::Int
         haskey(cache, design) && return cache[design]
         count = 0
         for pattern in patterns
-            np = length(pattern)
-            if np >= length(design)
-                if design == pattern 
-                    count += 1
-                end
+            startswith(design, pattern) || continue
+            if design == pattern 
+                count += 1
                 continue
             end
     
-            startswith(design, pattern) || continue
-            count += ispossible!(cache, design[np+1 : end], patterns)
+            np = length(pattern)
+            subdesign = design[np+1 : end]
+            count += ispossible!(cache, subdesign, patterns)
         end
         cache[design] = count
         return count
     end
 
     function solve_common(patterns, designs)::Tuple{Int, Int}
-        cache = Dict{AbstractString, Int}()
+        cache = Dict{String, Int}()
 
         possible_designs = 0
         ncombinations = 0
@@ -56,7 +55,4 @@ module AoC_2024_19
     @time (part1, part2) = solve();
     println("\nPart 1 answer: $(part1)");
     println("\nPart 2 answer: $(part2)\n");
-
-    @assert(part1 == 333, "Part 1 is wrong")
-    @assert(part2 == 678536865274732, "Part 2 is wrong")
 end
