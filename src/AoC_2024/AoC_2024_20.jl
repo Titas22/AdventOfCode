@@ -50,16 +50,18 @@ module AoC_2024_20
 
     get_distance(idx::CartesianIndex{2})::Int = abs(idx[1]) + abs(idx[2])
 
-    function count_cheats(path::Vector{CartesianIndex{2}}, dist_to_end::Matrix{Int}, time_to_save::Int, grid)::Int
+    function count_cheats(path::Vector{CartesianIndex{2}}, dist_to_end::Matrix{Int}, time_to_save::Int, grid::NTuple{N, CartesianIndex{2}})::Int where N
+        distances = [get_distance(grid[ii]) for ii = 1 : N]
         count = 0
         for pos in path
-            cur_dist = dist_to_end[pos]
-            for dir in grid
-                next = pos + dir
+            cur_dist = dist_to_end[pos] - time_to_save
+            for ii in 1 : N
+                @inbounds next = pos + grid[ii]
                 checkbounds(Bool, dist_to_end, next) || continue
-                next_dist = dist_to_end[next]
+                @inbounds next_dist = dist_to_end[next]
                 next_dist == -1 && continue
-                cur_dist - get_distance(dir) - next_dist >= time_to_save || continue
+                @inbounds next_dist += distances[ii]
+                cur_dist >= next_dist || continue
                 count += 1
             end
         end
