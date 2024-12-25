@@ -15,107 +15,79 @@ module AoC_2024_20
 
         return (charmat, start)
     end
-    function solve_common(inputs)
 
-        return inputs;
+    const directions::NTuple{4, CartesianIndex{2}} = CartesianIndex.(((0,1), (-1,0), (0,-1), (1,0)))
+
+    function find_path(charmat::Matrix{Char}, start::CartesianIndex{2})::Tuple{Vector{CartesianIndex{2}}, Matrix{Int}}
+        pos = start
+        prev_dir = CartesianIndex(0, 0)
+        pathlength = count(x -> x == '.', charmat)
+    
+        path::Vector{CartesianIndex{2}} = [pos]
+        sizehint!(path, pathlength)
+        
+        for _ = 2 : pathlength
+            for dir in directions
+                dir == prev_dir && continue
+                next = pos + dir
+                checkbounds(Bool, charmat, next) || continue
+                charmat[next] == '.' || continue
+    
+                push!(path, next)
+                pos = next
+                prev_dir = -dir
+                break
+            end
+        end
+
+        dist_to_end = fill(-1, size(charmat))
+        pathlength = length(path)
+        for ii in eachindex(path)
+            dist_to_end[path[ii]] = pathlength - ii
+        end
+        return (path, dist_to_end)
     end
 
-    function solve_part_1(inputs)
+    get_distance(idx::CartesianIndex{2})::Int = abs(idx[1]) + abs(idx[2])
 
-        return nothing;
+    function count_cheats(path::Vector{CartesianIndex{2}}, dist_to_end::Matrix{Int}, time_to_save::Int, grid)::Int
+        count = 0
+        for pos in path
+            cur_dist = dist_to_end[pos]
+            for dir in grid
+                next = pos + dir
+                checkbounds(Bool, dist_to_end, next) || continue
+                next_dist = dist_to_end[next]
+                next_dist == -1 && continue
+                cur_dist - get_distance(dir) - next_dist >= time_to_save || continue
+                count += 1
+            end
+        end
+    
+        return count
     end
 
-    function solve_part_2(inputs)
-
-        return nothing;
+    solve_part_1(path::Vector{CartesianIndex{2}}, dist_to_end::Matrix{Int}, time_to_save::Int) = count_cheats(path, dist_to_end, time_to_save, directions .* 2)
+    function solve_part_2(path::Vector{CartesianIndex{2}}, dist_to_end::Matrix{Int}, time_to_save::Int) 
+        r = 20
+        grid = Tuple(CartesianIndex(ii, jj) for ii in -r:r for jj in -r:r if 1 < abs(ii) + abs(jj) <= r)
+        return count_cheats(path, dist_to_end, time_to_save, grid)
     end
 
     function solve(btest::Bool = false)::Tuple{Any, Any}
         lines       = @getinputs(btest);
-        # lines2      = @getinputs(btest, "_2"); # Use if 2nd problem test case inputs are different
-        inputs      = parse_inputs(lines);
+        (charmat, start) = parse_inputs(lines)
 
-        solution    = solve_common(inputs);
-        part1       = solve_part_1(solution);
-        part2       = solve_part_2(solution);
+        (path, dist_to_end) = find_path(charmat, start)
+        time_to_save = btest ? 64 : 100
+        part1       = solve_part_1(path, dist_to_end, time_to_save);
+        part2       = solve_part_2(path, dist_to_end, time_to_save);
 
         return (part1, part2);
     end
 
-    @time (part1, part2) = solve(true); # Test
-    # @time (part1, part2) = solve();
+    # @time (part1, part2) = solve(true); # Test
+    @time (part1, part2) = solve();
     println("\nPart 1 answer: $(part1)");
     println("\nPart 2 answer: $(part2)\n");
 end
-lines = @getinputs(false)
-
-const directions::NTuple{4, CartesianIndex{2}} = CartesianIndex.(((0,1), (-1,0), (0,-1), (1,0)))
-
-(charmat, start) = AoC_2024_20.parse_inputs(lines)
-
-function find_path(charmat::Matrix{Char}, start::CartesianIndex{2})::Vector{CartesianIndex{2}}
-    pos = start
-    prev_dir = CartesianIndex(0, 0)
-    pathlength = count(x -> x == '.', charmat)
-
-    path::Vector{CartesianIndex{2}} = [pos]
-    sizehint!(path, pathlength)
-    
-    println(pathlength)
-    
-    for _ = 2 : pathlength
-        for dir in directions
-            dir == prev_dir && continue
-            next = pos + dir
-            checkbounds(Bool, charmat, next) || continue
-            charmat[next] == '.' || continue
-
-            push!(path, next)
-            pos = next
-            prev_dir = -dir
-            break
-        end
-    end
-    return path
-end
-
-path = find_path(charmat, start)
-
-dist_to_end = fill(-1, size(charmat))
-pathlength = length(path)
-for ii in eachindex(path)
-    dist_to_end[path[ii]] = pathlength - ii
-end
-
-display(dist_to_end)
-
-get_distance(idx::CartesianIndex{2})::Int = abs(idx[1]) + abs(idx[2])
-
-function count_cheats(path::Vector{CartesianIndex{2}}, dist_to_end::Matrix{Int}, ispart2::Bool = false, time_to_save::Int = 100)
-    if ispart2
-        r = 20
-        grid = Tuple(CartesianIndex(ii, jj) for ii in -r:r for jj in -r:r if 1 < abs(ii) + abs(jj) <= r)
-    else
-        grid = directions .* 2
-    end
-
-    count = 0
-    for pos in path
-        cur_dist = dist_to_end[pos]
-        # println("Pos: " * string(pos) * " dist = " * string(cur_dist))
-        for dir in grid
-            next = pos + dir
-            checkbounds(Bool, dist_to_end, next) || continue
-            next_dist = dist_to_end[next]
-            next_dist == -1 && continue
-            cur_dist - get_distance(dir) - next_dist >= time_to_save || continue
-            # println("Next: " * string(next) * " dist = " * string(next_dist))
-            count += 1
-        end
-    end
-
-    return count
-end
-
-count_cheats(path, dist_to_end, true, 100)
-# 1631956 - too high
