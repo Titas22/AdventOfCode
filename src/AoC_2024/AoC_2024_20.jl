@@ -89,20 +89,26 @@ end
 
 display(dist_to_end)
 
-function count_cheats(path::Vector{CartesianIndex{2}}, dist_to_end::Matrix{Int}, time_to_save::Int = 100)
+get_distance(idx::CartesianIndex{2})::Int = abs(idx[1]) + abs(idx[2])
+
+function count_cheats(path::Vector{CartesianIndex{2}}, dist_to_end::Matrix{Int}, ispart2::Bool = false, time_to_save::Int = 100)
+    if ispart2
+        r = 20
+        grid = Tuple(CartesianIndex(ii, jj) for ii in -r:r for jj in -r:r if 1 < abs(ii) + abs(jj) <= r)
+    else
+        grid = directions .* 2
+    end
+
     count = 0
-    # grid = CartesianIndices((-1:1, -1:1))
-    tstep = 2
-    time_to_save += tstep
     for pos in path
         cur_dist = dist_to_end[pos]
         # println("Pos: " * string(pos) * " dist = " * string(cur_dist))
-        for dir in directions
-            next = pos + dir*tstep
+        for dir in grid
+            next = pos + dir
             checkbounds(Bool, dist_to_end, next) || continue
             next_dist = dist_to_end[next]
             next_dist == -1 && continue
-            cur_dist - next_dist >= time_to_save || continue
+            cur_dist - get_distance(dir) - next_dist >= time_to_save || continue
             # println("Next: " * string(next) * " dist = " * string(next_dist))
             count += 1
         end
@@ -111,4 +117,5 @@ function count_cheats(path::Vector{CartesianIndex{2}}, dist_to_end::Matrix{Int},
     return count
 end
 
-count_cheats(path, dist_to_end, 100)
+count_cheats(path, dist_to_end, true, 100)
+# 1631956 - too high
