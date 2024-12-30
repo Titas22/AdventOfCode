@@ -1,5 +1,6 @@
 module AoC_2024_21
     using AdventOfCode
+    using Parsers
     using StaticArrays
 
     import Base: /
@@ -21,43 +22,6 @@ module AoC_2024_21
 
     # const DIRECTION_MAP = SVector('^', 'v', '<', '>')
     # get_direction_char(dir::CartesianIndex{2})::Char = DIRECTION_MAP[1 + (dir[1] + 1) + (dir[2] + 1) * 2]
-
-
-    function parse_inputs(lines::Vector{String})
-
-        return lines;
-    end
-    function solve_common(inputs)
-
-        return inputs;
-    end
-
-    function solve_part_1(inputs)
-
-        return nothing;
-    end
-
-    function solve_part_2(inputs)
-
-        return nothing;
-    end
-
-    function solve(btest::Bool = false)::Tuple{Any, Any}
-        lines       = @getinputs(btest);
-        # lines2      = @getinputs(btest, "_2"); # Use if 2nd problem test case inputs are different
-        inputs      = parse_inputs(lines);
-
-        solution    = solve_common(inputs);
-        part1       = solve_part_1(solution);
-        part2       = solve_part_2(solution);
-
-        return (part1, part2);
-    end
-
-    @time (part1, part2) = solve(true); # Test
-    # @time (part1, part2) = solve();
-    println("\nPart 1 answer: $(part1)");
-    println("\nPart 2 answer: $(part2)\n");
     
     is_row_with_empty(keypad::NumericKeypad, idx::CartesianIndex{2})::Bool = idx[1] == 4
     is_row_with_empty(keypad::DirectionalKeypad, idx::CartesianIndex{2})::Bool = idx[1] == 1
@@ -94,9 +58,12 @@ module AoC_2024_21
             return [get_combined_path_string(hdir, hdist, vdir, vdist)]
         end
 
-        # 2 Path Options        
+        # 2 Path Options
         vpath = get_straight_path_string(vdir, vdist)
         hpath = get_straight_path_string(hdir, hdist)
+        
+        isa(keypad, NumericKeypad) || return [vpath * hpath] # Looks like for non-numeric we can always use just one option
+
         return [vpath * hpath, hpath * vpath]
     end
 
@@ -122,138 +89,71 @@ module AoC_2024_21
 
         return dict
     end
-end
-
-lines = @getinputs(false)
-
-numeric_keypad = AoC_2024_21.NUMERIC_KEYPAD
-directional_keypad = AoC_2024_21.DIRECTIONAL_KEYPAD
-
-numeric_distances = AoC_2024_21.get_distance_map(numeric_keypad)
-directional_distances = AoC_2024_21.get_distance_map(directional_keypad)
-
-println("\n")
-
-function find_inputs(code::String)
-    robot_locations = ['A', 'A', 'A']
-    temp_location_A = robot_locations[1]
-    full_shortest_path = ""
-    for targetA in code
-        # global numeric_distances, directional_distances, temp_location_A, full_shortest_path
-        # possible_sequences = String[]
-        pathsA = numeric_distances[temp_location_A][targetA] .* 'A'
-        println("RobotA location: '$(temp_location_A)'   target: '$targetA'   options: $(pathsA)")
-        temp_dict = Dict{Tuple{String, String}, String}()
-        final_shortest_A = ""
-        # shortest_B = ""
-        for pathA in pathsA
-            println("B -> A checking path: '$pathA'")
-            temp_location_B = robot_locations[2]
-            shortest_A = ""
-            for targetB in pathA
-                pathsB = directional_distances[temp_location_B][targetB] .* 'A'
-                println("\tRobotB location: '$(temp_location_B)'   target: '$targetB'   options: $(pathsB)")
-
-                shortest_B = ""
-                for pathB in pathsB
-                    temp_location_C = robot_locations[3]
-                    println("\tC -> B checking path: '$pathB'")
-                    shortest_C = ""
-                    for targetC in pathB
-                        pathsC = directional_distances[temp_location_C][targetC] .* 'A'
-                        println("\t\tRobotC location: '$(temp_location_C)'   target: '$targetC'   options: $(pathsC)")
-
-                        for pathC in pathsC
-                            println("\t\t\tChecking input option: '$pathC'")
-                            
-                        end
-
-                        t = (pathA, pathB)
-                        if !haskey(temp_dict, t)
-                            temp_dict[t] = ""
-                        end
-                        temp_dict[t] *= pathsC[1]
-
-                        shortest_C *= pathsC[end] # can take either
-                        
-                        temp_location_C = targetC
-                    end
-
-                    if isempty(shortest_B) || length(shortest_B) > length(shortest_C)
-                        shortest_B = shortest_C
-                    end
-                end
-
-                println("\tShortest B: $(shortest_B)\n")
-                temp_location_B = targetB
-                shortest_A *= shortest_B
+    
+    numeric_distances = get_distance_map(NUMERIC_KEYPAD)
+    directional_distances = get_distance_map(DIRECTIONAL_KEYPAD)
+    
+    function find_input_sequence(directional_moves::String; depth::Int)::String
+        input_sequence = ""
+        robot_pos = 'A'
+        
+        for move in directional_moves
+            path = directional_distances[robot_pos][move][1] * 'A'
+            if depth == 1
+                input_sequence *= path
+            else
+                input_sequence *= find_input_sequence(path; depth=depth-1)
             end
-
-            println("Shortest A: $(shortest_A)\n")
-            if isempty(final_shortest_A) || length(final_shortest_A) > length(shortest_A)
-                final_shortest_A = shortest_A
+            robot_pos = move
+        end
+        return input_sequence
+    end
+    
+    function find_shortest_inputs(code::String, num_directional_robots::Int = 2)::String
+        numeric_location = 'A'
+        full_shortest_input = ""
+        for num in code
+            numeric_paths = numeric_distances[numeric_location][num] .* 'A'
+            
+            shortest_num_input = ""
+            for num_path in numeric_paths
+                input_sequence = find_input_sequence(num_path; depth=num_directional_robots)
+                !isempty(shortest_num_input) && length(input_sequence) > length(shortest_num_input) && continue
+                shortest_num_input = input_sequence
             end
-            # println("Shortest B->A: $(shortest_B)\n")
+    
+            full_shortest_input *= shortest_num_input
+            numeric_location = num
         end
-        println("Final Shortest A: $(final_shortest_A)\n")
-        temp_location_A = targetA
-
-        # paths = collect(values(temp_dict))
-        # display(temp_dict)
-        # (len, idx) = findmin(length, paths)
-        # println("Shortest path: $(paths[idx])")
-        # full_shortest_path *= paths[idx]
-
-        full_shortest_path *= final_shortest_A
+    
+        return full_shortest_input
     end
-    println("Final $code: $(full_shortest_path)")
 
-    return full_shortest_path
-end
-println("Correct:       <vA<AA>>^AvAA<^A>A<v<A>>^AvA^A<vA>^A<v<A>^A>AAvA^A<v<A>A>^AAAvA<^A>A")
-
-total = 0
-for line in lines
-    global total
-    full_shortest_path = find_inputs(line)
-    total += Parsers.parse(Int, line[1:end-1]) * length(full_shortest_path)
-end
-
-println("Total $(total)")
-
-
-function print_movements(keypad::AoC_2024_21.Keypad, pos::CartesianIndex{2}, inputs::String)::String
-    movements = ""
-    for ch in inputs
-        if ch == 'v'
-            pos = CartesianIndex(pos[1] + 1, pos[2])
-        elseif ch == '^'
-            pos = CartesianIndex(pos[1] - 1, pos[2])
-        elseif ch == '<'
-            pos = CartesianIndex(pos[1], pos[2]-1)
-        elseif ch == '>'
-            pos = CartesianIndex(pos[1], pos[2]+1)
-        else
-            movements *= keypad[pos]
+    function solve_part_1(lines)
+        total = 0
+        for line in lines
+            full_shortest_path = find_shortest_inputs(line, 2)
+            total += Parsers.parse(Int, line[1:end-1]) * length(full_shortest_path)
         end
+        return total
     end
-    println(movements)
-    return movements
+
+    function solve_part_2(lines)
+
+        return nothing
+    end
+
+    function solve(btest::Bool = false)::Tuple{Any, Any}
+        lines       = @getinputs(btest);
+
+        part1       = solve_part_1(lines);
+        part2       = solve_part_2(lines);
+
+        return (part1, part2);
+    end
+
+    @time (part1, part2) = solve(true); # Test
+    # @time (part1, part2) = solve();
+    println("\nPart 1 answer: $(part1)");
+    println("\nPart 2 answer: $(part2)\n");
 end
-
-println("")
-
-# print("Inputs 2: "); inputs_B = print_movements(directional_keypad, CartesianIndex(1,3), full_shortest_path)
-println("Inputs 1: <vA<AA>>^AvAA<^A>A<v<A>>^AvA^A<vA>^A<v<A>^A>AAvA^A<v<A>A>^AAAvA<^A>A")
-print("Inputs 2: "); inputs_B = print_movements(directional_keypad, CartesianIndex(1,3), "<vA<AA>>^AvAA<^A>A<v<A>>^AvA^A<vA>^A<v<A>^A>AAvA^A<v<A>A>^AAAvA<^A>A")
-print("Inputs 3: "); inputs_C = print_movements(directional_keypad, CartesianIndex(1,3), inputs_B)
-# print("Outputs:  "); outputs  = print_movements(numeric_keypad, CartesianIndex(3,2), inputs_C)
-print("Outputs:  "); outputs  = print_movements(numeric_keypad, CartesianIndex(4,3), inputs_C)
-println("")
-
-println("Test:")
-println("Inputs 1: $(full_shortest_path)")
-print("Inputs 2: "); inputs_B = print_movements(directional_keypad, CartesianIndex(1,3), full_shortest_path)
-print("Inputs 3: "); inputs_C = print_movements(directional_keypad, CartesianIndex(1,3), inputs_B)
-print("Outputs:  "); outputs  = print_movements(numeric_keypad, CartesianIndex(4,3), inputs_C)
-println("")
