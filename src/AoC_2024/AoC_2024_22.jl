@@ -4,14 +4,14 @@ module AoC_2024_22
 
     parse_inputs(lines::Vector{String})::Vector{Int} = Parsers.parse.(Int, lines)
 
-    prune(secret::Int)::Int = mod(secret, 16777216)
-    mix(secret::Int, value::Int)::Int = secret ⊻ value
-    mixprune(secret::Int, value::Int)::Int = prune(mix(secret, value))
+    @inline prune(secret::Int)::Int = secret & 16777215 # mod(secret, 16777216)
+    @inline mix(secret::Int, value::Int)::Int = secret ⊻ value
+    @inline mixprune(secret::Int, value::Int)::Int = prune(mix(secret, value))
 
-    function evolve(secret::Int)::Int
-        secret = mixprune(secret, secret * 64)
-        secret = mixprune(secret, secret ÷ 32)
-        secret = mixprune(secret, secret * 2048)
+    @inline function evolve(secret::Int)::Int
+        secret = mixprune(secret, secret << 6) # * 64
+        secret = mixprune(secret, secret >> 5) # ÷ 32
+        secret = mixprune(secret, secret << 11) # * 2048
         return secret
     end
 
