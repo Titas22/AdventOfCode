@@ -62,24 +62,21 @@ module AoC_2024_21
         vpath = get_straight_path_string(vdir, vdist)
         hpath = get_straight_path_string(hdir, hdist)
         
-        isa(keypad, NumericKeypad) || return [vpath * hpath] # Looks like for non-numeric we can always use just one option
+        # isa(keypad, NumericKeypad) || return [vpath * hpath] # Looks like for non-numeric we can always use just one option
+        # ok maybe not... 
+        # turns out there is a specific order that always works but this way we find the correct path anyway
 
         return [vpath * hpath, hpath * vpath]
     end
 
     function get_distance_map(keypad::Keypad)
-        # dict = Dict{Char, Dict{Char, Union{String, Tuple{String, String}}}}()
         dict = Dict{Char, Dict{Char, Vector{String}}}()
-        # dict = Dict()
         for from = CartesianIndices(keypad)
-            # dict[keypad[from]] = Dict{Char, Union{String, Tuple{String, String}}}()
             dict[keypad[from]] = Dict{Char, Vector{String}}()
             for to = CartesianIndices(keypad)
                 (keypad[from] == ' ' || keypad[to] == ' ') && continue
 
-
                 delta = to - from
-                # println("from: " * string(from) * "   to: " * string(to) * "   delta: " * string(delta))
                 paths = get_paths(keypad, from, to)
                 # println("from: " * keypad[from] * "   to: " * keypad[to] * "   delta: " * string(paths))
 
@@ -92,33 +89,53 @@ module AoC_2024_21
     
     numeric_distances = get_distance_map(NUMERIC_KEYPAD)
     directional_distances = get_distance_map(DIRECTIONAL_KEYPAD)
-    
-    function find_input_sequence_length(directional_moves::String; depth::Int)::Int
+
+    # cache::Dict{UInt, BigInt} = Dict{UInt, BigInt}()
+    # hash(str::String, num::Int)::UInt = Base.hash(str * Char(num))
+    cache::Dict{Tuple{String, Int}, BigInt} = Dict{Tuple{String, Int}, BigInt}()
+
+    function find_input_sequence_length(directional_moves::String; depth::Int)::BigInt
+        # k = hash(directional_moves, depth)
+        k = (directional_moves, depth)
+        haskey(cache, k) && return cache[k]
         input_sequence_length = 0
         robot_pos = 'A'
         
         for move in directional_moves
-            path = directional_distances[robot_pos][move][1] * 'A'
-            if depth == 1
-                input_sequence_length += length(path)
-            else
-                input_sequence_length += find_input_sequence_length(path; depth=depth-1)
+            shortest_move = BigInt(0)
+            for path in directional_distances[robot_pos][move]
+                if depth == 1
+                    path_length =  BigInt(length(path))+1
+                else
+                    path_length =  find_input_sequence_length(path * 'A'; depth=depth-1)
+                end
+                if shortest_move == 0 || path_length < shortest_move 
+                    shortest_move = path_length
+                end
             end
+            input_sequence_length += shortest_move
+            # path = directional_distances[robot_pos][move][1] * 'A'
+            # if depth == 1
+            #     input_sequence_length += length(path)
+            # else
+            #     input_sequence_length += find_input_sequence_length(path; depth=depth-1)
+            # end
             robot_pos = move
         end
+        cache[k] = input_sequence_length
         return input_sequence_length
     end
     
-    function find_shortest_inputs(code::String, num_directional_robots::Int = 2)::Int
+    function find_shortest_inputs(code::String, num_directional_robots::Int = 2)::BigInt
         numeric_location = 'A'
-        total_shortest_input = 0
+        total_shortest_input = BigInt(0)
         for num in code
             numeric_paths = numeric_distances[numeric_location][num] .* 'A'
             
-            shortest_num_input = typemax(Int)
+            shortest_num_input = BigInt(0)
             for num_path in numeric_paths
                 input_length = find_input_sequence_length(num_path; depth=num_directional_robots)
-                input_length > shortest_num_input && continue
+                input_length > shortest_num_input > 0 && continue
                 shortest_num_input = input_length
             end
     
@@ -129,7 +146,7 @@ module AoC_2024_21
         return total_shortest_input
     end
 
-    function solve_common(lines::Vector{String}; depth::Int)::Int
+    function solve_common(lines::Vector{String}; depth::Int)::BigInt
         total = 0
         for line in lines
             shortest_path_length = find_shortest_inputs(line, depth)
@@ -139,22 +156,23 @@ module AoC_2024_21
     end
 
     solve_part_1(lines) = solve_common(lines, depth=2)
-    solve_part_2(lines) = solve_common(lines, depth=50)
+    solve_part_2(lines) = solve_common(lines, depth=25)
 
     function solve(btest::Bool = false)::Tuple{Any, Any}
         lines       = @getinputs(btest);
 
+        empty!(cache)
         part1       = solve_part_1(lines);
         part2       = solve_part_2(lines);
 
         return (part1, part2);
     end
 
-    @time (part1, part2) = solve(true); # Test
-    # @time (part1, part2) = solve();
+    # @time (part1, part2) = solve(true); # Test
+    @time (part1, part2) = solve();
     println("\nPart 1 answer: $(part1)");
     println("\nPart 2 answer: $(part2)\n");
-
-    @assert(part1 == 126384, "Part 1 is wrong")
-    # @assert(part1 == 128962, "Part 1 is wrong")
+    
+    @assert(part1 == 128962, "Part 1 is wrong")
+    @assert(part2 == 159684145150108, "Part 2 is wrong")
 end
