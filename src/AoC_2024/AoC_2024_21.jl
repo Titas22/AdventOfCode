@@ -93,47 +93,47 @@ module AoC_2024_21
     numeric_distances = get_distance_map(NUMERIC_KEYPAD)
     directional_distances = get_distance_map(DIRECTIONAL_KEYPAD)
     
-    function find_input_sequence(directional_moves::String; depth::Int)::String
-        input_sequence = ""
+    function find_input_sequence_length(directional_moves::String; depth::Int)::Int
+        input_sequence_length = 0
         robot_pos = 'A'
         
         for move in directional_moves
             path = directional_distances[robot_pos][move][1] * 'A'
             if depth == 1
-                input_sequence *= path
+                input_sequence_length += length(path)
             else
-                input_sequence *= find_input_sequence(path; depth=depth-1)
+                input_sequence_length += find_input_sequence_length(path; depth=depth-1)
             end
             robot_pos = move
         end
-        return input_sequence
+        return input_sequence_length
     end
     
-    function find_shortest_inputs(code::String, num_directional_robots::Int = 2)::String
+    function find_shortest_inputs(code::String, num_directional_robots::Int = 2)::Int
         numeric_location = 'A'
-        full_shortest_input = ""
+        total_shortest_input = 0
         for num in code
             numeric_paths = numeric_distances[numeric_location][num] .* 'A'
             
-            shortest_num_input = ""
+            shortest_num_input = typemax(Int)
             for num_path in numeric_paths
-                input_sequence = find_input_sequence(num_path; depth=num_directional_robots)
-                !isempty(shortest_num_input) && length(input_sequence) > length(shortest_num_input) && continue
-                shortest_num_input = input_sequence
+                input_length = find_input_sequence_length(num_path; depth=num_directional_robots)
+                input_length > shortest_num_input && continue
+                shortest_num_input = input_length
             end
     
-            full_shortest_input *= shortest_num_input
+            total_shortest_input += shortest_num_input
             numeric_location = num
         end
     
-        return full_shortest_input
+        return total_shortest_input
     end
 
     function solve_part_1(lines)
         total = 0
         for line in lines
-            full_shortest_path = find_shortest_inputs(line, 2)
-            total += Parsers.parse(Int, line[1:end-1]) * length(full_shortest_path)
+            shortest_path_length = find_shortest_inputs(line, 2)
+            total += Parsers.parse(Int, line[1:end-1]) * shortest_path_length
         end
         return total
     end
@@ -156,4 +156,7 @@ module AoC_2024_21
     # @time (part1, part2) = solve();
     println("\nPart 1 answer: $(part1)");
     println("\nPart 2 answer: $(part2)\n");
+
+    @assert(part1 == 126384, "Part 1 is wrong")
+    # @assert(part1 == 128962, "Part 1 is wrong")
 end
