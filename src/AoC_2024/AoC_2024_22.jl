@@ -55,11 +55,31 @@ end
 
 initial_secrets = Parsers.parse.(Int, lines)
 
+nbuyers = length(lines)
+nsales = 2000
 
-for ii = 1 : 2000
-    global initial_secrets
-    initial_secrets = evolve.(initial_secrets)
+total_gainz = zeros(Int, 19, 19, 19, 19)
+for secret in initial_secrets
+    last_changes = zeros(Int, 4)
+    last_price = mod(secret, 10)
+    already_sold = falses(19, 19, 19, 19)
+    for ii = 1 : nsales
+        secret = evolve(secret)
+        price = mod(secret, 10)
+
+        popfirst!(last_changes)
+        push!(last_changes, price - last_price + 10)
+        last_price = price
+
+        ii > 3 || continue
+
+        idx = CartesianIndex(last_changes[1], last_changes[2], last_changes[3], last_changes[4])
+        already_sold[idx] && continue
+        total_gainz[idx] += price
+        already_sold[idx] = true
+    end
 end
+p1 = sum(initial_secrets)
 initial_secrets
-sum(initial_secrets)
-    
+
+(gainz, idx) = findmax(total_gainz)
