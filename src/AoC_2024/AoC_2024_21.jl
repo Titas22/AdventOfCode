@@ -129,19 +129,17 @@ module AoC_2024_21
         return total_shortest_input
     end
 
-    function solve_part_1(lines)
+    function solve_common(lines::Vector{String}; depth::Int)::Int
         total = 0
         for line in lines
-            shortest_path_length = find_shortest_inputs(line, 2)
+            shortest_path_length = find_shortest_inputs(line, depth)
             total += Parsers.parse(Int, line[1:end-1]) * shortest_path_length
         end
         return total
     end
 
-    function solve_part_2(lines)
-
-        return nothing
-    end
+    solve_part_1(lines) = solve_common(lines, depth=2)
+    solve_part_2(lines) = solve_common(lines, depth=50)
 
     function solve(btest::Bool = false)::Tuple{Any, Any}
         lines       = @getinputs(btest);
