@@ -55,7 +55,8 @@ module AoC_2024_23
             second = links[k2]
             for k3 in second
                 k3 in links[k] || continue
-                push!(all_trios, to_sorted_tuple(k, k2, k3))
+                t = to_sorted_tuple(k, k2, k3)
+                push!(all_trios, t)
             end
         end
     end
@@ -101,7 +102,8 @@ module AoC_2024_23
 
         return max_clique
     end
-    
+
+    # https://en.wikipedia.org/wiki/Bron%E2%80%93Kerbosch_algorithm#With_pivoting
     function BronKerbosch!(largest_clique::Set{Int}, R::Set{Int}, P::Set{Int}, X::Set{Int}, N::Links)
         if isempty(P) && isempty(X)
             if length(R) > length(largest_clique)
@@ -110,22 +112,21 @@ module AoC_2024_23
             end
             return
         end
-        for v in P
+        u = union(P, X) |> first
+        for v in setdiff(P, N[u])
             BronKerbosch!(largest_clique, union(R, [v]), intersect(P, N[v]), intersect(X, N[v]), N)
             P = setdiff(P, [v])
             X = union(X, [v])
         end
-    end
+    end    
     
     function solve_part_2(all_trios::Set{Trio}, links::Links)::String
         vertices = find_max_clique_size(all_trios, links)
-        # vertices = keys(links)
+        
         largest_clique::Set{Int} = Set{Int}()
         BronKerbosch!(largest_clique, Set{Int}(), Set{Int}(vertices), Set{Int}(), links)
 
-        x = [c for c in largest_clique]
-        sort!(x)
-        return join(int2letters.(x), ',')
+        return join(int2letters.(sort(collect(largest_clique))), ',')
     end
 
     function solve(btest::Bool = false)::Tuple{Any, Any}
