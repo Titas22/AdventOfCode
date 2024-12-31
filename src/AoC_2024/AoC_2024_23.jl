@@ -4,7 +4,11 @@ module AoC_2024_23
     const Links = Dict{Int, Set{Int}}
     const Trio = Tuple{Int, Int, Int}
 
-    letters2int(str::String)::Int = (str[1]-'a') * 26 + str[2]-'a'
+    letters2int(str::String)::Int = (str[1]-'a')*26 + str[2]-'a'
+    function int2letters(v::Int)::String
+        (d, r) = divrem(v, 26)
+        return Char(97+d) * Char(97+r)
+    end
 
     function add_link!(d::Links, a::Int, b::Int)
         if !haskey(d, a)
@@ -47,7 +51,6 @@ module AoC_2024_23
         end
     end
     function find_trios!(all_trios::Set{Trio}, links::Links, k::Int)
-        thirds = Set{Int}()
         for k2 in links[k]
             second = links[k2]
             for k3 in second
@@ -75,24 +78,54 @@ module AoC_2024_23
         return total
     end
 
-    # function find_largest_network(links::Links, start::Symbol)
-    #     network = Set{Symbol}()
-    #     push!(network, start)
-    #     return network
-    # end
-    
-    function solve_part_2(all_trios::Set{Trio})
-        # n_largest_network = 0
-        # largest_network = Set{Symbol}()
-        # for link in keys(links)
-        #     ln = find_largest_network(links, link)
-        #     sln = length(ln)
-        #     sln > n_largest_network || continue
-        #     n_largest_network = sln
-        #     largest_network = ln
-        # end
+    function find_max_clique_size(all_trios::Set{Trio}, links::Links)
+        vec_trios::Vector{Trio} = [trio for trio in all_trios]
+        vertices::Vector{Int} = [k for (k, _) in links]
 
-        return nothing;
+        counts = vertices .* 0
+        for ii in eachindex(vertices)
+            v = vertices[ii]
+            for t in vec_trios
+                v in t || continue
+                counts[ii] += 1
+            end
+        end
+        counts
+        nmax = max(counts...)
+
+        max_clique = Int[]
+        for (c, v) in zip(counts, vertices)
+            c == nmax || continue
+            push!(max_clique, v)
+        end
+
+        return max_clique
+    end
+    
+    function BronKerbosch!(largest_clique::Set{Int}, R::Set{Int}, P::Set{Int}, X::Set{Int}, N::Links)
+        if isempty(P) && isempty(X)
+            if length(R) > length(largest_clique)
+                empty!(largest_clique)
+                push!(largest_clique, R...)
+            end
+            return
+        end
+        for v in P
+            BronKerbosch!(largest_clique, union(R, [v]), intersect(P, N[v]), intersect(X, N[v]), N)
+            P = setdiff(P, [v])
+            X = union(X, [v])
+        end
+    end
+    
+    function solve_part_2(all_trios::Set{Trio}, links::Links)::String
+        vertices = find_max_clique_size(all_trios, links)
+        # vertices = keys(links)
+        largest_clique::Set{Int} = Set{Int}()
+        BronKerbosch!(largest_clique, Set{Int}(), Set{Int}(vertices), Set{Int}(), links)
+
+        x = [c for c in largest_clique]
+        sort!(x)
+        return join(int2letters.(x), ',')
     end
 
     function solve(btest::Bool = false)::Tuple{Any, Any}
@@ -102,7 +135,7 @@ module AoC_2024_23
         all_trios   = solve_common(links)
 
         part1       = solve_part_1(all_trios);
-        part2       = solve_part_2(all_trios);
+        part2       = solve_part_2(all_trios, links);
 
         return (part1, part2);
     end
@@ -112,73 +145,6 @@ module AoC_2024_23
     println("\nPart 1 answer: $(part1)");
     println("\nPart 2 answer: $(part2)\n");
 
-    # @assert(part1 == 1248, "Part 1 is wrong")
-    # @assert(part2 == , "Part 2 is wrong")
+    @assert(part1 == 1248, "Part 1 is wrong")
+    @assert(part2 == "aa,cf,cj,cv,dr,gj,iu,jh,oy,qr,xr,xy,zb", "Part 2 is wrong")
 end
-lines       = @getinputs(false)
-
-links       = AoC_2024_23.parse_inputs(lines)
-all_trios   = AoC_2024_23.solve_common(links)
-
-vec = [trio for trio in all_trios]
-sort!(vec)
-vec
-
-vertices = [k for k in keys(links)]
-
-counts = vertices .* 0 
-for (ii, v) in pairs(vertices)
-
-    for t in vec
-        v in t || continue
-        counts[ii] += 1
-    end
-end
-counts
-nmax = max(counts...)
-
-max_clique = Int[]
-for (c, v) in zip(counts, vertices)
-    c == nmax || continue
-    push!(max_clique, v)
-end
-max_clique
-
-
-letters2int(str::String)::Int = (str[1]-'a') * 26 + str[2]-'a'
-function int2letters(v::Int)::String
-    (d, r) = divrem(v, 26)
-    return Char(97 + d) * Char(97+r)
-end
-# divrem
-
-int2letters.(max_clique)
-
-max_clique
-
-function BronKerbosch1(R, P, X, N)
-    if isempty(P) && isempty(X)
-        println("Maximal clique: ", R)  # Report R as a maximal clique
-    else
-        for v in copy(P)
-            BronKerbosch1(
-                union(R, [v]), 
-                intersect(P, N[v]), 
-                intersect(X, N[v]), 
-                N
-            )
-            P = setdiff(P, [v])
-            X = union(X, [v])
-        end
-    end
-end
-
-
-R = Set()             # Initially empty
-P = Set(max_clique)  # All vertices in the graph
-X = Set()             # Initially empty
-N = links
-BronKerbosch1(R, P, X, N)
-x = [61, 95, 622, 228, 57, 615, 0, 388, 241, 73, 165, 651, 433]
-sort!(x)
-join(int2letters.(x), ',')
