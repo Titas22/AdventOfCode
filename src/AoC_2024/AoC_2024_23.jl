@@ -31,32 +31,14 @@ module AoC_2024_23
         return links
     end
 
-    function to_sorted_tuple(k::T, k2::T, k3::T)::Tuple{T, T, T} where T<:Int
-        if k < k2
-            if k2 < k3
-                return (k, k2, k3)
-            elseif k3 < k
-                return (k3, k , k2)
-            else
-                return (k, k3, k2)
-            end
-        else # k2 < k
-            if k < k3
-                return (k2, k, k3)
-            elseif k3 < k2
-                return (k3, k2, k)
-            else
-                return (k2, k3, k)
-            end
-        end
-    end
     function find_trios!(all_trios::Set{Trio}, links::Links, k::Int)
-        for k2 in links[k]
+        linked = links[k]
+        for k2 in linked
+            k < k2 || continue
             second = links[k2]
             for k3 in second
-                k3 in links[k] || continue
-                t = to_sorted_tuple(k, k2, k3)
-                push!(all_trios, t)
+                k3 > k2 && k3 in linked || continue
+                push!(all_trios, (k, k2, k3))
             end
         end
     end
