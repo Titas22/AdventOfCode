@@ -1,7 +1,7 @@
 module AoC_2024_23
     using AdventOfCode
 
-    const Links = Dict{Int, Set{Int}}
+    const Links = Dict{Int, Vector{Int}}
     const Trio = Tuple{Int, Int, Int}
 
     letters2int(str::String)::Int = (str[1]-'a')*26 + str[2]-'a'
@@ -12,10 +12,13 @@ module AoC_2024_23
 
     function add_link!(d::Links, a::Int, b::Int)
         if !haskey(d, a)
-            d[a] = Set{Int}()
+            d[a] = Vector{Int}()
+            sizehint!(d[a], 16)
         end
-        push!(d[a], b)
+        v = d[a]
+        b in v || push!(v, b)
     end
+
     function add_links!(d::Links, a::String, b::String)
         na = letters2int(a)
         nb = letters2int(b)
@@ -45,6 +48,7 @@ module AoC_2024_23
 
     function solve_common(links::Links)::Vector{Trio}
         all_trios = Vector{Trio}()
+        sizehint!(all_trios, 12000)
         for (k, _) in links
             find_trios!(all_trios, links, k)
         end
