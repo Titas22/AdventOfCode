@@ -31,7 +31,7 @@ module AoC_2024_23
         return links
     end
 
-    function find_trios!(all_trios::Set{Trio}, links::Links, k::Int)
+    function find_trios!(all_trios::Vector{Trio}, links::Links, k::Int)
         linked = links[k]
         for k2 in linked
             k < k2 || continue
@@ -43,15 +43,15 @@ module AoC_2024_23
         end
     end
 
-    function solve_common(links::Links)::Set{Trio}
-        all_trios = Set{Trio}()
+    function solve_common(links::Links)::Vector{Trio}
+        all_trios = Vector{Trio}()
         for (k, _) in links
             find_trios!(all_trios, links, k)
         end
         return all_trios
     end
 
-    function solve_part_1(all_trios::Set{Trio})
+    function solve_part_1(all_trios::Vector{Trio})
         total = 0
         lims = (letters2int("ta"), letters2int("tz"))
         for trio in all_trios
@@ -61,7 +61,7 @@ module AoC_2024_23
         return total
     end
 
-    function find_max_clique_size(all_trios::Set{Trio})::Vector{Int}
+    function find_max_clique_size(all_trios::Vector{Trio})::Vector{Int}
         counts = zeros(Int, 675)
         for triplet in all_trios
             for num in triplet
@@ -89,7 +89,7 @@ module AoC_2024_23
         end
     end    
     
-    function solve_part_2(all_trios::Set{Trio}, links::Links)::String
+    function solve_part_2(all_trios::Vector{Trio}, links::Links)::String
         vertices = find_max_clique_size(all_trios)
         
         largest_clique::Set{Int} = Set{Int}()
