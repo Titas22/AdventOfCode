@@ -4,19 +4,22 @@ module AoC_2024_23
     const Links = Dict{Int, Vector{Int}}
     const Trio = Tuple{Int, Int, Int}
 
-    letters2int(str::String)::Int = (str[1]-'a')*26 + str[2]-'a'
+    letters2int(str::String)::Int = (str[1]-'a')*26 + str[2]-'`'
     function int2letters(v::Int)::String
         (d, r) = divrem(v, 26)
-        return Char(97+d) * Char(97+r)
+        return Char(97+d) * Char(96+r)
     end
 
     function add_link!(d::Links, a::Int, b::Int)
         if !haskey(d, a)
-            d[a] = Vector{Int}()
-            sizehint!(d[a], 16)
+            v = Vector{Int}()
+            sizehint!(v, 16)
+            d[a] = v
+        else
+            v = d[a]
         end
-        v = d[a]
-        b in v || push!(v, b)
+        b in v && return
+        push!(v, b)
     end
 
     function add_links!(d::Links, a::String, b::String)
@@ -69,11 +72,11 @@ module AoC_2024_23
         counts = zeros(Int, 675)
         for triplet in all_trios
             for num in triplet
-                @inbounds counts[num+1] += 1
+                @inbounds counts[num] += 1
             end
         end
         max_count = maximum(counts)
-        return findall(x -> x == max_count, counts) .- 1
+        return findall(x -> x == max_count, counts)
     end
 
     # https://en.wikipedia.org/wiki/Bron%E2%80%93Kerbosch_algorithm#With_pivoting
