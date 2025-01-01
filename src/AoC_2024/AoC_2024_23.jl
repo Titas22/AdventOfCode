@@ -79,28 +79,21 @@ module AoC_2024_23
         return total
     end
 
-    function find_max_clique_size(all_trios::Set{Trio}, links::Links)
-        vec_trios::Vector{Trio} = [trio for trio in all_trios]
-        vertices::Vector{Int} = [k for (k, _) in links]
-
-        counts = vertices .* 0
-        for ii in eachindex(vertices)
-            v = vertices[ii]
-            for t in vec_trios
-                v in t || continue
-                counts[ii] += 1
+    function find_max_clique_size(all_trios::Set{Trio})::Vector{Int}
+        counts = zeros(Int, 675)
+        for triplet in all_trios
+            for num in triplet
+                @inbounds counts[num+1] += 1
             end
         end
-        counts
-        nmax = max(counts...)
-
-        max_clique = Int[]
-        for (c, v) in zip(counts, vertices)
-            c == nmax || continue
-            push!(max_clique, v)
-        end
-
-        return max_clique
+        
+        # Find the maximum frequency
+        max_count = maximum(counts)
+    
+        # Find all numbers with the maximum frequency
+        most_repeated_numbers = findall(x -> x == max_count, counts) .- 1
+    
+        return most_repeated_numbers
     end
 
     # https://en.wikipedia.org/wiki/Bron%E2%80%93Kerbosch_algorithm#With_pivoting
@@ -121,7 +114,7 @@ module AoC_2024_23
     end    
     
     function solve_part_2(all_trios::Set{Trio}, links::Links)::String
-        vertices = find_max_clique_size(all_trios, links)
+        vertices = find_max_clique_size(all_trios)
         
         largest_clique::Set{Int} = Set{Int}()
         BronKerbosch!(largest_clique, Set{Int}(), Set{Int}(vertices), Set{Int}(), links)
