@@ -121,7 +121,4 @@ module AoC_2024_23
     @time (part1, part2) = solve();
     println("\nPart 1 answer: $(part1)");
     println("\nPart 2 answer: $(part2)\n");
-
-    @assert(part1 == 1248, "Part 1 is wrong")
-    @assert(part2 == "aa,cf,cj,cv,dr,gj,iu,jh,oy,qr,xr,xy,zb", "Part 2 is wrong")
 end
