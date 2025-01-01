@@ -68,14 +68,8 @@ module AoC_2024_23
                 @inbounds counts[num+1] += 1
             end
         end
-        
-        # Find the maximum frequency
         max_count = maximum(counts)
-    
-        # Find all numbers with the maximum frequency
-        most_repeated_numbers = findall(x -> x == max_count, counts) .- 1
-    
-        return most_repeated_numbers
+        return findall(x -> x == max_count, counts) .- 1
     end
 
     # https://en.wikipedia.org/wiki/Bron%E2%80%93Kerbosch_algorithm#With_pivoting
