@@ -47,7 +47,7 @@ include("./src/AoC_2024/AoC_2024_xx.jl") # use to run & re-run the actual script
 | 22 | [Monkey Market](https://adventofcode.com/2024/day/22) | 34.447 ms | 1.13 MiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_22.jl) |
 | 23 | [LAN Party](https://adventofcode.com/2024/day/23) | 1.306 ms | 740.75 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_23.jl) |
 | 24 | [Crossed Wires](https://adventofcode.com/2024/day/24) | 647.500 μs | 163.38 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_24.jl) |
-| 25 | [Code Chronicle](https://adventofcode.com/2024/day/25) | - s | - KiB | [:x:](https://github.com/Titas22/AdventOfCode.jl) |
+| 25 | [Code Chronicle](https://adventofcode.com/2024/day/25) | 642.700 μs | 163.38 KiB | [:white_check_mark:](https://github.com/Titas22/AdventOfCode.jl/blob/main/src/AoC_2024/AoC_2024_25.jl) |
 
 
 The benchmarks have been measured on this machine:
